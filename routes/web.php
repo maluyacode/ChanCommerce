@@ -131,3 +131,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
