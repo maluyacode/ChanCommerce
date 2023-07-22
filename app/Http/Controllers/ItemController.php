@@ -30,10 +30,9 @@ class ItemController extends Controller
      */
     public function create()
     {
-        $suppliers = Supplier::all();
-
-        $categories = Category::all();
-        return View::make('items.create', compact('suppliers', 'categories'));
+        $suppliers = Supplier::all()->pluck('sup_name', 'id');
+        $categories = Category::all()->pluck('cat_name', 'id');
+        return response()->json(["suppliers" => $suppliers, "categories" => $categories]);
     }
 
     /**
