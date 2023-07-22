@@ -15,7 +15,8 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
-
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.js"></script>
     @yield('styles')
     @yield('headscripts')
     <link rel="stylesheet" type="text/css"

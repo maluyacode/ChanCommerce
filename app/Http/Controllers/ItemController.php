@@ -12,6 +12,7 @@ use App\Models\Item;
 use App\Models\Category;
 use App\Models\Supplier;
 use App\Models\Stock;
+use Barryvdh\Debugbar\Facades\Debugbar;
 
 class ItemController extends Controller
 {
@@ -21,7 +22,6 @@ class ItemController extends Controller
     public function index()
     {
         $items = Item::with('supplier', 'category')->get();
-
         return response()->json($items);
     }
 
@@ -54,6 +54,7 @@ class ItemController extends Controller
 
     public function store(Request $request)
     {
+        Debugbar::info($request);
         $rules = [
             'item_name' => 'required|string|max:255',
             'sellprice' => 'required|numeric|min:0',
@@ -77,6 +78,7 @@ class ItemController extends Controller
         $item->sellprice = $request->sellprice;
         $item->sup_id = $request->sup_id;
         $item->cat_id = $request->cat_id;
+        $item->img_path = "NONE";
 
         if ($request->document !== null) {
             foreach ($request->input("document", []) as $file) {
@@ -86,7 +88,7 @@ class ItemController extends Controller
 
         $item->save();
 
-        return redirect()->route('items.index');
+        return response()->json($item, $status = 200);
     }
 
     /**

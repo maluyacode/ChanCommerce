@@ -23,3 +23,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/items', [ItemController::class, 'index']);
 Route::get('/item/create', [ItemController::class, 'create']);
 Route::post('/item/storeMedia', [ItemController::class, 'storeMedia'])->name('items.storeMedia');
+Route::post('/item/store', [ItemController::class, 'store']);

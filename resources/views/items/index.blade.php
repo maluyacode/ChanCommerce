@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('styles')
-    <!-- jQuery -->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
@@ -24,7 +22,7 @@
 
 @section('content')
     <div class="content-header">
-        <div class="container-fluid">
+        <div class="container-fluid for-alert">
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="yow">{{ __('Items') }}</h1>
@@ -68,31 +66,26 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="itemForm">
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="name" name="name">
+                            <input type="text" class="form-control" id="name" name="item_name">
                         </div>
                         <div class="mb-3">
-                            <label for="supplier" class="form-label">Category</label>
-                            <select class="form-select" id="supplier" name="category_id">
-                                <option value="">Please select</option>
+                            <label for="catergory" class="form-label">Category</label>
+                            <select class="form-select" id="category" name="cat_id">
+                                <option selected>Please select</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="supplier" class="form-label">Supplier</label>
-                            <select class="form-select" id="supplier" name="supplier_id">
+                            <select class="form-select" id="supplier" name="sup_id">
                                 <option value="">Please select</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="sellprice" class="form-label">Sell Price</label>
                             <input type="text" class="form-control" id="sellprice" name="sellprice">
-                        </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Description</label>
-                            <textarea type="text" class="form-control" id="description" name="description" rows="4">
-                            </textarea>
                         </div>
                         <div class="mb-3">
                             <label for="images">Item Image</label>
@@ -161,7 +154,6 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('js/item-index.js') }}" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
