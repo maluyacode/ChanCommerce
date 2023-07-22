@@ -1,3 +1,8 @@
+.card-body {
+    color: #F4F2DE !important;
+    background-color: #2B2730;
+}
+
 .modal-title {
     color: black;
 }
@@ -6,3 +11,16 @@ form {
     color: #2B2730;
 }
 
+#draggable {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    padding: 10px;
+    background-color: rgb(0, 0, 255);
+}
+
+#draggable img {
+    width: 150px;
+    height: 150px;
+    margin: 10px;
+}

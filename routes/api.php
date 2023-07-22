@@ -24,3 +24,6 @@ Route::get('/items', [ItemController::class, 'index']);
 Route::get('/item/create', [ItemController::class, 'create']);
 Route::post('/item/storeMedia', [ItemController::class, 'storeMedia'])->name('items.storeMedia');
 Route::post('/item/store', [ItemController::class, 'store']);
+Route::get('/item/{id}/edit', [ItemController::class, 'edit']);
+Route::put('/item/{id}/update', [ItemController::class, 'update']);
+Route::delete('/item/{id}/delete', [ItemController::class, 'destroy']);

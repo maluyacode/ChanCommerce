@@ -101,57 +101,57 @@ class ItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //$item =  Item::find($id);
-        $item = DB::table('items')
-            ->join('categories', 'items.cat_id', '=', 'categories.id')
-            ->join('suppliers', 'items.sup_id', '=', 'suppliers.id')
-            ->select('items.id as it_id', 'suppliers.id AS s_id', 'items.*', 'categories.*', 'suppliers.*')
-            ->where('items.id', $id)
-            ->first();
-        //
-        // $suppliers = Supplier::all();
-        $suppliers = Supplier::where('id', '<>', $item->s_id)->get(['sup_name', 'id']);
-        $categories = Category::where('id', '<>', $item->cat_id)->get(['cat_name', 'id']);
-        return view('items.edit', compact('item', 'suppliers', 'categories'));
+        $item = Item::with('supplier', 'category')->find($id);
+        $item->getMedia('images');
+
+        $suppliers = Supplier::whereNotIn('id', [$item->sup_id])->pluck('sup_name', 'id');
+        $categories = Category::whereNotIn('id', [$item->cat_id])->pluck('cat_name', 'id');;
+
+        return response()->json(["item" => $item, "suppliers" => $suppliers, "categories" => $categories]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        $rules = ['item_name' => 'required|string|max:255',    'sellprice' => 'required|numeric|min:0',    'sup_id' => 'required',    'cat_id' => 'required',    'img_path' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',];
-        $messages = ['item_name.required' => 'Item name is required.',    'item_name.string' => 'Item name must be a string.',    'item_name.max' => 'Item name must not exceed :max characters.',    'sellprice.required' => 'Sell price is required.',    'sellprice.numeric' => 'Sell price must be a number.',    'sellprice.min' => 'Sell price must be at least :min.',    'sup_id.required' => 'Supplier is required.',    'cat_id.required' => 'Category is required.',      'img_path.required' => 'Image is required.',    'img_path.image' => 'The file must be an image.',    'img_path.mimes' => 'The image must be of type: :values.',    'img_path.max' => 'The image size must not exceed :max kilobytes.',];
+        $rules = [
+            'item_name' => 'required|string|max:255',
+            'sellprice' => 'required|numeric|min:0',
+            'sup_id' => 'required',
+            'cat_id' => 'required',
+        ];
+        $messages = [
+            'item_name.required' => 'Item name is required.',
+            'item_name.string' => 'Item name must be a string.',
+            'item_name.max' => 'Item name must not exceed :max characters.',
+            'sellprice.required' => 'Sell price is required.',
+            'sellprice.numeric' => 'Sell price must be a number.',
+            'sellprice.min' => 'Sell price must be at least :min.',
+            'sup_id.required' => 'Supplier is required.',
+            'cat_id.required' => 'Category is required.',
+        ];
+        Validator::make($request->all(), $rules, $messages)->validate();
 
-        $validator = Validator::make($request->all(), $rules, $messages);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
         $item = Item::find($id);
-
-        if ($request->file()) {
-            $fileName = time() . '_' . $request->file('img_path')->getClientOriginalName();
-
-            // $filePath = $request->file('img_path')->storeAs('uploads', $fileName,'public');
-            // dd($fileName,$filePath);
-
-            $path = Storage::putFileAs(
-                'public/images',
-                $request->file('img_path'),
-                $fileName
-            );
-            $item->img_path = '/storage/images/' . $fileName;
-        }
         $item->item_name = $request->item_name;
         $item->sellprice = $request->sellprice;
         $item->sup_id = $request->sup_id;
         $item->cat_id = $request->cat_id;
-        // dd($artist);
+
+        if ($request->document !== null) {
+            DB::table('media')->where('model_id', $id)->delete();
+            foreach ($request->input("document", []) as $file) {
+                $item->addMedia(storage_path("items/images/" . $file))->toMediaCollection("images");
+            }
+        }
 
         $item->save();
-        return redirect()->route('items.index');
+
+
+        return response()->json($item);
     }
 
     /**
@@ -160,7 +160,7 @@ class ItemController extends Controller
     public function destroy($id)
     {
         Item::destroy($id);
-        return redirect()->route('items.index');
+        return response()->json(["status" => 200]);
     }
     public function getItems(Request $request)
     {
