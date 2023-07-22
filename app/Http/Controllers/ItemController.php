@@ -35,40 +35,57 @@ class ItemController extends Controller
         return response()->json(["suppliers" => $suppliers, "categories" => $categories]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function storeMedia(Request $request)
+    {
+        $path = storage_path("items/images");
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+
+        $file = $request->file("file");
+        $name = uniqid() . "_" . trim($file->getClientOriginalName());
+        $file->move($path, $name);
+
+        return response()->json([
+            "name" => $name,
+            "original_name" => $file->getClientOriginalName(),
+        ]);
+    }
+
     public function store(Request $request)
     {
-        $rules = ['item_name' => 'required|string|max:255',    'sellprice' => 'required|numeric|min:0',    'sup_id' => 'required',    'cat_id' => 'required',    'img_path' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',];
-        $messages = ['item_name.required' => 'Item name is required.',    'item_name.string' => 'Item name must be a string.',    'item_name.max' => 'Item name must not exceed :max characters.',    'sellprice.required' => 'Sell price is required.',    'sellprice.numeric' => 'Sell price must be a number.',    'sellprice.min' => 'Sell price must be at least :min.',    'sup_id.required' => 'Supplier is required.',    'cat_id.required' => 'Category is required.',      'img_path.required' => 'Image is required.',    'img_path.image' => 'The file must be an image.',    'img_path.mimes' => 'The image must be of type: :values.',    'img_path.max' => 'The image size must not exceed :max kilobytes.',];
+        $rules = [
+            'item_name' => 'required|string|max:255',
+            'sellprice' => 'required|numeric|min:0',
+            'sup_id' => 'required',
+            'cat_id' => 'required',
+        ];
+        $messages = [
+            'item_name.required' => 'Item name is required.',
+            'item_name.string' => 'Item name must be a string.',
+            'item_name.max' => 'Item name must not exceed :max characters.',
+            'sellprice.required' => 'Sell price is required.',
+            'sellprice.numeric' => 'Sell price must be a number.',
+            'sellprice.min' => 'Sell price must be at least :min.',
+            'sup_id.required' => 'Supplier is required.',
+            'cat_id.required' => 'Category is required.',
+        ];
+        Validator::make($request->all(), $rules, $messages)->validate();
 
-        $validator = Validator::make($request->all(), $rules, $messages);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
         $item = new Item;
-
-        if ($request->file()) {
-            $fileName = time() . '_' . $request->file('img_path')->getClientOriginalName();
-
-            // $filePath = $request->file('img_path')->storeAs('uploads', $fileName,'public');
-            // dd($fileName,$filePath);
-
-            $path = Storage::putFileAs(
-                'public/images',
-                $request->file('img_path'),
-                $fileName
-            );
-            $item->img_path = '/storage/images/' . $fileName;
-        }
         $item->item_name = $request->item_name;
         $item->sellprice = $request->sellprice;
         $item->sup_id = $request->sup_id;
         $item->cat_id = $request->cat_id;
-        //dd($item);
+
+        if ($request->document !== null) {
+            foreach ($request->input("document", []) as $file) {
+                $item->addMedia(storage_path("items/images/" . $file))->toMediaCollection("images");
+            }
+        }
 
         $item->save();
+
         return redirect()->route('items.index');
     }
 

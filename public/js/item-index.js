@@ -56,6 +56,21 @@ $('.dt-buttons').prepend(
 $('#create').on('click', function () {
     $('#update').hide();
     $('#save').show();
+    $.ajax({
+        url: "api/item/create",
+        type: "GET",
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (data) {
+            console.log(data);
+        },
+        error: function (error) {
+            alert("error");
+        },
+    })
+
 })
 
 $(document).on('click', 'button.edit', function () {
@@ -63,4 +78,6 @@ $(document).on('click', 'button.edit', function () {
     $('#update').show();
 })
 
+$('#save').on('click', function () {
 
+});

@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
     <link rel="stylesheet" href="{{ asset('css/item-index.css') }}">
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 @endsection
 
 @section('headscripts')
@@ -92,6 +94,10 @@
                             <textarea type="text" class="form-control" id="description" name="description" rows="4">
                             </textarea>
                         </div>
+                        <div class="mb-3">
+                            <label for="images">Item Image</label>
+                            <div class="dropzone" id="dropzone-image"></div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -103,6 +109,55 @@
         </div>
     </div>
     <script src="{{ asset('js/item-index.js') }}" defer></script>
+    <script>
+        initilizeDropzone();
+        var uploadedDocumentMap = {}
+
+        function initilizeDropzone() {
+            Dropzone.options.dropzoneImage = {
+                url: '{{ route('items.storeMedia') }}',
+                maxFilesize: 2,
+                acceptedFiles: 'image/*',
+                addRemoveLinks: true,
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                success: function(file, response) {
+                    $('form').append('<input type="hidden" name="document[]" value="' + response.name + '">')
+                    uploadedDocumentMap[file.name] = response.name
+                },
+                removedfile: function(file) {
+                    file.previewElement.remove()
+                    var name = ''
+                    if (typeof file.file_name !== 'undefined') {
+                        name = file.file_name
+                    } else {
+                        name = uploadedDocumentMap[file.name]
+                    }
+                    $('form').find('input[name="document[]"][value="' + name + '"]').remove()
+                },
+                error: function(file) {
+                    alert("Only image will be accepted.");
+                    file.previewElement.remove();
+                    $('.dz-message').css({
+                        display: "block",
+                    })
+                },
+                init: function() {
+                    @if (isset($project) && $project->document)
+                        var files = {!! json_encode($project->document) !!}
+                        for (var i in files) {
+                            var file = files[i]
+                            this.options.addedfile.call(this, file)
+                            file.previewElement.classList.add('dz-complete')
+                            $('form').append('<input type="hidden" name="document[]" value="' + file.file_name +
+                                '">')
+                        }
+                    @endif
+                },
+            }
+        }
+    </script>
 @endsection
 
 @section('scripts')
