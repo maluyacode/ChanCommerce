@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
-Use View;
-Use Storage;
+use App\Models\Supplier;
+use View;
+use Storage;
 use DB;
 
-    use App\Models\Item;
+use App\Models\Item;
 
 class CategoryController extends Controller
 {
@@ -19,7 +20,7 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
         //dd(compact('items'));
-        return View::make('categories.index',compact('categories'));
+        return View::make('categories.index', compact('categories'));
     }
 
     /**
@@ -40,20 +41,18 @@ class CategoryController extends Controller
         ];
         $messages = [
             'cat_name.required' => 'Please enter your category name.',
-            
+
         ];
-    
-try {
-    $validatedData = $request->validate($rules, $messages);
-    $categories = new Category;
-    $categories->cat_name = $request->cat_name;
-  
-    $categories->save();
-    
-    
-} catch (ValidationException $e) {
-    return redirect()->back()->withErrors($e->errors())->with('alert', 'Please fix the errors below.')->withInput();
-}
+
+        try {
+            $validatedData = $request->validate($rules, $messages);
+            $categories = new Category;
+            $categories->cat_name = $request->cat_name;
+
+            $categories->save();
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->with('alert', 'Please fix the errors below.')->withInput();
+        }
 
         return redirect()->route('categories.index');
     }
@@ -61,19 +60,20 @@ try {
     /**
      * Display the specified resource.
      */
-    
-    
+
+
     public function show($id)
     {
         // dd($id);
         $items = DB::table('items')
-        ->join('categories', 'items.cat_id', '=', 'categories.id')
-        
-        ->select('items.id as it_id','items.*','categories.*')
-       ->where('categories.id',$id)->get() ;  
-       $categories = Category::all();
+            ->join('categories', 'items.cat_id', '=', 'categories.id')
+            ->join('suppliers', 'items.sup_id', '=', 'suppliers.id')
+            ->select('items.id as it_id', 'items.*', 'categories.*', 'suppliers.*')
+            ->where('categories.id', $id)->get();
+            $categories = Category::all();
+            $suppliers = Supplier::all();
 
-        return view::make('items.show', compact('items','categories'))->with('message','Product Added to Cart!');
+        return view::make('items.show', compact('items', 'categories'))->with('message', 'Product Added to Cart!');
     }
 
     /**
@@ -95,26 +95,24 @@ try {
         ];
         $messages = [
             'cat_name.required' => 'Please enter your category name.',
-            
+
         ];
 
         try {
             $validatedData = $request->validate($rules, $messages);
             $categories = Category::find($id);
 
-        $categories->cat_name = $request->cat_name;
- 
-        $categories->save();
-            
-            
+            $categories->cat_name = $request->cat_name;
+
+            $categories->save();
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->with('alert', 'Please fix the errors below.')->withInput();
         }
-        
-                return redirect()->route('categories.index');
-            }
-    
-   
+
+        return redirect()->route('categories.index');
+    }
+
+
     /**
      * Remove the specified resource from storage.
      */
