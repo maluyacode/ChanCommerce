@@ -18,7 +18,7 @@ class ItemSeeder extends Seeder
         $faker = Faker::create();
         $categories = Category::pluck('id')->toArray();
         $suppliers = Supplier::pluck('id')->toArray();
-        
+
         foreach(range(1,10) as $index) {
             $item = new Item;
             $item->item_name = $faker->word;
