@@ -12,8 +12,8 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
-     <!-- Styles -->
-     <style>
+    <!-- Styles -->
+    <style>
         /* ! tailwindcss v3.2.4 | MIT License | https://tailwindcss.com */
         *,
         ::after,
@@ -825,151 +825,134 @@
             }
         }
     </style>
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-e06GcLQw98u2PjItJSav8mx2ZCJ9soMG+sEZp5j5d5YY5yJ0rLlYBkbTRvE/L/bN+pt1BZz+LZCp5j+vd5/gJw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-   <div class=navbar>
-    <div class="sm:fixed sm:top-0 sm:left-0 p-6 text-left">
-        <a class="font-semibold text-black-600 hover:text-dark-900 dark:text-dark-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
-            href="{{ url('/redirect') }}">
-            {{ 'QK Hardware Store' }}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-e06GcLQw98u2PjItJSav8mx2ZCJ9soMG+sEZp5j5d5YY5yJ0rLlYBkbTRvE/L/bN+pt1BZz+LZCp5j+vd5/gJw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <div class="sm:fixed sm:top-0 sm:left-0 p-6 text-left">
+            <a class="font-semibold text-black-600 hover:text-dark-900 dark:text-dark-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+                href="{{ url('/redirect') }}">
+                {{ 'QK Hardware Store' }}
 
-        </a>
-       <strong> @if(Auth::user()->usertype == 'Admin')
-        <a style="color: black;" href="{{ route('backadmin') }}" class="d-block" style="color: white;">Toggle Admin Mode</a>
-    @endif
-    </strong>
-        <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right">
-            @if (Auth::check())
-            <a href="{{ route('userprofile',['id' => auth()->user()->id]) }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">
-                <i class="mr-2 fas fa-file"></i>    
-                {{ __('My profile') }}
             </a>
-            <br>
-              <a href="{{ route('shoppingcart', ['id' => auth()->user()->id]) }}" type="button" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">
-                <i class="fa fa-shopping-cart" aria-hidden="true"></i> Shopping Cart <span class="badge badge-primary rounded-pill" style="font-size:12px; justify-content:center">{{$itemCount}}</span>
-                {{-- <span class="badge">{{ Session::has('cart') ? Session::get('cart')->totalQty : '' }}</span> --}}
-              </a>
-              <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <a href="{{ route('logout') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
-                   onclick="event.preventDefault(); this.closest('form').submit();">
-                    <i class="mr-2 fas fa-sign-out-alt"></i>
-                    {{ __('Log Out') }}
-                </a>
-            </form>
-            
-              @else
-              <a href="{{ route('register') }}"
-                                    class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
-              <a href="{{ route('login') }}"
-                                class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log
-                                in</a>
-            @endif
-           
-  
-                                
-             
-
-            
+            <strong>
+                @if (Auth::user()->usertype == 'Admin')
+                    <a style="color: black;" href="{{ route('backadmin') }}" class="d-block"
+                        style="color: white;">Toggle Admin Mode</a>
+                @endif
+            </strong>
+            <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right">
+                @if (Auth::check())
+                    <a href="{{ route('userprofile', ['id' => auth()->user()->id]) }}"
+                        class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">
+                        <i class="mr-2 fas fa-file"></i>
+                        {{ __('My profile') }}
+                    </a>
+                    <br>
+                    <a href="{{ route('shoppingcart', ['id' => auth()->user()->id]) }}" type="button"
+                        class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i> Shopping Cart <span
+                            class="badge badge-primary rounded-pill"
+                            style="font-size:12px; justify-content:center">{{ $itemCount }}</span>
+                        <span class="badge">{{ Session::has('cart') ? Session::get('cart')->totalQty : '' }}</span>
+                    </a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <a href="{{ route('logout') }}"
+                            class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+                            onclick="event.preventDefault(); this.closest('form').submit();">
+                            <i class="mr-2 fas fa-sign-out-alt"></i>
+                            {{ __('Log Out') }}
+                        </a>
+                    </form>
+                @else
+                    <a href="{{ route('register') }}"
+                        class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
+                    <a href="{{ route('login') }}"
+                        class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log
+                        in</a>
+                @endif
+            </div>
         </div>
 
-    </div>
-</div>
+<body class="antialiased" style="background-color: #F0E68C">
+    <div class="">
 
-    <body class="antialiased" style="background-color: #F0E68C">
-        <div class="">
-            
-            <div class="max-w-7xl mx-auto p-6 lg:p-8">
-                <div class="flex justify-center">
-                    <img src="/images/SQUARELOGO.png" alt=""width="80px" height="80px" class="img"
-                        style="opacity: .8">
-                </div>
-                <p class="card-text" style="text-align:center; font-size: 30px">
-                    {{ __('Welcome to QK Hardware Store! Browse our products!') }}
-                </p>
+        <div class="max-w-7xl mx-auto p-6 lg:p-8">
+            <div class="flex justify-center">
+                <img src="/images/SQUARELOGO.png" alt=""width="80px" height="80px" class="img"
+                    style="opacity: .8">
+            </div>
+            <p class="card-text" style="text-align:center; font-size: 30px">
+                {{ __('Welcome to QK Hardware Store! Browse our products!') }}
+            </p>
             </p>
             @yield('search')
             <nav class="navbar navbar-expand-md navbar-dark navbar-laravel">
                 <div class="container" style="background-color: #A52A2A">
-                @yield('categories')
-            
-
-
-
-
-
-            </li>
-
-
-
-
+                    @yield('categories')
+                    </li>
+                </div>
+            </nav>
+            <div class="card">
+                @yield('hover')
+            </div>
         </div>
-
-    </nav>
-    <div class="card">
-    @yield('hover')
-</div>
-</div>
-</div>
-<br>
-        
+    </div>
+    <br>
     @yield('content')
 
 </body>
 <style>
-    
-.btn-outline-success {
-color: black;
+    .btn-outline-success {
+        color: black;
 
-}
-.card{
-                        display: flex;
-                        justify-content: center;
-                        flex-wrap: wrap;
-                        width: 78%;
-                        margin: 0 auto;
-                        background-color: #A52A2A; 
-                        color: white;
-                     }
+    }
 
-.gallery {
-display: flex;
-justify-content: center;
-flex-wrap: wrap;
-width: 90%;
-margin: 0 auto;
+    .card {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        width: 78%;
+        margin: 0 auto;
+        background-color: #A52A2A;
+        color: white;
+    }
+
+    .gallery {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        width: 90%;
+        margin: 0 auto;
 
 
-}
+    }
 
-.gallery .box {
-height: 200px;
-width: 200;
-margin: 10px;
-overflow: hidden;
-border-radius: 5px;
-box-shaddow: 10 10px 10px #000;
+    .gallery .box {
+        height: 200px;
+        width: 200;
+        margin: 10px;
+        overflow: hidden;
+        border-radius: 5px;
+        box-shaddow: 10 10px 10px #000;
 
-}
+    }
 
-.gallery .box img {
-height: 90%;
-width:90%;
-object-fit: cover;
-border-style: solid;
+    .gallery .box img {
+        height: 90%;
+        width: 90%;
+        object-fit: cover;
+        border-style: solid;
 
-}
+    }
 
-.gallery .box img:hover {
-transform: scale(2, 2);
-}
+    .gallery .box img:hover {
+        transform: scale(2, 2);
+    }
 </style>
-<script
-src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
-
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </html>

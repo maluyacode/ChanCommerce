@@ -14,7 +14,7 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Styles -->
-    <style>
+    {{-- <style>
         /* ! tailwindcss v3.2.4 | MIT License | https://tailwindcss.com */
         *,
         ::after,
@@ -825,46 +825,59 @@
                 padding: 2rem
             }
         }
-    </style>
+    </style> --}}
 </head>
 
 <body class="antialiased" style="background-color: #F0E68C">
-    <div class="">
-        @if (Route::has('login'))
-            <div class=navbar>
-                <div class="sm:fixed sm:top-0 sm:left-0 p-6 text-left">
-                    <a class="font-semibold text-black-600 hover:text-dark-900 dark:text-dark-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
-                        href="{{ url('/') }}">
-                        {{ 'QK Hardware Store' }}
+    @if (Route::has('login'))
+        <div class="navbar navbar-expand-lg" style="background-color:#A52A2A">
+            {{-- <div class="container"> --}}
+            <a class="navbar-brand" href="{{ url('/') }}" style="color:white">
+                <img src="/images/SQUARELOGO.png" width="40" height="40" alt="">
+                {{ 'QK Hardware Store' }}
+            </a>
 
-                    </a>
-                    @auth
-                        @if (Auth::user()->usertype == 'Admin')
-                            <a style="color: black;" href="{{ route('backadmin') }}" class="d-block"
-                                style="color: white;">Toggle Admin Mode</a>
-                        @endif
-                    @endauth
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto">
+                    <form action="{{ route('search') }}" method="get">
+                        <input type="text" name="q" placeholder="Search items...">
+                        <button type="submit" style="background-color: #F0E68C">Search</button>
+                    </form>
+                </ul>
+            </div>
+            @auth
+                @if (Auth::user()->usertype == 'Admin')
+                    <a style="color: black;" href="{{ route('backadmin') }}" class="d-block" style="color: white;">Toggle
+                        Admin Mode</a>
+                @endif
+            @endauth
+            <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right">
+                @auth
+                    <a href="{{ url('redirect') }}" style="color:white"
+                        class="font-semibold text-black-600 hover:text-dark-900 dark:text-dark-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Home</a>
+                @else
+                    <a href="{{ route('login') }}"
+                        class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log
+                        in</a>
 
-                    <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right">
-                        @auth
-                            <a href="{{ url('redirect') }}"
-                                class="font-semibold text-black-600 hover:text-dark-900 dark:text-dark-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Home</a>
-                        @else
-                            <a href="{{ route('login') }}"
-                                class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log
-                                in</a>
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}"
+                            class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
+                    @endif
+                @endauth
+            </div>
+        </div><br>
+    @endif
 
-                            @if (Route::has('register'))
-                                <a href="{{ route('register') }}"
-                                    class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
-                            @endif
-                        @endauth
-                    </div>
-                </div>
-            </div @endif
+    @if (Session::has('message'))
+        <div class="alert alert-success">
+            {!! Session::get('message') !!}
+        </div>
+        <br>
+    @endif
 
-            <div class="max-w-7xl mx-auto p-6 lg:p-8">
-                <div class="flex justify-center">
+    <div class="max-w-7xl mx-auto p-6 lg:p-8">
+        {{-- <div class="flex justify-center">
                     <img src="/images/SQUARELOGO.png" alt=""width="80px" height="80px" class="img"
                         style="opacity: .8">
                 </div>
@@ -879,30 +892,17 @@
                         <button type="submit" style="background-color: #F0E68C">Search</button>
                     </form>
 
-                </div>
-                <nav class="navbar navbar-expand-md navbar-dark navbar-laravel">
-                    <div class="container" style="background-color: #A52A2A">
-
-                        <li class="collapse navbar-collapse" id="navbarSupportedContent" href="{{ url('/') }}"
-                            style="justify-content: space-between">
-
-
-                            @foreach ($categories as $category)
-                                <a class="btn btn" style="background-color:#000; color:#e5e7eb"
-                                    href="{{ route('category', $category->id) }}">{{ $category->cat_name }} </a>
-                            @endforeach
-
-                        </li>
-
-
-
-
-                    </div>
-
-                </nav>
-
-                <div class="card">
-
+                </div> --}}
+        <nav class="navbar navbar-expand-md navbar-dark navbar-laravel">
+            <div class="container" style="background-color: #A52A2A">
+                @foreach ($categories as $category)
+                    <a class="btn btn" style="background-color:#000; color:#e5e7eb"
+                        href="{{ route('category', $category->id) }}">{{ $category->cat_name }} </a>
+                @endforeach
+                </li>
+            </div>
+        </nav>
+        {{-- <div class="card">
                     <div class="gallery">
                         <div class="box">
                             <img src="/images/pic1.jpg" alt="">
@@ -914,15 +914,8 @@
                             <img src="/images/pic3.jpg" alt="">
                         </div>
                     </div>
-                </div>
-                <br>
-                @if (Session::has('message'))
-                    <div class="alert alert-success">
-                        {!! Session::get('message') !!}
-                    </div>
-                    <br>
-                @endif
-                <style>
+                </div> --}}
+        {{-- <style>
                     .btn-outline-success {
                         color: black;
 
@@ -969,67 +962,87 @@
                     .gallery .box img:hover {
                         transform: scale(2, 2);
                     }
-                </style>
+                </style> --}}
 
-                <div class="container">
-                    <div class="row">
-                        @foreach ($items as $item)
-                            <div class="col-md-4 mb-4">
-                                <div class="card h-100">
-                                    <div class="card-body">
-
-                                        <div class="thumbnail">
-                                            <img src="{{ asset($item->img_path) }}" class="card-img-top"
-                                                alt="">
-                                            <br>
-                                            <div class="caption">
-                                                <h3 class="card-title">{{ $item->item_name }}
-                                                </h3>
-                                                <p class="card-text">P{{ $item->sellprice }}</p>
-
-                                                <p class="card-text">{{ $item->cat_name }}</p>
-                                                <p class="card-text">{{ $item->description }}</p>
-                                                <div class="clearfix">
-                                                    <form id="my-form" method="POST"
-                                                        action="{{ route('addcart', ['id' => $item->id]) }}">
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-primary" role="button">
-                                                            <i class="fas fa-cart-plus"></i> Add to Cart
-                                                        </button>
-                                                    </form>
-                                                    <script>
-                                                        var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
-                                                        var link = document.getElementById('my-form');
-
-                                                        if (isAuthenticated) {
-                                                            link.href = '{{ route('addcart', ['id' => $item->it_id]) }}';
-                                                        } else {
-                                                            link.href = '{{ route('login') }}';
-                                                        }
-
-                                                        $.get('/check-availability/{{ $item->it_id }}', function(response) {
-                                                            if (response.available == false) {
-                                                                link.querySelector('button').disabled = true;
-                                                            }
-                                                        });
-                                                    </script>
-
+        <div class="container">
+            @foreach ($items as $item)
+                <div class="row justify-content-center mb-3">
+                    <div class="col-md-12 col-xl-10">
+                        <div class="card shadow-0 border rounded-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
+                                        <div class="bg-image hover-zoom ripple rounded ripple-surface">
+                                            <img src="{{ asset($item->img_path) }}" class="card-img-top"  alt="">
+                                            <a href="#!">
+                                                <div class="hover-overlay">
+                                                    <div class="mask"
+                                                        style="background-color: rgba(253, 253, 253, 0.15);">
+                                                    </div>
                                                 </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6 col-xl-6">
+                                        <h5>{{ $item->item_name }}</h5>
+                                        <div class="mt-1 mb-0 text-muted small">
+                                            <span>{{ $item->cat_name }}</span>
+                                            <span class="text-primary"> • </span>
+                                            <span>{{ $item->description }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-lg-3 col-xl-3 border-sm-start-none border-start">
+                                        <div class="d-flex flex-row align-items-center mb-1">
+                                            <h4 class="mb-1 me-1">₱ {{ $item->sellprice }}</h4>
+                                        </div>
+                                        <div class="d-flex flex-column mt-4">
+                                            {{-- <button class="btn btn-primary btn-sm" type="button">Details</button> --}}
+                                            {{-- <button class="btn btn-outline-primary btn-sm mt-2" type="button">
+                                    Add to wishlist
+                                </button> --}}
+                                            <div class="clearfix">
+                                                <form id="my-form" method="POST"
+                                                    action="{{ route('addcart', ['id' => $item->id]) }}">
+                                                    @csrf
+                                                    <button class="btn btn-outline-primary btn-sm btn-block"
+                                                        type="submit" role="button">
+                                                        <i class="fas fa-cart-plus"></i> Add to Cart
+                                                    </button>
+                                                </form>
+                                                <script>
+                                                    var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
+                                                    var link = document.getElementById('my-form');
+
+                                                    if (isAuthenticated) {
+                                                        link.href = '{{ route('addcart', ['id' => $item->id]) }}';
+                                                    } else {
+                                                        link.href = '{{ route('login') }}';
+                                                    }
+
+                                                    $.get('/check-availability/{{ $item->id }}', function(response) {
+                                                        if (response.available == false) {
+                                                            link.querySelector('button').disabled = true;
+                                                        }
+                                                    });
+                                                </script>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        @endforeach
+                        </div>
                     </div>
                 </div>
-                <script>
-                    src = "https://code.jquery-1.12.4.min.js" >
-                </script>
-                <script>
-                    src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-                </script>
-                <style>
+            @endforeach
+        </div>
+
+        <script>
+            src = "https://code.jquery-1.12.4.min.js" >
+        </script>
+        <script>
+            src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        </script>
+        {{-- <style>
                     .card-img-top {
                         height: 200px;
                         object-fit: cover;
@@ -1054,10 +1067,11 @@
                         background-color: #007bff;
                         border-color: #007bff;
                     }
-                </style>
+                </style> --}}
 
-                <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"></script>
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    </div>
 
 </html>
