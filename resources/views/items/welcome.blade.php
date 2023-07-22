@@ -831,36 +831,43 @@
 <body class="antialiased" style="background-color: #F0E68C">
     <div class="">
         @if (Route::has('login'))
-            <div class= "navbar navbar-expand-lg navbar-light bg-light">
-                {{-- <div class="sm:fixed sm:top-0 sm:left-0 p-6 text-left">
-                    <a class="font-semibold text-black-600 hover:text-dark-900 dark:text-dark-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
-                        href="{{ url('/') }}">
-                        {{ 'QK Hardware Store' }}
+            <div class="navbar navbar-expand-lg" style="background-color:#A52A2A">
+                {{-- <div class="container"> --}}
+                <a class="navbar-brand" href="{{ url('/') }}" style="color:white">
+                    <img src="/images/SQUARELOGO.png" width="40" height="40" alt="">
+                    {{ 'QK Hardware Store' }}
+                </a>
 
-                    </a>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto">
+                        <form action="{{ route('search') }}" method="get">
+                            <input type="text" name="q" placeholder="Search items...">
+                            <button type="submit" style="background-color: #F0E68C">Search</button>
+                        </form>
+                    </ul>
+                </div>
+                @auth
+                    @if (Auth::user()->usertype == 'Admin')
+                        <a style="color: black;" href="{{ route('backadmin') }}" class="d-block"
+                            style="color: white;">Toggle Admin Mode</a>
+                    @endif
+                @endauth
+                <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right">
                     @auth
-                        @if (Auth::user()->usertype == 'Admin')
-                            <a style="color: black;" href="{{ route('backadmin') }}" class="d-block"
-                                style="color: white;">Toggle Admin Mode</a>
+                        <a href="{{ url('redirect') }}" style="color:white"
+                            class="font-semibold text-black-600 hover:text-dark-900 dark:text-dark-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Home</a>
+                    @else
+                        <a href="{{ route('login') }}"
+                            class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log
+                            in</a>
+
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}"
+                                class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
                         @endif
                     @endauth
-                    <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right">
-                        @auth
-                            <a href="{{ url('redirect') }}"
-                                class="font-semibold text-black-600 hover:text-dark-900 dark:text-dark-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Home</a>
-                        @else
-                            <a href="{{ route('login') }}"
-                                class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log
-                                in</a>
-
-                            @if (Route::has('register'))
-                                <a href="{{ route('register') }}"
-                                    class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
-                            @endif
-                        @endauth
-                    </div>
-                </div> --}}
-            </div>
+                </div>
+            </div><br>
         @endif
 
         <div class="max-w-7xl mx-auto p-6 lg:p-8">
@@ -871,14 +878,14 @@
                 <p class="card-text" style="text-align:center; font-size: 30px;">
                     {{ __('Welcome to QK Hardware Store! Browse our products!') }}
                 </p> --}}
-            <div
+            {{-- <div
                 class="container d-flex align-items-center justify-content-center"style="font-size: 18px; background-color: #A52A2A; display: flex; justify-content: center; height: 50px">
 
                 <form action="{{ route('search') }}" method="get">
                     <input type="text" name="q" placeholder="Search items...">
                     <button type="submit" style="background-color: #F0E68C">Search</button>
                 </form>
-            </div>
+            </div> --}}
             {{-- @if ($items->count())
                     <ul>
                         @foreach ($items as $item)
@@ -1017,13 +1024,13 @@
                                             <script>
                                                 var isAuthenticated = {{ auth()->check() ? 'true' : 'false' }};
                                                 var link = document.getElementById('my-form');
-    
+
                                                 if (isAuthenticated) {
                                                     link.href = '{{ route('addcart', ['id' => $item->id]) }}';
                                                 } else {
                                                     link.href = '{{ route('login') }}';
                                                 }
-    
+
                                                 $.get('/check-availability/{{ $item->id }}', function(response) {
                                                     if (response.available == false) {
                                                         link.querySelector('button').disabled = true;
