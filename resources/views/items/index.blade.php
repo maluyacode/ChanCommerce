@@ -1,86 +1,127 @@
 @extends('layouts.app')
 
+@section('styles')
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.js"></script>
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+@endsection
+
+@section('headscripts')
+    <!-- DataTables JS -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+
+    <!-- DataTables Buttons JS -->
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+@endsection
+
 @section('content')
-    <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="yow">{{ __('Items') }}</h1>
                     <br>
-                    <td align='right';>
-                    <a href="{{route('items.create')}}" class="btn btn-primary btn-round">
-                        <i class= "fa fa-plus"></i>Create Item </a>
-                    </td>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+                    <button class="btn btn-success bi bi-plus-circle"> Create</button>
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
     <div class="content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <table class="table" >
+                            <table id="itemsTable">
                                 <thead>
                                     <tr>
-                                      <th>Image</th>
-                                      <th>Item ID</th>
-                                      <th>Item Name</th>
-                                      <th>Category</th>
-                                      <th>Supplier</th>
-                                      <th>Sell Price</th>
-                                      <th>Date created</th>
-                                      <th>Action</th>
+                                        <th>Item ID</th>
+                                        <th>Item Name</th>
+                                        <th>Category</th>
+                                        <th>Supplier</th>
+                                        <th>Sell Price</th>
+                                        <th>Date created</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($items as $item)
-                                 
-                                    <tr>
-                                      <td><img src="{{asset($item->img_path)}}" alt="" width="50px" height="50px"></td>
-                                     
-                                     <td><strong>{{$item->it_id}}</td>
-                                      <td><strong>{{$item->item_name}}</td>
-                                        <td><strong>{{$item->cat_name}}</td>
-                                            <td><strong>{{$item->sup_name}}</td>
-                                      <td><strong>{{$item->sellprice}}</td>
-                                      <td><strong>{{$item->created_at}}</td>
-                                       
-                                      
-                                      
-                                        <td>
-                                            <a href="{{ route('items.edit', $item->it_id) }}" class="btn btn-primary"><i
-                                                    class="fas fa-edit"></i></a>
-                                                    
-                                                        {{-- <button type="submit" class = "btn btn-danger btn-delete" >
-                                                            <i class= "fas fa-trash"  style="color:white"></i>
-                                                        </button> --}}
-                                                        <form action="{{route('items.destroy',$item->it_id)}}" method="POST" style = "display:inline-block">
-                                                            @method('DELETE')
-                                                            @csrf
-                                                            <button type="submit"class = "btn btn-danger btn-delete">
-                                                                <i class="fas fa-trash" style="color:white"></i>
-                                                            </button>
-                                                        </form>
-                                            {{-- <button class="btn btn-danger btn-delete" data-url="{{route('items.destroy', $item->id)}}"><i
-                                                    class="fas fa-trash"></i></button> --}}
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                   
+                                    {{-- <tr>
+                                        <td>asdsadas</td>
+                                        <td>asdsada</td>
+                                        <td>asdsad</td>
+                                        <td>asdsad</td>
+                                        <td>asdsad</td>
+                                        <td>asdsad</td>
+                                        <td>asdsad</td>
+                                        <td>asdsada</td>
+                                    </tr> --}}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
+        </div>
     </div>
-    <!-- /.content -->
+
+
+    <script>
+        $('#itemsTable').DataTable({
+            ajax: {
+                url: '/api/items',
+                dataSrc: ''
+            },
+            responsive: true,
+            autoWidth: false,
+            dom: 'Bfrtip',
+            buttons: [
+                'copyHtml5',
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+            ],
+            columns: [{
+                    data: 'id'
+                },
+                {
+                    data: 'item_name'
+                },
+                {
+                    data: 'category.cat_name'
+                },
+                {
+                    data: 'supplier.sup_name'
+                },
+                {
+                    data: 'sellprice'
+                },
+                {
+                    data: null,
+                    render: function(data) {
+                        let createdDate = new Date(data.created_at);
+                        return createdDate.toLocaleDateString("en-US");
+                    }
+                },
+                {
+                    data: null,
+                    render: function(data) {
+                        return `<button type="button" data-id="${data.id}" class="btn btn-primary">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" data-id="${data.id}" class="btn btn-danger btn-delete">
+                            <i class="fas fa-trash" style="color:white"></i>
+                        </button>`;
+                    }
+                }
+            ]
+
+        });
+    </script>
 @endsection

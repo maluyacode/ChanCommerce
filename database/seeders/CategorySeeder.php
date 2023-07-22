@@ -17,7 +17,7 @@ class CategorySeeder extends Seeder
         $faker = Faker::create();
         foreach (range(1, 5) as $index) {
             $sup = new Category;
-            $sup->cat_name = $faker->name;
+            $sup->cat_name = $faker->word;
             $sup->save();
         }
     }

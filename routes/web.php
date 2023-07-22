@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\UserMiddleware;
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,8 +15,8 @@ use App\Http\Middleware\UserMiddleware;
 |
 */
 // Route::middleware([UserMiddleware::class])->group(function () {
-    
-   
+
+
 //     Route::post('/addcart/{id}', [App\Http\Controllers\CartController::class,'addcart'])->name('addcart');
 //     Route::get('/shoppingcart/{id}', [App\Http\Controllers\CartController::class, 'shoppingcart'])->name('shoppingcart');
 //     Route::get('/increment/{id}', [App\Http\Controllers\CartController::class, 'increment'])->name('increment');
@@ -88,15 +89,17 @@ Route::get('/success', function () {
 Route::get('/check-availability/{itemId}', [\App\Http\Controllers\ItemController::class, 'checkAvailability']);
 
 Route::middleware([AdminMiddleware::class])->group(function () {
-   
-    Route::resource('items','App\Http\Controllers\ItemController');
-    Route::resource('customers','App\Http\Controllers\CustomerController');
-    Route::resource('suppliers','App\Http\Controllers\SupplierController');
-    Route::resource('shippers','App\Http\Controllers\ShipperController');
-    Route::resource('stocks','App\Http\Controllers\StockController');
-    Route::resource('categories','App\Http\Controllers\CategoryController');
-    Route::resource('paymentmethods','App\Http\Controllers\PaymentMethodController');
-    Route::resource('orders','App\Http\Controllers\OrderController');
+
+    // Route::resource('items','App\Http\Controllers\ItemController');
+    Route::view('/items', 'items.index')->name('items.index');
+
+    Route::resource('customers', 'App\Http\Controllers\CustomerController');
+    Route::resource('suppliers', 'App\Http\Controllers\SupplierController');
+    Route::resource('shippers', 'App\Http\Controllers\ShipperController');
+    Route::resource('stocks', 'App\Http\Controllers\StockController');
+    Route::resource('categories', 'App\Http\Controllers\CategoryController');
+    Route::resource('paymentmethods', 'App\Http\Controllers\PaymentMethodController');
+    Route::resource('orders', 'App\Http\Controllers\OrderController');
     Route::get('updatestatus', [App\Http\Controllers\OrderController::class, 'getOrders'])->name('updatestatus');
     Route::get('shippedorders', [App\Http\Controllers\OrderController::class, 'ShippedOrders'])->name('shippedorders');
     Route::get('show', [App\Http\Controllers\OrderController::class, 'show'])->name('show');
@@ -105,17 +108,16 @@ Route::middleware([AdminMiddleware::class])->group(function () {
     Route::get('/shipped/{id}', [App\Http\Controllers\OrderController::class, 'Shipped'])->name('shipped');
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
-  
 });
 
 Route::middleware('auth')->group(function () {
     Route::view('about', 'about')->name('about');
-    Route::post('/addcart/{id}', [App\Http\Controllers\CartController::class,'addcart'])->name('addcart');
+    Route::post('/addcart/{id}', [App\Http\Controllers\CartController::class, 'addcart'])->name('addcart');
     Route::get('/shoppingcart/{id}', [App\Http\Controllers\CartController::class, 'shoppingcart'])->name('shoppingcart');
     Route::get('/increment/{id}', [App\Http\Controllers\CartController::class, 'increment'])->name('increment');
     Route::get('/decrement/{id}', [App\Http\Controllers\CartController::class, 'decrement'])->name('decrement');
     Route::get('/delete/{id}', [App\Http\Controllers\CartController::class, 'deletecart'])->name('delete');
-    Route::post('/checkout/{id}', [App\Http\Controllers\CartController::class,'checkout'])->name('checkout');
+    Route::post('/checkout/{id}', [App\Http\Controllers\CartController::class, 'checkout'])->name('checkout');
     Route::get('customerscreate', [App\Http\Controllers\CustomerController::class, 'customerscreate'])->name('customerscreate');
     Route::post('/userstore', [App\Http\Controllers\CustomerController::class, 'userstore'])->name('userstore');
     Route::get('customersedit/{id}', [App\Http\Controllers\CustomerController::class, 'customersedit'])->name('customersedit');
@@ -126,8 +128,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/confirmed', function () {
         return view('transact.confirmed');
     });
-  
-    Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
 
-   
+    Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
 });

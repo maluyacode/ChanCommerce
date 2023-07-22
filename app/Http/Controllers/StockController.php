@@ -1,13 +1,16 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\Stock;
-use View;
-use Storage;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+
 class StockController extends Controller
 {
     /**
@@ -15,13 +18,13 @@ class StockController extends Controller
      */
     public function index()
     {
-       
-    $items = Item::all();
-    $stocks = DB::table('items')
-    ->join('stocks', 'id', '=', 'stocks.item_id')
-    ->orderBy('stocks.item_id','ASC')->get();
 
-return View::make('stocks.index', compact('stocks','items'));
+        $items = Item::all();
+        $stocks = DB::table('items')
+            ->join('stocks', 'id', '=', 'stocks.item_id')
+            ->orderBy('stocks.item_id', 'ASC')->get();
+
+        return View::make('stocks.index', compact('stocks', 'items'));
     }
 
     /**
@@ -30,7 +33,7 @@ return View::make('stocks.index', compact('stocks','items'));
     public function create()
     {
         $items = Item::all();
-        return View::make('stocks.create',compact('items'));
+        return View::make('stocks.create', compact('items'));
     }
 
     /**
@@ -45,17 +48,22 @@ return View::make('stocks.index', compact('stocks','items'));
             'quantity.required' => 'Please enter Quantity.',
             'quantity.numeric' => 'Quantity must be a number.',
             'quantity.min' => 'Quantity must be at least :min.',
-            
+
         ];
         $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
-        $stock = new Stock;
-        $stock->item_id = $request->item_id;
-        $stock->quantity = $request->quantity;
-        
-        $stock->save();
+        $findStock = Stock::find($request->item_id);
+        if (!$findStock) {
+            $stock = new Stock;
+            $stock->item_id = $request->item_id;
+            $stock->quantity = $request->quantity;
+            $stock->save();
+        } else {
+            $findStock->quantity = $findStock->quantity + $request->quantity;
+            $findStock->save();
+        }
         return redirect()->route('stocks.index');
     }
 
@@ -74,23 +82,23 @@ return View::make('stocks.index', compact('stocks','items'));
     {
         // $stockid = Stock::find($item_id);
         // dd($stockid);
-        
+
         $stock = DB::table('items AS is')
-        ->select('is.id','ss.item_id','is.item_name','ss.quantity')
-       ->join('stocks AS ss', 'ss.item_id', '=', 'is.id')
-       ->where('ss.item_id',$id)   
-       ->first();
-       //dd($stock)
-      
-   $items = Item::where('id', '<>', $stock->item_id)->get(['item_name','id']);
-  
-   return View::make('stocks.edit', compact('items','stock'));
+            ->select('is.id', 'ss.item_id', 'is.item_name', 'ss.quantity')
+            ->join('stocks AS ss', 'ss.item_id', '=', 'is.id')
+            ->where('ss.item_id', $id)
+            ->first();
+        //dd($stock)
+
+        $items = Item::where('id', '<>', $stock->item_id)->get(['item_name', 'id']);
+
+        return View::make('stocks.edit', compact('items', 'stock'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $rules = [
             'quantity' => 'required|numeric|min:0',
@@ -99,25 +107,25 @@ return View::make('stocks.index', compact('stocks','items'));
             'quantity.required' => 'Please enter Quantity.',
             'quantity.numeric' => 'Quantity must be a number.',
             'quantity.min' => 'Quantity must be at least :min.',
-            
+
         ];
         $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
         $stock = Stock::find($id);
-    
+
         $stock->item_id = $request->item_id;
         $stock->quantity = $request->quantity;
-   
+
         if ($stock->quantity > 0) {
             Item::where('id', $stock->item_id)
                 ->update([
                     "description" => "On Stock",
-                    
+
                 ]);
         }
-       
+
         $stock->save();
         return redirect()->route('stocks.index');
     }

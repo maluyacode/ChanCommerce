@@ -24,7 +24,7 @@ class ItemSeeder extends Seeder
             $item->item_name = $faker->word;
             $item->description = $faker->randomElement(['On stock', 'Out of stock']);
             $item->sellprice = $faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 10000);
-            $item->img_path = '/storage/images/' .$faker->image('public/storage/images',400,300, null, false);
+            $item->img_path = 'default.jpg';
             $item->sup_id = $faker->randomElement($suppliers);
             $item->cat_id = $faker->randomElement($categories);
             $item->created_at = $faker->dateTimeBetween('-1 year', 'now');
