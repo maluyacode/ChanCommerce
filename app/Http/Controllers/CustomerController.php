@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-use App\Models\Customer;
-use App\Models\User;
-use App\Models\Order;
-use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+
+use App\Models\Customer;
+use App\Models\User;
+use App\Models\Order;
 
 class CustomerController extends Controller
 {

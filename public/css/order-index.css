@@ -3,7 +3,7 @@
     background-color: #2B2730;
 }
 
-#category-table_wrapper {
+#order-table_wrapper {
     background-color: #2B2730 !important;
 }
 
@@ -24,24 +24,6 @@ td {
 .table-bordered td {
     text-transform: capitalize;
     border: 1px solid #464444 !important;
-}
-
-.categoryForm {
-    display: inline-flex;
-    flex-direction: row;
-}
-
-.categoryForm button,
-.categoryForm input {
-    margin: 0 5px;
-}
-
-.colorData {
-    background-color: red !important;
-}
-
-.jc-bs3-row {
-    background-color: #00000000;
 }
 
 .table-bordered thead {

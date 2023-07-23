@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +35,6 @@ Route::post('/category/store', [CategoryController::class, 'store']);
 Route::get('/category/{id}/edit', [CategoryController::class, 'edit']);
 Route::put('/category/{id}/update', [CategoryController::class, 'update']);
 Route::delete('/category/{id}/delete', [CategoryController::class, 'destroy']);
+
+
+// Route::get('/orders', [OrderController::class, 'index']);
