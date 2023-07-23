@@ -3,6 +3,29 @@
     background-color: #2B2730;
 }
 
+.jc-bs3-row {
+    background-color: #00000000;
+}
+
+#itemsTable thead {
+    text-transform: uppercase;
+}
+
+#itemsTable thead tr th {
+    font-weight: 500 !important;
+}
+
+#itemsTable_filter label {
+    font-weight: 200 !important;
+    text-transform: uppercase;
+}
+
+#itemsTable tbody {
+    font-weight: 400;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-transform: capitalize;
+}
+
 .modal-title {
     color: black;
 }
@@ -23,4 +46,9 @@ form {
     width: 150px;
     height: 150px;
     margin: 10px;
+}
+
+.yow {
+    letter-spacing: 5px;
+    font-family: 'Times New Roman', Times, serif;
 }

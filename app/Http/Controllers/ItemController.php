@@ -119,7 +119,7 @@ class ItemController extends Controller
     {
         $rules = [
             'item_name' => 'required|string|max:255',
-            'sellprice' => 'required|numeric|min:0',
+            'sellprice' => 'required|numeric',
             'sup_id' => 'required',
             'cat_id' => 'required',
         ];

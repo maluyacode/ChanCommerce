@@ -1,3 +1,4 @@
+// initialize datatable
 let dataTable = $('#itemsTable').DataTable({
     ajax: {
         url: '/api/items',
@@ -49,9 +50,11 @@ let dataTable = $('#itemsTable').DataTable({
 
 });
 
+// make create button
 $('.dt-buttons').prepend(
     '<button type="button" id="create" data-bs-toggle="modal" data-bs-target="#itemModal" class="dt-button">Create</buttons>'
 );
+
 
 $('#create').on('click', function () {
     $('#item_id').remove();
@@ -59,6 +62,13 @@ $('#create').on('click', function () {
     $('#update').hide();
     $('#save').show();
     $('#itemForm').trigger("reset");
+
+    $('input[name="document[]"]').remove();
+    $('.dz-preview').remove()
+    $('.dz-message').css({
+        display: "block",
+    })
+
     $.ajax({
         url: "api/item/create",
         type: "GET",
@@ -92,10 +102,6 @@ $('#create').on('click', function () {
 
 })
 
-$(document).on('click', 'button.edit', function () {
-    $('#save').hide();
-    $('#update').show();
-})
 
 $('#save').on('click', function (event) {
     event.preventDefault();
@@ -103,7 +109,7 @@ $('#save').on('click', function (event) {
     // for (var pair of formData.entries()) {
     //     console.log(pair[0] + ', ' + pair[1]);
     // }
-    $('#itemModal').modal("hide");
+    $('#itemModal *').prop('disabled', true);
     $.ajax({
         url: '/api/item/store',
         type: "POST",
@@ -115,6 +121,8 @@ $('#save').on('click', function (event) {
         },
         dataType: "json",
         success: function (data, status) {
+            $('#itemModal *').prop('disabled', false);
+            $('#itemModal').modal("hide");
             $('#itemForm').trigger("reset");
             $('input[name="document[]"]').remove();
             $('.dz-preview').remove()
@@ -143,8 +151,18 @@ $('#save').on('click', function (event) {
 
 
 $(document).on('click', 'button.edit', function () {
+    $('#save').hide();
+    $('#update').show();
     $('#item_id').remove();
+
+    $('input[name="document[]"]').remove();
+    $('.dz-preview').remove()
+    $('.dz-message').css({
+        display: "block",
+    })
+
     let id = $(this).attr('data-id');
+
     $.ajax({
         url: `/api/item/${id}/edit`,
         type: "GET",
@@ -156,7 +174,7 @@ $(document).on('click', 'button.edit', function () {
             $('#draggable').remove();
             let category = $('#category');
             let supplier = $('#supplier');
-            // console.log(data.item.media.original_url);
+
             let container = $('<div>').attr({ id: "draggable", })
             $('#itemForm').append($(`<input type="hidden" value="${id}" id="item_id">`))
 
@@ -190,12 +208,20 @@ $(document).on('click', 'button.edit', function () {
     })
 });
 
+
 $('#update').on('click', function (event) {
     event.preventDefault();
+
     let id = $('#item_id').val();
     let formData = new FormData($('#itemForm')[0]);
-    $('#itemModal').modal("hide");
+    for (var pair of formData.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
+    }
+
     formData.append('_method', 'PUT');
+
+    $('#itemModal *').prop('disabled', true);
+
     $.ajax({
         url: `/api/item/${id}/update`,
         type: "POST",
@@ -207,6 +233,8 @@ $('#update').on('click', function (event) {
         },
         dataType: "json",
         success: function (data, status) {
+            $('#itemModal').modal("hide");
+            $('#itemModal *').prop('disabled', false);
             $('#itemForm').trigger("reset");
             $('input[name="document[]"]').remove();
             $('.dz-preview').remove()
@@ -230,7 +258,9 @@ $('#update').on('click', function (event) {
 
         },
         error: function (error) {
+            console.log(error.responseJSON.errors);
             alert("error");
+            $('#itemModal *').prop('disabled', false);
         }
     })
 })
@@ -238,29 +268,41 @@ $('#update').on('click', function (event) {
 
 $(document).on('click', 'button.delete', function () {
     let id = $(this).attr("data-id");
-    $.ajax({
-        url: `/api/item/${id}/delete`,
-        type: 'DELETE',
-        dataType: "json",
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function (data) {
-            $('.for-alert').prepend(`
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                Successfully Deleted!
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        `);
-            $('.alert').fadeOut(5000, function () {
-                $(this).remove();
-            });
-            $('#itemsTable').DataTable().ajax.reload();
-        },
-        error: function () {
-            alert('error')
+    $.confirm({
+        title: 'Delete Item',
+        content: 'Are you sure?',
+        buttons: {
+            confirm: function () {
+                $.ajax({
+                    url: `/api/item/${id}/delete`,
+                    type: 'DELETE',
+                    dataType: "json",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function (data) {
+                        $('.for-alert').prepend(`
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            Successfully Deleted!
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    `);
+                        $('.alert').fadeOut(5000, function () {
+                            $(this).remove();
+                        });
+                        $('#itemsTable').DataTable().ajax.reload();
+                    },
+                    error: function () {
+                        alert('error')
+                    }
+                })
+            },
+
+            cancel: function () {
+                $.alert('Canceled!');
+            },
         }
-    })
+    });
 });

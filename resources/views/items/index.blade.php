@@ -21,6 +21,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 @endsection
 
 @section('content')
@@ -28,8 +31,7 @@
         <div class="container-fluid for-alert">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="yow">{{ __('Items') }}</h1>
-                    <br>
+                    <h1 class="yow">{{ __('List of Items') }}</h1>
                 </div>
             </div>
         </div>
@@ -62,6 +64,7 @@
         </div>
     </div>
     <div class="modal fade" id="itemModal" tabindex="-1" aria-labelledby="itemModalLabel" aria-hidden="true">
+        <!-- Modal -->
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -104,8 +107,11 @@
             </div>
         </div>
     </div>
+
     <script src="{{ asset('js/item-index.js') }}" defer></script>
+
     <script>
+        // Initialize Dropzone, processes
         initilizeDropzone();
         var uploadedDocumentMap = {}
 
