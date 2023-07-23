@@ -74,8 +74,7 @@
                                         Add to wishlist
                                     </button> --}}
                                         <div class="clearfix">
-                                            <form id="my-form" method="POST"
-                                                action="{{ route('addcart', ['id' => $item->id]) }}">
+                                            <form id="my-form" method="POST" action="{{ route('addcart', $item->it_id) }}">
                                                 @csrf
                                                 <button class="btn btn-outline-primary btn-sm btn-block" type="submit"
                                                     role="button">

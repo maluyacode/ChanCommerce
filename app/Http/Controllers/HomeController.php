@@ -32,7 +32,7 @@ class HomeController extends Controller
             return view('transact.dashboard', compact('usertype', 'categories', 'items', 'suppliers'));
         }
     }
-    
+
     public function redirectadmin()
     {
         $usertype = Auth::user()->usertype;
