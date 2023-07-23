@@ -1,0 +1,50 @@
+.card-body {
+    color: #F4F2DE !important;
+    background-color: #2B2730;
+}
+
+.jc-bs3-row {
+    background-color: #00000000;
+}
+
+#ordersTable thead {
+    text-transform: uppercase;
+}
+
+#ordersTable thead tr th {
+    font-weight: 500 !important;
+}
+
+#ordersTable_filter label {
+    font-weight: 200 !important;
+    text-transform: uppercase;
+}
+
+#ordersTable tbody {
+    font-weight: 400;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-transform: capitalize;
+}
+
+.yow {
+    letter-spacing: 5px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.table-bordered {
+    border: 1px solid #464444 !important;
+}
+
+.table-bordered th {
+    border: 1px solid #464444 !important;
+}
+
+.table-bordered td {
+    text-transform: capitalize;
+    border: 1px solid #464444 !important;
+}
+
+.shipped,
+.delivered {
+    font-size: 12px !important;
+}

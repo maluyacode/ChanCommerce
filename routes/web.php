@@ -89,7 +89,7 @@ Route::get('/check-availability/{itemId}', [\App\Http\Controllers\ItemController
 
 Route::middleware([AdminMiddleware::class])->group(function () {
 
-    // Route::resource('items','App\Http\Controllers\ItemController');
+    // Route::resource('items','App\Http\Controllers\ItemController'); in api
     Route::view('/items', 'items.index')->name('items.index');
 
     Route::resource('customers', 'App\Http\Controllers\CustomerController');
@@ -99,13 +99,13 @@ Route::middleware([AdminMiddleware::class])->group(function () {
     Route::resource('categories', 'App\Http\Controllers\CategoryController');
     Route::resource('paymentmethods', 'App\Http\Controllers\PaymentMethodController');
     Route::resource('orders', 'App\Http\Controllers\OrderController');
-    // Route::view('/orders/list', 'orders.index')->name('orders.index');
-    Route::get('updatestatus', [App\Http\Controllers\OrderController::class, 'getOrders'])->name('updatestatus');
+    // Route::view('/orders/list', 'orders.index')->name('orders.index'); in api
+    Route::view('updatestatus', 'orders.updatestatus')->name('updatestatus'); //in api
     Route::get('shippedorders', [App\Http\Controllers\OrderController::class, 'ShippedOrders'])->name('shippedorders');
     Route::get('show', [App\Http\Controllers\OrderController::class, 'show'])->name('show');
-    Route::get('/delivered/{id}', [App\Http\Controllers\OrderController::class, 'Delivered'])->name('delivered');
+    //  Route::get('/delivered/{id}', [App\Http\Controllers\OrderController::class, 'Delivered'])->name('delivered'); in api
     Route::get('/fordelivery/{id}', [App\Http\Controllers\OrderController::class, 'ForDelivery'])->name('fordelivery');
-    Route::get('/shipped/{id}', [App\Http\Controllers\OrderController::class, 'Shipped'])->name('shipped');
+    ///Route::get('/shipped/{id}', [App\Http\Controllers\OrderController::class, 'Shipped'])->name('shipped');
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 });

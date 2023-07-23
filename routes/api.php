@@ -37,4 +37,6 @@ Route::put('/category/{id}/update', [CategoryController::class, 'update']);
 Route::delete('/category/{id}/delete', [CategoryController::class, 'destroy']);
 
 
-// Route::get('/orders', [OrderController::class, 'index']);
+Route::get('/get-orders', [OrderController::class, 'getOrders']);
+Route::get('/update-to-shipped/{id}', [OrderController::class, 'Shipped']);
+Route::get('/update-to-delivered/{id}', [OrderController::class, 'Delivered']);

@@ -68,22 +68,27 @@ class OrderController extends Controller
         // foreach ($orders as $order) {
         //     $total = $total + 1;
         // }
+        $orders = Order::with([
+            'items' => function ($query) {
+                return $query->select('id', 'item_name', 'sellprice');
+            },
+            'customer' => function ($query) {
+                return $query->select('id', 'customer_name');
+            },
+            'shipper'  => function ($query) {
+                return $query->select('id', 'name');
+            },
+            'paymentmethod'  => function ($query) {
+                return $query->select('id', 'Methods');
+            }
+        ])->whereNotIn('status', ["Delivered"])->get();
 
-
-        // return View::make('orders.updatestatus', compact('orders', 'total'));
+        return response()->json($orders);
     }
 
     public function Delivered($id)
     {
-        $orders = DB::table('orders')
-            ->join('orderlines', 'orders.id', '=', 'orderlines.orderinfo_id')
-            ->join('customers', 'orders.cus_id', '=', 'customers.id')
-            ->join('items', 'items.id', '=', 'orderlines.item_id')
-            ->join('shippers', 'orders.ship_id', '=', 'shippers.id')
-            ->join('payment_methods', 'payment_methods.id', '=', 'orders.pm_id')
-            ->select('orders.id AS o_id', 'orders.*', 'orderlines.*', 'items.*', 'shippers.*', 'payment_methods.*', 'customers.*')
-            ->where('orders.id', $id)
-            ->first();
+        $order = Order::find($id);
 
         Order::where('id', $id)
             ->update([
@@ -91,7 +96,7 @@ class OrderController extends Controller
 
             ]);
 
-        return back();
+        return response()->json($order);
     }
 
     public function ForDelivery($id)
@@ -122,23 +127,14 @@ class OrderController extends Controller
 
     public function Shipped($id)
     {
-        $orders = DB::table('orders')
-            ->join('orderlines', 'orders.id', '=', 'orderlines.orderinfo_id')
-            ->join('customers', 'orders.cus_id', '=', 'customers.id')
-            ->join('items', 'items.id', '=', 'orderlines.item_id')
-            ->join('shippers', 'orders.ship_id', '=', 'shippers.id')
-            ->join('payment_methods', 'payment_methods.id', '=', 'orders.pm_id')
-            ->select('orders.id AS o_id', 'orders.*', 'orderlines.*', 'items.*', 'shippers.*', 'payment_methods.*', 'customers.*')
-            ->where('orders.id', $id)
-            ->first();
+        $order = Order::find($id);
 
         Order::where('id', $id)
             ->update([
                 "status" => "Shipped"
-
             ]);
 
-        return back();
+        return response()->json($order);
     }
 
     public function ShippedOrders()
