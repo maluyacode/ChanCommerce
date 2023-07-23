@@ -15,6 +15,7 @@ use App\Mail\OrderMail;
 
 use App\DataTables\DeliveredOrderDataTable;
 use App\DataTables\OrderDataTable;
+use App\DataTables\ShippedOrderDataTable;
 use App\Models\Orderline;
 use App\Models\Customer;
 use App\Models\Item;
@@ -52,7 +53,29 @@ class OrderController extends Controller
      */
     public function show(DeliveredOrderDataTable $dataTable)
     {
-        return $dataTable->render('orders.show');
+        $orders = Order::with([
+            'items' => function ($query) {
+                return $query->select('id', 'item_name', 'sellprice');
+            },
+            'customer' => function ($query) {
+                return $query->select('id', 'customer_name');
+            },
+            'shipper'  => function ($query) {
+                return $query->select('id', 'name');
+            },
+            'paymentmethod'  => function ($query) {
+                return $query->select('id', 'Methods');
+            }
+        ])->where('status', "Delivered")->get();
+
+        $total = 0;
+        foreach ($orders as $order) {
+            $total += $order->items->map(function ($item) {
+                return  $item->sellprice * $item->pivot->quantity;
+            })->sum();
+        }
+
+        return $dataTable->render('orders.show', compact('total'));
     }
 
 
@@ -137,25 +160,10 @@ class OrderController extends Controller
         return response()->json($order);
     }
 
-    public function ShippedOrders()
+    public function ShippedOrders(ShippedOrderDataTable $dataTable)
     {
-        $orderline = Orderline::all();
-        $customer = Customer::all();
-        $item = Item::all();
-        $shipper = Shipper::all();
-        $pmethod = PaymentMethod::all();
-
-
-        $orders = DB::table('orders')
-            ->join('orderlines', 'orders.id', '=', 'orderlines.orderinfo_id')
-            ->join('customers', 'orders.cus_id', '=', 'customers.id')
-            ->join('items', 'items.id', '=', 'orderlines.item_id')
-            ->join('shippers', 'orders.ship_id', '=', 'shippers.id')
-            ->join('payment_methods', 'payment_methods.id', '=', 'orders.pm_id')
-            ->select('orders.id AS o_id', 'orders.*', 'orderlines.*', 'items.*', 'shippers.*', 'payment_methods.*', 'customers.*')
-            ->where('orders.status', "Shipped")
-            ->orderBy('orders.id', 'ASC')->paginate(20);
-        return View::make('orders.shipped', compact('orders'));
+        $test = 10;
+        return $dataTable->render('orders.shipped', compact('test'));
     }
     /**
      * Show the form for editing the specified resource.

@@ -14,6 +14,9 @@
                 <div class="col-sm-6">
                     <h1 class="yow">{{ __('Sales for Delivered Items') }}</h1>
                 </div>
+                <div class="col-sm-6">
+                    <h1 class="yow" style="text-align: right"> Total: {{ '₱' . number_format($total, 2) }}</h1>
+                </div>
             </div>
         </div>
     </div>
@@ -32,9 +35,9 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="{{ asset('js/order-show.js') }}" defer></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css">
     <script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script>
     <script src="/vendor/datatables/buttons.server-side.js"></script>
     {!! $dataTable->scripts() !!}
+    <script src="{{ asset('js/order-show.js') }}" defer></script>
 @endsection

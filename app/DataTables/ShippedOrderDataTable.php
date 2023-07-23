@@ -13,7 +13,7 @@ use Yajra\DataTables\Services\DataTable;
 
 use App\Models\Order;
 
-class DeliveredOrderDataTable extends DataTable
+class ShippedOrderDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -67,8 +67,7 @@ class DeliveredOrderDataTable extends DataTable
             'paymentmethod'  => function ($query) {
                 return $query->select('id', 'Methods');
             }
-        ])->where('status', "Delivered")
-            ->orderBy('id', 'ASC')->get();
+        ])->where('status', "Shipped")->get();
         return $orders;
     }
 
@@ -78,13 +77,13 @@ class DeliveredOrderDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('deliveredorder-table')
+            ->setTableId('shippedorder-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
+            ->dom('Bfrtip')
             ->autoWidth(false)
             ->addTableClass('table-bordered')
             ->responsive(true)
-            ->dom('Bfrtip')
             ->orderBy(1)
             ->selectStyleSingle()
             ->buttons([
@@ -93,8 +92,7 @@ class DeliveredOrderDataTable extends DataTable
                 Button::make('print'),
                 Button::make('reset'),
                 Button::make('reload')
-            ])
-            ->paging(10);
+            ]);
     }
 
     /**
@@ -126,6 +124,6 @@ class DeliveredOrderDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'DeliveredOrder_' . date('YmdHis');
+        return 'ShippedOrder_' . date('YmdHis');
     }
 }
