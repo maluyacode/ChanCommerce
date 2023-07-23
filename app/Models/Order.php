@@ -15,16 +15,16 @@ class Order extends Model
     protected $primaryKey = "id";
     protected $fillable = ['user_id'];
 
-    public function getTotalAttribute()
-    {
-        $total = 0;
+    // public function getTotalAttribute()
+    // {
+    //     $total = 0;
 
-        foreach ($this->orderlines as $orderline) {
-            $total += $orderline->items->sellprice * $orderline->quantity;
-        }
+    //     foreach ($this->orderlines as $orderline) {
+    //         $total += $orderline->items->sellprice * $orderline->quantity;
+    //     }
 
-        return $total;
-    }
+    //     return $total;
+    // }
 
     public function items()
     {

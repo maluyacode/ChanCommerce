@@ -14,31 +14,29 @@ class OrderMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $order;
-
-    public function __construct($Email,$order)
+    public $Email;
+    public function __construct($Email, $order)
     {
         $this->Email = $Email;
-        
         $this->order = $order;
-    
     }
 
     public function build()
     {
-        
+
         // var_dump(app(PDF::class));
         $pdf = app(PDF::class);
-$view = view('pdf.order', ['order' => $this->order]);
-$pdf->loadHTML($view->render());
-$pdf->setOptions(['defaultFont' => 'Arial']);
+        $view = view('pdf.order', ['order' => $this->order]);
+        $pdf->loadHTML($view->render());
+        $pdf->setOptions(['defaultFont' => 'Arial']);
 
         // return $this->view('emails.order-confirmation')
         //             ->with(['order' => $this->order])
         //             ->attachData($pdf->output(), 'order.pdf', [
         //                 'mime' => 'application/pdf',
         //             ]);
-    
-                    return $this->to($this->Email)
+
+        return $this->to($this->Email)
             ->view('emails.confirm-confirmation')
             ->with(['order' => $this->order])
             ->attachData($pdf->output(), 'confirm.pdf', [
@@ -49,5 +47,4 @@ $pdf->setOptions(['defaultFont' => 'Arial']);
     /**
      * Get the message envelope.
      */
-   
 }

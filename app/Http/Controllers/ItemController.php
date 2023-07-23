@@ -156,6 +156,7 @@ class ItemController extends Controller
      */
     public function destroy($id)
     {
+        Debugbar::info($id);
         Item::destroy($id);
         return response()->json(["status" => 200]);
     }

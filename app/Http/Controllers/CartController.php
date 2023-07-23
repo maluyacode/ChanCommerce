@@ -27,7 +27,6 @@ class CartController extends Controller
 {
     public function addcart($id)
     {
-        dd($id);
         if (Auth::id()) {
             // dd($id);
             $user = auth()->user()->id;
@@ -125,39 +124,17 @@ class CartController extends Controller
 
     public function checkout(Request $request, $id)
     {
+        // dd($request, $id);
 
-        // $rules = [
-        //     'pm_id' => 'required',
-        //     'ship_id' => 'required',
-        // ];
-
-        // $messages = [
-        //     'pm_id.required' => 'Payment Method is required',
-        //     'ship_id.required' => 'Shipping Courier is required',
-        // ];
-        // $validator = Validator::make($request->all(), $rules, $messages);
-
-        // if ($validator->fails()) {
-        //     return redirect()
-        //         ->back()
-        //         ->withErrors($validator)
-        //         ->withInput();
-        // }
         $pmethod_id = $request->input('pmethod_id');
+        $shipper_id = $request->input('shipper_id');
 
-        // Check if a payment method has been selected
         if ($pmethod_id == "Select Payment Method") {
-            // Redirect back with an error message
             return redirect()->back()->with('message', 'Please select a payment method.');
         }
-
-        // Get the selected shipper ID
-        $shipper_id = $request->input('shipper_id');
         if ($shipper_id == "Select Shipper") {
-            // Redirect back with an error message
             return redirect()->back()->with('message', 'Please select a shipping courier.');
         }
-
 
         $user = auth()->user()->id;
 
@@ -170,19 +147,17 @@ class CartController extends Controller
             ->join('customers', 'customers.user_id', "=", 'carts.user_id')
             ->select('carts.*', 'customers.*')
             ->where('carts.user_id', $user)->get();
-        //  dd($cart);
 
+        $customer =  Customer::where('user_id', Auth::id())->first();
         $order = new Order;
         $ship = $request->shipper_id;
         $pm = $request->pmethod_id;
-        $customer =  Customer::where('user_id', Auth::id())->first();
-
         $order->cus_id = $customer->id;
         $order->ship_id = $ship;
         $order->pm_id = $pm;
         $order->save();
-        foreach ($cart as $carts) {
 
+        foreach ($cart as $carts) {
             DB::table('orderlines')->insert(
                 [
                     'orderinfo_id' => $order->id,
@@ -204,13 +179,10 @@ class CartController extends Controller
             $stock->save();
         }
 
-
-        // Send the email with the PDF file
-
+        // dd($order);
         Mail::send(new OrderMail($Email, $order));
 
         Cart::where('user_id', $user)->delete();
-
 
         return View::make('transact.success');
     }

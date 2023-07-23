@@ -73,10 +73,11 @@
                     Mode</a>
             @endif
         @endauth
-        @foreach ($categories as $category)
+        {{-- @foreach ($categories as $category)
             <a style="color:black; margin-right:20px"
                 href="{{ route('category', $category->id) }}">{{ $category->cat_name }} </a>
-        @endforeach
+        @endforeach --}}
+        @yield('categories')
     </nav>
     {{-- <div class="sm:fixed sm:top-0 sm:left-0 p-6 text-left">
         <a class="font-semibold text-black-600 hover:text-dark-900 dark:text-dark-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"

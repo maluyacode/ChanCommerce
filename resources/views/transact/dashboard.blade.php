@@ -74,7 +74,8 @@
                                         Add to wishlist
                                     </button> --}}
                                         <div class="clearfix">
-                                            <form id="my-form" method="POST" action="{{ route('addcart', $item->it_id) }}">
+                                            <form id="my-form" method="POST"
+                                                action="{{ route('addcart', $item->it_id) }}">
                                                 @csrf
                                                 <button class="btn btn-outline-primary btn-sm btn-block" type="submit"
                                                     role="button">
@@ -115,4 +116,10 @@
     <script>
         src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
     </script>
+@endsection
+@section('categories')
+    @foreach ($categories as $category)
+        <a style="color:black; margin-right:20px" href="{{ route('category', $category->id) }}">{{ $category->cat_name }}
+        </a>
+    @endforeach
 @endsection
