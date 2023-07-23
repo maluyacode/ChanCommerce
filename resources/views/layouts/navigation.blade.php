@@ -13,14 +13,14 @@
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <li class="nav-item " style="background-color:#A52A2A">
+            {{-- <li class="nav-item " style="background-color:#A52A2A">
                 <a href="{{ route('redirect') }}" class="nav-link">
                     <i class="nav-icon fas fa-th"style="color: white"></i>
                     <p style="color: white">
                         {{ __('Dashboard') }}
                     </p>
                 </a>
-            </li>
+            </li> --}}
 
             <li class="nav-item dropdown-items" style="background-color:#A52A2A">
                 <a href="#" class="nav-link">
@@ -62,6 +62,7 @@
                         </a>
                     </li>
                 </ul>
+            </li>
 
             <li class="nav-item" style="background-color:#A52A2A">
                 <a href="{{ route('customers.index') }}" class="nav-link">

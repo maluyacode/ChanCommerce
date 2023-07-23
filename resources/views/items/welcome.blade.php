@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-{{-- welcome --}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <head>
     <meta charset="utf-8">
@@ -829,10 +829,64 @@
 </head>
 
 <body class="antialiased" style="background-color: #F0E68C">
-    <div class="">
-        @if (Route::has('login'))
+    @if (Route::has('login'))
+        <nav class="navbar navbar-expand-lg" style="background-color: #A52A2A">
+            <a class="navbar-brand" href="{{ url('/') }}" style="color:white">
+                <img src="/images/SQUARELOGO.png" width="40" height="40" alt="">
+                {{ 'QK Hardware Store' }}
+            </a>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto"></ul>
+                <div class="form-inline my-2 my-lg-0">
+                    <form action="{{ route('search') }}" method="get">
+                        <input class="form-control mr-sm-2" type="search" aria-label="Search" style="width: 1000px;">
+                        <button class="btn my-2 my-sm-0" type="submit"
+                            style="background-color: #F0E68C;
+                    margin-right:50px; margin-left:-20px"><i
+                                class="fas fa-search"></i></button>
+                    </form>
+                    @auth
+                        <a href="{{ url('redirect') }}" style="color:white"
+                            class="font-semibold text-black-600 hover:text-dark-900 dark:text-dark-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Home</a>
+                    @else
+                        <a href="{{ route('login') }}"
+                            class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+                            style="color:white">Log in</a>
+
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}"
+                                class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+                                style="color:white">Register</a>
+                        @endif
+                    @endauth
+                </div>
+            </div>
+        </nav>
+    @endif
+
+    <nav class="navbar navbar-expand-lg" style="background-color: white">
+        @auth
+            @if (Auth::user()->usertype == 'Admin')
+                <a style="color: black;" href="{{ route('backadmin') }}" class="d-block" style="color: white;">Toggle Admin
+                    Mode</a>
+            @endif
+        @endauth
+        @foreach ($categories as $category)
+            <a style="color:black; margin-right:20px"
+                href="{{ route('category', $category->id) }}">{{ $category->cat_name }} </a>
+        @endforeach
+    </nav>
+
+    @if (Session::has('message'))
+        <div class="alert alert-success">
+            {!! Session::get('message') !!}
+        </div>
+        <br>
+    @endif
+    {{-- @if (Route::has('login'))
             <div class="navbar navbar-expand-lg" style="background-color:#A52A2A">
-                {{-- <div class="container"> --}}
+                <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}" style="color:white">
                     <img src="/images/SQUARELOGO.png" width="40" height="40" alt="">
                     {{ 'QK Hardware Store' }}
@@ -868,17 +922,15 @@
                     @endauth
                 </div>
             </div><br>
-        @endif
-
-        <div class="max-w-7xl mx-auto p-6 lg:p-8">
-            {{-- <div class="flex justify-center">
+        @endif --}}
+    {{-- <div class="flex justify-center">
                     <img src="/images/SQUARELOGO.png" alt=""width="80px" height="80px" class="img"
                         style="opacity: .8">
                 </div>
                 <p class="card-text" style="text-align:center; font-size: 30px;">
                     {{ __('Welcome to QK Hardware Store! Browse our products!') }}
                 </p> --}}
-            {{-- <div
+    {{-- <div
                 class="container d-flex align-items-center justify-content-center"style="font-size: 18px; background-color: #A52A2A; display: flex; justify-content: center; height: 50px">
 
                 <form action="{{ route('search') }}" method="get">
@@ -886,7 +938,7 @@
                     <button type="submit" style="background-color: #F0E68C">Search</button>
                 </form>
             </div> --}}
-            {{-- @if ($items->count())
+    {{-- @if ($items->count())
                     <ul>
                         @foreach ($items as $item)
                             <li>{{ $item->item_name }}</li>
@@ -895,17 +947,17 @@
                 @else
                     <p>No results found.</p>
                 @endif --}}
-            <nav class="navbar navbar-expand-md navbar-dark navbar-laravel">
-                <div class="container" style="background-color: #A52A2A">
-                    @foreach ($categories as $category)
-                        <a class="btn btn" style="background-color:#000; color:#e5e7eb"
-                            href="{{ route('category', $category->id) }}">{{ $category->cat_name }} </a>
-                    @endforeach
-                    </li>
-                </div>
-            </nav>
+    {{-- <nav class="navbar navbar-expand-md navbar-dark navbar-laravel">
+            <div class="container" style="background-color: #A52A2A">
+                @foreach ($categories as $category)
+                    <a class="btn btn" style="background-color:#000; color:#e5e7eb"
+                        href="{{ route('category', $category->id) }}">{{ $category->cat_name }} </a>
+                @endforeach
+                </li>
+            </div>
+        </nav> --}}
 
-            {{-- <div class="card">
+    {{-- <div class="card">
                     <div class="gallery">
                         <div class="box">
                             <img src="/images/pic1.jpg" alt="">
@@ -918,64 +970,8 @@
                         </div>
                     </div>
                 </div> --}}
-        </div>
-    </div>
+
     <br>
-    @if (Session::has('message'))
-        <div class="alert alert-success">
-            {!! Session::get('message') !!}
-        </div>
-        <br>
-    @endif
-    {{-- <style>
-        .btn-outline-success {
-            color: black;
-
-        }
-
-        .gallery {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            width: 90%;
-            margin: 0 auto;
-
-
-        }
-
-        .card {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            width: 78%;
-            margin: 0 auto;
-            background-color: #A52A2A;
-            color: white;
-        }
-
-        .gallery .box {
-            height: 200px;
-            width: 200;
-            margin: 20px;
-            overflow: hidden;
-            border-radius: 5px;
-            box-shaddow: 10 10px 10px #000;
-
-        }
-
-        .gallery .box img {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-            border-style: solid;
-
-        }
-
-        .gallery .box img:hover {
-            transform: scale(2, 2);
-        }
-    </style> --}}
-
     <div class="container">
         @foreach ($items as $item)
             <div class="row justify-content-center mb-3">
@@ -1106,33 +1102,6 @@
     <script>
         src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
     </script>
-    <style>
-        .card-img-top {
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .card {
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-title {
-            font-weight: bold;
-            margin-bottom: 30px;
-        }
-
-        .card-text {
-            margin-bottom: 5px;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-    </style>
-
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

@@ -173,7 +173,7 @@ class ItemController extends Controller
             ->join('categories', 'items.cat_id', '=', 'categories.id')
             ->join('suppliers', 'items.sup_id', '=', 'suppliers.id')
             ->select('items.id as it_id', 'items.*', 'categories.*', 'suppliers.*')
-            ->orderBy('items.id', 'ASC')->paginate(3);
+            ->orderBy('items.id', 'ASC')->paginate(4);
         $categoryId = $request->input('category_id');
 
         return View::make('items.welcome', compact('items', 'categories', 'suppliers', 'categoryId'));
