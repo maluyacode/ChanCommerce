@@ -1,5 +1,5 @@
 @extends('layouts.transact')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @section('search')
     <div
         class="container d-flex align-items-center justify-content-center"style="font-size: 18px; background-color: #A52A2A; display: flex; justify-content: center; height: 50px">
@@ -29,7 +29,7 @@
             <img src="/images/pic3.jpg" alt="">
         </div>
     </div>
-@endsection
+@endsection --}}
 @section('content')
     @if (Session::has('message'))
         <div class="alert alert-success">
@@ -116,31 +116,4 @@
     <script>
         src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
     </script>
-    <style>
-        .card-img-top {
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .card {
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-title {
-            font-weight: bold;
-            margin-bottom: 30px;
-        }
-
-        .card-text {
-            margin-bottom: 5px;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-    </style>
 @endsection
-<b></b>

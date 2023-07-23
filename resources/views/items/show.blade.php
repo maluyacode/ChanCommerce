@@ -4,7 +4,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -848,8 +847,19 @@
                                 class="fas fa-search"></i></button>
                     </form>
                     @auth
-                        <a href="{{ url('redirect') }}" style="color:white"
-                            class="font-semibold text-black-600 hover:text-dark-900 dark:text-dark-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Home</a>
+                        <a href="{{ route('shoppingcart', ['id' => auth()->user()->id]) }}"
+                            class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">
+                            <i class="fas fa-shopping-cart" style="margin-left:-30px; color:white"></i>
+                            {{-- <span class="badge badge-light"
+                                style="font-size:12px; margin-right:10px;">{{ $itemCount }}</span> --}}
+                            <span class="badge">{{ Session::has('cart') ? Session::get('cart')->totalQty : '' }}</span>
+                        </a>
+                        <a href="{{ route('userprofile', ['id' => auth()->user()->id]) }}"
+                            class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+                            style="color:white; margin-right:10px">
+                            <i class="fas fa-person"></i>
+                            {{ __('Profile') }}
+                        </a>
                     @else
                         <a href="{{ route('login') }}"
                             class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
@@ -869,7 +879,8 @@
     <nav class="navbar navbar-expand-lg" style="background-color: white">
         @auth
             @if (Auth::user()->usertype == 'Admin')
-                <a style="color: black;" href="{{ route('backadmin') }}" class="d-block" style="color: white;">Toggle Admin
+                <a style="color: black; margin-right:20px" href="{{ route('backadmin') }}" class="d-block"
+                    style="color: white;">Toggle Admin
                     Mode</a>
             @endif
         @endauth
@@ -995,43 +1006,16 @@
             </div>
         @endforeach
     </div>
+</body>
 
-    <script>
-        src = "https://code.jquery-1.12.4.min.js" >
-    </script>
-    <script>
-        src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-    </script>
-    {{-- <style>
-                    .card-img-top {
-                        height: 200px;
-                        object-fit: cover;
-                    }
-
-                    .card {
-                        border: 1px solid #dee2e6;
-                        border-radius: 4px;
-                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                    }
-
-                    .card-title {
-                        font-weight: bold;
-                        margin-bottom: 30px;
-                    }
-
-                    .card-text {
-                        margin-bottom: 5px;
-                    }
-
-                    .btn-primary {
-                        background-color: #007bff;
-                        border-color: #007bff;
-                    }
-                </style> --}}
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    </div>
+<script>
+    src = "https://code.jquery-1.12.4.min.js" >
+</script>
+<script>
+    src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 </html>

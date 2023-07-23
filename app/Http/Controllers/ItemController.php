@@ -147,10 +147,7 @@ class ItemController extends Controller
                 $item->addMedia(storage_path("items/images/" . $file))->toMediaCollection("images");
             }
         }
-
         $item->save();
-
-
         return response()->json($item);
     }
 
@@ -164,8 +161,6 @@ class ItemController extends Controller
     }
     public function getItems(Request $request)
     {
-
-
         $categories = Category::all();
         $suppliers = Supplier::all();
 
