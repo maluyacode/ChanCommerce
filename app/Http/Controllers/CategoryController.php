@@ -8,10 +8,13 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Validator;
+use Barryvdh\Debugbar\Facades\Debugbar;
 
 use App\DataTables\CategoryDataTable;
 use App\Models\Category;
 use App\Models\Supplier;
+use GuzzleHttp\Promise\Create;
 
 class CategoryController extends Controller
 {
@@ -43,18 +46,13 @@ class CategoryController extends Controller
             'cat_name.required' => 'Please enter your category name.',
 
         ];
+        Validator::make($request->all(), $rules, $messages);
 
-        try {
-            $validatedData = $request->validate($rules, $messages);
-            $categories = new Category;
-            $categories->cat_name = $request->cat_name;
+        Category::create([
+            "cat_name" => $request->cat_name,
+        ])->save();
 
-            $categories->save();
-        } catch (ValidationException $e) {
-            return redirect()->back()->withErrors($e->errors())->with('alert', 'Please fix the errors below.')->withInput();
-        }
-
-        return redirect()->route('categories.index');
+        return response()->json([], 200, [], 0);
     }
 
     /**
@@ -79,16 +77,16 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        $categories =  Category::find($id);
-        return view('categories.edit', compact('categories'));
+        $category =  Category::find($id);
+        return response()->json($category);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         $rules = [
             'cat_name' => 'required|max:255|min:3',
@@ -97,19 +95,13 @@ class CategoryController extends Controller
             'cat_name.required' => 'Please enter your category name.',
 
         ];
+        Validator::make($request->all(), $rules, $messages);
 
-        try {
-            $validatedData = $request->validate($rules, $messages);
-            $categories = Category::find($id);
+        $categories = Category::find($id);
+        $categories->cat_name = $request->cat_name;
+        $categories->save();
 
-            $categories->cat_name = $request->cat_name;
-
-            $categories->save();
-        } catch (ValidationException $e) {
-            return redirect()->back()->withErrors($e->errors())->with('alert', 'Please fix the errors below.')->withInput();
-        }
-
-        return redirect()->route('categories.index');
+        return response()->json([], 200, [], 0);
     }
 
 
@@ -119,6 +111,6 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         Category::destroy($id);
-        return redirect()->route('categories.index');
+        return response()->json([], 200, [], 0);
     }
 }

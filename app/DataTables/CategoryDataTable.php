@@ -74,7 +74,8 @@ class CategoryDataTable extends DataTable
     {
         return [
             Column::make('id')
-                ->addClass('text-center'),
+                ->addClass('text-center')
+                ->addClass('selection'),
             Column::make('cat_name')
                 ->title('name')
                 ->addClass('text-center'),

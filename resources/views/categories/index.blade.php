@@ -9,6 +9,8 @@
 @section('headscripts')
     <script type="text/javascript" src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
 @endsection
 
 @section('content')
@@ -24,7 +26,7 @@
     </div>
 
     <div class="content">
-        <div class="container-fluid">
+        <div class="container-fluid for-alert">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">

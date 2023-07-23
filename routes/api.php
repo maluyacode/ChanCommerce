@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,3 +28,9 @@ Route::post('/item/store', [ItemController::class, 'store']);
 Route::get('/item/{id}/edit', [ItemController::class, 'edit']);
 Route::put('/item/{id}/update', [ItemController::class, 'update']);
 Route::delete('/item/{id}/delete', [ItemController::class, 'destroy']);
+
+
+Route::post('/category/store', [CategoryController::class, 'store']);
+Route::get('/category/{id}/edit', [CategoryController::class, 'edit']);
+Route::put('/category/{id}/update', [CategoryController::class, 'update']);
+Route::delete('/category/{id}/delete', [CategoryController::class, 'destroy']);
