@@ -35,6 +35,7 @@ class CustomerController extends Controller
     {
         $users = User::all();
         $user = Auth::user();
+        $itemCount = DB::table('carts')->where('user_id', $id)->count();
 
         $customers = DB::table('customers')
             ->join('users', 'customers.user_id', '=', 'users.id')
@@ -141,8 +142,13 @@ class CustomerController extends Controller
             }
         }
 
+<<<<<<< Updated upstream
         $itemCount = DB::table('carts')->where('user_id', Auth::user()->id)->count();
         return View::make('customers.cusprofile', compact('order', 'user', 'users', 'customers', 'totalprice', 'orders', 'itemCount'));
+=======
+
+        return View::make('customers.cusprofile', compact('order', 'user', 'users', 'customers', 'totalprice', 'orders','itemCount'));
+>>>>>>> Stashed changes
     }
 
     /**

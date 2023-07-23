@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 <head>
     <meta charset="utf-8">
@@ -10,9 +8,13 @@
     <title>QK Hardware Store</title>
 
     <!-- Fonts -->
+
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 
 <body class="antialiased" style="background-color: #F0E68C">
@@ -73,11 +75,9 @@
                     Mode</a>
             @endif
         @endauth
-        {{-- @foreach ($categories as $category)
-            <a style="color:black; margin-right:20px"
-                href="{{ route('category', $category->id) }}">{{ $category->cat_name }} </a>
-        @endforeach --}}
         @yield('categories')
-    </nav>
+    </nav><br>
+    @yield('content')
 </body>
+
 </html>

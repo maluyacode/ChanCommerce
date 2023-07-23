@@ -70,6 +70,9 @@ class CartController extends Controller
         $totalprice = 0;
         $shipper = Shipper::all();
         $pmethod = PaymentMethod::all();
+        $userId = auth()->user()->id;
+        $itemCount = DB::table('carts')->where('user_id', $userId)->count();
+
         $cart = DB::table('carts')
             ->join('users', 'users.id', "=", 'carts.user_id')
             ->join('items', 'items.id', "=", 'carts.item_id')
@@ -81,7 +84,7 @@ class CartController extends Controller
             $totalprice += $carts->sellprice;
         }
 
-        return View::make('transact.shopping-cart', compact('cart', 'totalprice', 'shipper', 'pmethod', 'user'));
+        return View::make('transact.shopping-cart', compact('cart', 'totalprice', 'shipper', 'pmethod', 'user', 'itemCount'));
     }
     public function increment($id)
     {

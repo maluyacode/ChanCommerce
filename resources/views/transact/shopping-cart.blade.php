@@ -1,117 +1,139 @@
-@extends('layouts.transact')
-@section('title')
-    Laravel Shopping Cart
-@endsection
+@extends('layouts.main-navbar')
 @section('content')
-    @if (Session::has('message'))
+    @if (session()->has('message'))
         <div class="alert alert-success">
-            {!! Session::get('message') !!}
+            <button type="button" class="close" data-dismiss="alert" style="display:inline-block">x</button>
+            {{ session()->get('message') }}
         </div>
     @endif
     @if (Auth::id())
-        <div class="content">
-            <div class="container-fluid">
+        <div class="container-fluid">
+            <div class="text-center">
                 <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card" style="background-color: white">
-                            <div class="card-body" style="border:3px solid #000000; padding:3px; margin:2px">
-                                <table class="table">
-                                    <thead>
+                    <div class="col-lg-8">
+                        <div class="card mb-4" style="width:1000px">
+                            {{-- <div class="card-body text-center">
+                      <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                        class="rounded-circle img-fluid" style="width: 150px;">
+                      <h5 class="my-3">John Smith</h5>
+                      <p class="text-muted mb-1">Full Stack Developer</p>
+                      <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
+                      <div class="d-flex justify-content-center mb-2">
+                        <button type="button" class="btn btn-primary">Follow</button>
+                        <button type="button" class="btn btn-outline-primary ms-1">Message</button>
+                      </div>
+                    </div> --}}
+                            <table class="table">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col" style="font-size: 17px">Item Image</th>
+                                        <th scope="col" style="font-size: 17px;">Item Name</th>
+                                        <th scope="col" style="font-size: 17px;">Quantity</th>
+                                        <th scope="col" style="font-size: 17px;">Item Price</th>
+                                        <th scope="col" style="font-size: 17px;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($cart as $carts)
+                                        <tr>
+                                            <td><img src="{{ asset($carts->img_path) }}" alt="" width="80px"
+                                                    height="80px" style="border:3px solid #000000;"></td>
+                                            <td><strong><span
+                                                        style="font-size: 17px; justify-content: center">{{ $carts->item_name }}</span></strong>
+                                            </td>
+                                            <td><span class="badge badge-primary rounded-pill"
+                                                    style="font-size: 17px">{{ $carts->quantityC }}</span></td>
 
-                                        <th style="font-size: 17px">Item Image</th>
-                                        <th style="font-size: 17px;">Item Name</th>
-                                        <th style="font-size: 17px;">Quantity</th>
-                                        <th style="font-size: 17px;">Item Price</th>
-                                        <link rel="stylesheet"
-                                            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-                                        <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css"
-                                            rel="stylesheet">
-                                        <link rel="stylesheet" href="{{ url('src/css/app.css') }}">
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($cart as $carts)
-                                            <tr>
+                                            <td><span class="label label-success"
+                                                    style="font-size: 17px;">{{ $carts->sellprice }}</span></td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                        Action <span class="caret"></span>
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <a href="{{ route('increment', ['id' => $carts->item_id]) }}">Add
+                                                            Quantity</a>
+                                                        <a href="{{ route('decrement', ['id' => $carts->item_id]) }}">Reduce
+                                                            Quantity</a>
+                                                        <a href="{{ route('delete', ['id' => $carts->item_id]) }}">Remove
+                                                            All</a>
+                                                    </div>
+                                                </div>
+                                                {{-- <button type="button" class="btn btn-primary btn-xs dropdown-toggle"
+                                                data-toggle="dropdown">
+                                                Action <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a href="{{ route('increment', ['id' => $carts->item_id]) }}">Add
+                                                        Quantity</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ route('decrement', ['id' => $carts->item_id]) }}">Reduce
+                                                        Quantity</a>
+                                                </li>
+                                                <li>
+                                                    <a href="{{ route('delete', ['id' => $carts->item_id]) }}">Remove
+                                                        All</a>
+                                                </li>
+                                            </ul> --}}
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            <div class="card-footer text-muted text-center">
+                                <strong>Total Price: {{ $totalprice }}</strong>
+                            </div>
+                        </div>
+                    </div>
 
-                                                <td><img src="{{ asset($carts->img_path) }}" alt="" width="80px"
-                                                        height="80px"
-                                                        style="border:3px solid #000000; padding:3px; margin:2px"></td>
-                                                <td><strong><span
-                                                            style="font-size: 17px; justify-content: center">{{ $carts->item_name }}</span></strong>
-                                                </td>
-                                                <td><span class="badge badge-primary rounded-pill"
-                                                        style="font-size: 17px">{{ $carts->quantityC }}</span></td>
+                    <div class="col-lg-4">
+                        <div class="card mb-4" style="width:470px;height:430px">
+                            <div class="card-header">
+                                Transaction
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <form method="POST" action="{{ route('checkout', ['id' => $user]) }}">
+                                        @csrf
+                                        <div class="container" style="padding:70px">
+                                            <div class="row">
+                                                <label for="pmethod_id">Payment Method</label>
+                                                <select class="form-select form-control" name="pmethod_id" id="pmethod_id">
+                                                    <option selected>Select Payment Method</option>
+                                                    @foreach ($pmethod as $pm)
+                                                        <option value={{ $pm->id }}>{{ $pm->Methods }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div><br>
 
-                                                <td><span class="label label-success"
-                                                        style="font-size: 17px;">{{ $carts->sellprice }}</span></td>
-                                                <td class="btn-group">
-                                                    <button type="button" class="btn btn-primary btn-xs dropdown-toogle"
-                                                        data-toggle="dropdown">Action <span class="caret"></span></button>
-                                                    <ul class="dropdown-menu">
-                                                        <li><a href="{{ route('increment', ['id' => $carts->item_id]) }}">Add
-                                                                Quantity
-                                                            </a></li>
-                                                        <li><a href="{{ route('decrement', ['id' => $carts->item_id]) }}">Reduce
-                                                                Quantity</a></li>
-                                                        <li><a href="{{ route('delete', ['id' => $carts->item_id]) }}">Reduce
-                                                                All</a></li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                            <div class="row">
+                                                <label for="country">Shipping Via</label>
+                                                <select class="form-select form-control" name="shipper_id" id="shipper_id">
+                                                    <option selected>Select Shipper</option>
+                                                    @foreach ($shipper as $ship)
+                                                        <option value={{ $ship->id }}>{{ $ship->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div><br>
+
+                                            <div class="text-center" style="font-size: 20px">
+                                                <button type="submit" class="btn btn-success"
+                                                    id="checkout-button">Checkout</button>
+                                            </div>
+
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        {{-- </ul>
-            </div>
-        </div> --}}
-        <div class="row">
-            <div class="col-sm-6 col-md-6 col-md-offset-3 col-sm-offset-2 text-center"
-                style="background-color: white; border:3px solid #000000; font-size: 18px ">
-                <br>
-                <strong>Total: {{ $totalprice }}</strong>
-            </div>
-        </div>
-        <hr>
-        <form method="POST" action="{{ route('checkout', ['id' => $user]) }}">
-            @csrf
-            <div class="container">
-                <div class="row">
-                    <div class="form-group row">
-                        <label for="pmethod_id">Payment Method</label>
-                        <select class="form-select form-control" name="pmethod_id" id="pmethod_id">
-                            <option selected>Select Payment Method</option>
-                            @foreach ($pmethod as $pm)
-                                <option value={{ $pm->id }}>{{ $pm->Methods }}</option>
-                            @endforeach
-                        </select>
-
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="form-group row" style="align:center">
-                        <label for="country">Shipping Via</label>
-                        <select class="form-select form-control" name="shipper_id" id="shipper_id">
-                            <option selected>Select Shipper</option>
-                            @foreach ($shipper as $ship)
-                                <option value={{ $ship->id }}>{{ $ship->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-6 col-md-offset-3 col-sm-offset-3 text-right" style="font-size: 20px">
-                    <button type="submit" class="btn btn-success" id="checkout-button"
-                        style="border:3px solid #000000; padding:3px; margin:2px">Checkout</button>
-                </div>
-
-            </div>
-        </form>
         {{-- <script>
             // Get references to the payment method and shipper select elements
             const pmethodSelect = document.getElementById('pmethod_id');
@@ -139,7 +161,4 @@
             </div>
         </div>
     @endif
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 @endsection

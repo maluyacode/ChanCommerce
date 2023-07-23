@@ -1,10 +1,5 @@
 @extends('layouts.main-navbar')
 @section('content')
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url('src/css/app.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <div class="card">
         <img src="{{ asset($customers->img_pathC) }}" alt="" style="height:350px">
         <h1 style="font-size: 20px;">Name: {{ $customers->customer_name }}</h1>
@@ -15,11 +10,11 @@
                 class="fas fa-edit"></i></a>
     </div>
     <br>
-    @if (Session::has('message'))
-        <center>
-            <div class="alert alert-success">
-                {!! Session::get('message') !!}
-            </div>
+    @if (session()->has('message'))
+        <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert" style="display:inline-block">x</button>
+            {{ session()->get('message') }}
+        </div>
     @endif
     <br>
     <div class="container" style="background-color: #A52A2A; color: white; text-align:center">
@@ -171,7 +166,7 @@
 </main> --}}
 
 
-    <style>
+    {{-- <style>
         main {
             width: 100%;
             max-width: 1000px;
@@ -257,5 +252,5 @@
         a:hover {
             opacity: 0.7;
         }
-    </style>
+    </style> --}}
 @endsection
