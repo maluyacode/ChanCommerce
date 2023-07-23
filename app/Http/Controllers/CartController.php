@@ -21,12 +21,15 @@ use App\Models\Cart;
 use App\Models\Stock;
 use App\Mail\OrderConfirmation;
 use App\Mail\OrderMail;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
 {
     public function addcart($id)
     {
+        session()->flush();
+        dd($id);
         if (Auth::id()) {
             // dd($id);
             $user = auth()->user()->id;

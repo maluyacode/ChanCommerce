@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderConfirmation;
 use App\Mail\OrderMail;
 
+use App\DataTables\DeliveredOrderDataTable;
 use App\DataTables\OrderDataTable;
 use App\Models\Orderline;
 use App\Models\Customer;
@@ -42,55 +43,36 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store()
     {
-        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    public function show(DeliveredOrderDataTable $dataTable)
     {
-        $orderline = Orderline::all();
-        $customer = Customer::all();
-        $item = Item::all();
-        $shipper = Shipper::all();
-        $pmethod = PaymentMethod::all();
-
-        $totaleach = 0;
-        $total = 0;
-
-        $orders = DB::table('orders')
-            ->join('orderlines', 'orders.id', '=', 'orderlines.orderinfo_id')
-            ->join('customers', 'orders.cus_id', '=', 'customers.id')
-            ->join('items', 'items.id', '=', 'orderlines.item_id')
-            ->join('shippers', 'orders.ship_id', '=', 'shippers.id')
-            ->join('payment_methods', 'payment_methods.id', '=', 'orders.pm_id')
-            ->select('orders.id AS o_id', 'orders.*', 'orderlines.*', 'items.*', 'shippers.*', 'payment_methods.*', 'customers.*')
-            ->where('orders.status', "Delivered")
-            ->orderBy('orders.id', 'ASC')->get();
-
-        foreach ($orders as $order) {
-            $totaleach += $order->sellprice;
-            $total = $total + $totaleach;
-        }
-        return View::make('orders.show', compact('orders', 'total'));
+        return $dataTable->render('orders.show');
     }
+
+
     public function getOrders()
     {
-        $total = 0;
-        $orders = DB::table('orders')
-            ->join('customers', 'orders.cus_id', '=', 'customers.id')
-            ->select('orders.id AS o_id', 'orders.created_at', 'orders.status', 'customers.*')
-            ->where('orders.status', "Processing")
-            ->orWhere('orders.status', "Shipped")
-            ->orderBy('orders.id', 'ASC')->get();
-        foreach ($orders as $order) {
-            $total = $total + 1;
-        }
-        return View::make('orders.updatestatus', compact('orders', 'total'));
+        // $total = 0;
+        // $orders = DB::table('orders')
+        //     ->join('customers', 'orders.cus_id', '=', 'customers.id')
+        //     ->select('orders.id AS o_id', 'orders.created_at', 'orders.status', 'customers.*')
+        //     ->where('orders.status', "Processing")
+        //     ->orWhere('orders.status', "Shipped")
+        //     ->orderBy('orders.id', 'ASC')->get();
+        // foreach ($orders as $order) {
+        //     $total = $total + 1;
+        // }
+
+
+        // return View::make('orders.updatestatus', compact('orders', 'total'));
     }
+
     public function Delivered($id)
     {
         $orders = DB::table('orders')
@@ -111,6 +93,7 @@ class OrderController extends Controller
 
         return back();
     }
+
     public function ForDelivery($id)
     {
         $orders = DB::table('orders')
@@ -157,6 +140,7 @@ class OrderController extends Controller
 
         return back();
     }
+
     public function ShippedOrders()
     {
         $orderline = Orderline::all();

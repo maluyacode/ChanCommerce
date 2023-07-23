@@ -1010,7 +1010,7 @@
                                     </button> --}}
                                         <div class="clearfix">
                                             <form id="my-form" method="POST"
-                                                action="{{ route('addcart', ['id' => $item->id]) }}">
+                                                action="{{ route('addcart', ['id' => $item->it_id]) }}">
                                                 @csrf
                                                 <button class="btn btn-outline-primary btn-sm btn-block" type="submit"
                                                     role="button">

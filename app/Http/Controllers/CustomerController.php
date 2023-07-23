@@ -141,8 +141,8 @@ class CustomerController extends Controller
             }
         }
 
-
-        return View::make('customers.cusprofile', compact('order', 'user', 'users', 'customers', 'totalprice', 'orders'));
+        $itemCount = DB::table('carts')->where('user_id', Auth::user()->id)->count();
+        return View::make('customers.cusprofile', compact('order', 'user', 'users', 'customers', 'totalprice', 'orders', 'itemCount'));
     }
 
     /**

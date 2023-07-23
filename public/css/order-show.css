@@ -3,7 +3,7 @@
     background-color: #2B2730;
 }
 
-#deliveredorder-table_wrapper {
+#order-table_wrapper {
     background-color: #2B2730 !important;
 }
 
@@ -27,7 +27,7 @@ td {
 }
 
 .table-bordered thead {
-    text-transform: uppercase !important;
+    text-transform: uppercase;
     letter-spacing: 2px;
     font-weight: 400 !important;
 }

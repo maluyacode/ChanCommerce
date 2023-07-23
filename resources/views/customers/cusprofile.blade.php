@@ -7,8 +7,6 @@
 
     <div class="card">
         <img src="{{ asset($customers->img_pathC) }}" alt="" style="height:350px">
-
-
         <h1 style="font-size: 20px;">Name: {{ $customers->customer_name }}</h1>
         <p class="title">User Type: {{ $customers->usertype }}</p>
         <p>Address: {{ $customers->address }}</p>
@@ -97,7 +95,7 @@
             <th>Status</th>
             <th>Quantity</th>
             <th>Price</th>
-          
+
           </tr>
         </thead>
         <tbody>
@@ -108,12 +106,12 @@
               <td>{{ $orderItem->status }}</td>
               <td>{{ $orderItem->quantity }}</td>
               <td>{{ $orderItem->sellprice * $orderItem->quantity }}</td>
-              
+
             </tr>
           </tbody>
-       
+
           @endforeach
-        
+
       </table>
     </div>
   </div>
@@ -144,7 +142,7 @@
             <th>Status</th>
             <th>Quantity</th>
             <th>Price</th>
-          
+
           </tr>
         </thead>
         <tbody>
@@ -155,12 +153,12 @@
               <td>{{ $orderItem->status }}</td>
               <td>{{ $orderItem->quantity }}</td>
               <td>{{ $orderItem->sellprice * $orderItem->quantity }}</td>
-              
+
             </tr>
           </tbody>
-       
+
           @endforeach
-        
+
       </table>
     </div>
   </div>

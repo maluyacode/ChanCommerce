@@ -100,7 +100,7 @@
                 <a href="{{ route('show') }}" class="nav-link">
                     <i class="nav-icon far fa-address-card" style="color: white"></i>
                     <p style="color: white">
-                        {{ __('Order Delivered Sales') }}
+                        {{ __('Order Delivered') }}
                     </p>
                 </a>
             </li>
