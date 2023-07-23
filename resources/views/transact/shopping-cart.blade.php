@@ -1,7 +1,5 @@
 @extends('layouts.main-navbar')
 @section('content')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     @if (session()->has('message'))
         <div class="alert alert-success">
             <button type="button" class="close" data-dismiss="alert" style="display:inline-block">x</button>
@@ -49,21 +47,19 @@
                                             <td><span class="label label-success"
                                                     style="font-size: 17px;">{{ $carts->sellprice }}</span></td>
                                             <td>
-                                                <div class="dropdown show">
+                                                <div class="dropdown">
                                                     <button class="btn btn-secondary dropdown-toggle" type="button"
                                                         id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false" role="button">
+                                                        aria-expanded="false">
                                                         Action <span class="caret"></span>
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('increment', ['id' => $carts->item_id]) }}">Add
+                                                        
+                                                        <a href="{{ route('increment', ['id' => $carts->item_id]) }}">Add
                                                             Quantity</a>
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('decrement', ['id' => $carts->item_id]) }}">Reduce
+                                                        <a href="{{ route('decrement', ['id' => $carts->item_id]) }}">Reduce
                                                             Quantity</a>
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('delete', ['id' => $carts->item_id]) }}">Remove
+                                                        <a href="{{ route('delete', ['id' => $carts->item_id]) }}">Remove
                                                             All</a>
                                                     </div>
                                                 </div>
@@ -166,13 +162,4 @@
             </div>
         </div>
     @endif
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
-    </script>
 @endsection

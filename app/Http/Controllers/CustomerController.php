@@ -142,13 +142,11 @@ class CustomerController extends Controller
             }
         }
 
-<<<<<<< Updated upstream
+
         $itemCount = DB::table('carts')->where('user_id', Auth::user()->id)->count();
         return View::make('customers.cusprofile', compact('order', 'user', 'users', 'customers', 'totalprice', 'orders', 'itemCount'));
-=======
 
-        return View::make('customers.cusprofile', compact('order', 'user', 'users', 'customers', 'totalprice', 'orders','itemCount'));
->>>>>>> Stashed changes
+        // return View::make('customers.cusprofile', compact('order', 'user', 'users', 'customers', 'totalprice', 'orders','itemCount'));
     }
 
     /**
