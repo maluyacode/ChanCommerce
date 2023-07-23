@@ -1,4 +1,4 @@
-@extends('layouts.transact')
+@extends('layouts.main-navbar')
 @section('content')
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
@@ -15,9 +15,6 @@
         <p>Date Created: {{ $customers->created_at }}</p>
         <a href="{{ route('customersedit', ['id' => $customers->user_id]) }}" class="btn btn-primary">Edit Profile<i
                 class="fas fa-edit"></i></a>
-
-
-
     </div>
     <br>
     @if (Session::has('message'))
