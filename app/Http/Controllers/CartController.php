@@ -27,7 +27,7 @@ class CartController extends Controller
 {
     public function addcart($id)
     {
-        dd($id);
+        // dd($id);
         if (Auth::id()) {
             // dd($id);
             $user = auth()->user()->id;

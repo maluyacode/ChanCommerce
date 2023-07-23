@@ -890,9 +890,10 @@
         @endforeach
     </nav>
 
-    @if (Session::has('message'))
+    @if (session()->has('message'))
         <div class="alert alert-success">
-            {!! Session::get('message') !!}
+            <button type="button" class="close" data-dismiss="alert" style="display:inline-block">x</button>
+            {{ session()->get('message') }}
         </div>
     @endif
 

@@ -31,11 +31,11 @@
     </div>
 @endsection --}}
 @section('content')
-    @if (Session::has('message'))
+    @if (session()->has('message'))
         <div class="alert alert-success">
-            {!! Session::get('message') !!}
+            <button type="button" class="close" data-dismiss="alert" style="display:inline-block">x</button>
+            {{ session()->get('message') }}
         </div>
-        <br>
     @endif
 
     <div class="container">
@@ -74,7 +74,8 @@
                                         Add to wishlist
                                     </button> --}}
                                         <div class="clearfix">
-                                            <form id="my-form" method="POST" action="{{ route('addcart', $item->it_id) }}">
+                                            <form id="my-form" method="POST"
+                                                action="{{ route('addcart', $item->it_id) }}">
                                                 @csrf
                                                 <button class="btn btn-outline-primary btn-sm btn-block" type="submit"
                                                     role="button">
