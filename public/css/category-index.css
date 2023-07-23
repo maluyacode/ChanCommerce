@@ -1,0 +1,27 @@
+.card-body {
+    color: #F4F2DE !important;
+    background-color: #2B2730;
+}
+
+#category-table_wrapper {
+    background-color: #2B2730 !important;
+}
+
+table th,
+td {
+    color: #F4F2DE !important;
+    background-color: #2B2730 !important;
+}
+
+.table-bordered {
+    border: 1px solid #464444 !important;
+}
+
+.table-bordered th {
+    border: 1px solid #464444 !important;
+}
+
+.table-bordered td {
+    text-transform: capitalize;
+    border: 1px solid #464444 !important;
+}

@@ -3,24 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+
+use App\DataTables\CategoryDataTable;
 use App\Models\Category;
 use App\Models\Supplier;
-use View;
-use Storage;
-use DB;
-
-use App\Models\Item;
 
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(CategoryDataTable $dataTable)
     {
-        $categories = Category::all();
-        //dd(compact('items'));
-        return View::make('categories.index', compact('categories'));
+        return $dataTable->render('categories.index');
     }
 
     /**
@@ -70,8 +70,8 @@ class CategoryController extends Controller
             ->join('suppliers', 'items.sup_id', '=', 'suppliers.id')
             ->select('items.id as it_id', 'items.*', 'categories.*', 'suppliers.*')
             ->where('categories.id', $id)->get();
-            $categories = Category::all();
-            $suppliers = Supplier::all();
+        $categories = Category::all();
+        $suppliers = Supplier::all();
 
         return view::make('items.show', compact('items', 'categories'))->with('message', 'Product Added to Cart!');
     }
