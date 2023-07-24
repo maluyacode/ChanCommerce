@@ -141,6 +141,7 @@ $('#save').on('click', function (event) {
             $('.alert').fadeOut(5000, function () {
                 $(this).remove();
             });
+            $('#itemsTable').DataTable().ajax.reload();
 
         },
         error: function (error) {

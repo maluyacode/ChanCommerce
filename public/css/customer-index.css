@@ -1,0 +1,82 @@
+.card-body {
+    color: #F4F2DE !important;
+    background-color: #2B2730;
+}
+
+.jc-bs3-row {
+    background-color: #00000000;
+}
+
+#accountsTable thead {
+    text-transform: uppercase;
+}
+
+#accountsTable thead tr th {
+    font-weight: 500 !important;
+}
+
+#accountsTable_filter label {
+    font-weight: 200 !important;
+    text-transform: uppercase;
+}
+
+#accountsTable tbody {
+    font-weight: 400;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-transform: capitalize;
+}
+
+.yow {
+    letter-spacing: 5px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.table-bordered {
+    border: 1px solid #464444 !important;
+}
+
+.table-bordered th {
+    border: 1px solid #464444 !important;
+}
+
+.table-bordered td {
+    text-transform: capitalize;
+    border: 1px solid #464444 !important;
+}
+
+.table-bordered td.lowercase {
+    text-transform: lowercase;
+}
+
+.form-group label {
+    color: #464444;
+}
+
+.dz-message {
+    color: #464444;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: row;
+}
+
+.action-buttons button {
+    margin: 3px;
+}
+
+.image-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    z-index: 12;
+    justify-content: center;
+}
+
+.image-container img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 1px solid #464444;
+    margin: 10px;
+}

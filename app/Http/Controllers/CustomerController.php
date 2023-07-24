@@ -8,27 +8,39 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 use App\Models\Customer;
 use App\Models\User;
 use App\Models\Order;
+use Barryvdh\Debugbar\Facades\Debugbar;
 
 class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    public function storeMedia(Request $request)
+    {
+        $path = storage_path("customers/images");
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+
+        $file = $request->file("file");
+        $name = uniqid() . "_" . trim($file->getClientOriginalName());
+        $file->move($path, $name);
+
+        return response()->json([
+            "name" => $name,
+            "original_name" => $file->getClientOriginalName(),
+        ]);
+    }
+
     public function index()
     {
-        // $users = User::all();
-
-
-        // $customers = DB::table('customers')
-        //     ->join('users', 'customers.user_id', '=', 'users.id')
-        //     ->select('customers.*', 'customers.id AS cus_id', 'users.*')
-
-        //     ->orderBy('customers.id', 'ASC')->get();
-        // return View::make('customers.index', compact('users', 'customers'));
+        $customers = Customer::with(['user'])->get();
+        return response()->json($customers, 200, [], 0);
     }
 
     public function userprofile($id, Request $request)
@@ -166,54 +178,46 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
+        Debugbar::info($request);
         $rules = [
             'customer_name' => 'required',
             'contact' => 'required',
             'address' => 'required',
-            'img_pathC' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'password' => 'required',
+            'usertype' => 'required',
+            'email' => 'required',
         ];
-
         $messages = [
             'customer_name.required' => 'Account Name is required',
             'contact.required' => 'Account Contact is required',
             'address.required' => 'Account Home Address is required',
-            'img_pathC.required' => 'Account Image is required',
-            'img_pathC.image' => 'Account Image must be an image',
-            'img_pathC.mimes' => 'Account Image must be a file of type: jpeg, png, jpg, gif',
-            'img_pathC.max' => 'Account Image must not be larger than 2048 kilobytes',
         ];
+        Validator::make($request->all(), $rules, $messages);
 
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()) {
-            return redirect()
-                ->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
+        $user = new User;
+        $user->name = $request->customer_name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->usertype = $request->usertype;
+        $user->save();
 
         $customer = new Customer;
-
-        if ($request->file()) {
-            $fileName = time() . '_' . $request->file('img_pathC')->getClientOriginalName();
-
-            $path = Storage::putFileAs(
-                'public/images',
-                $request->file('img_pathC'),
-                $fileName
-            );
-            $customer->img_pathC = '/storage/images/' . $fileName;
-        }
-
         $customer->customer_name = $request->customer_name;
         $customer->contact = $request->contact;
         $customer->address = $request->address;
-        $customer->user_id = Auth::user()->id;
+        $customer->user_id = $user->id;
+        $customer->img_pathC = "DEFAULT";
 
-        $usertype = Auth::user()->usertype;
+        if ($request->document !== null) {
+            foreach ($request->input("document", []) as $file) {
+                $customer->addMedia(storage_path("customers/images/" . $file))->toMediaCollection("images");
+                // unlink(storage_path("drivers/images/" . $file));
+            }
+        }
+
         $customer->save();
 
-        return redirect()->route('customers.index');
+        return response()->json($customer, 200, [], 0);
     }
     public function userstore(Request $request)
     {
@@ -277,10 +281,11 @@ class CustomerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        $customer =  Customer::find($id);
-        return view('customers.edit', compact('customer'));
+        $customer = Customer::with('user')->find($id);
+        $customer->getMedia('images');
+        return response()->json($customer);
     }
     public function customersedit(string $id)
     {
@@ -349,87 +354,62 @@ class CustomerController extends Controller
             }
         }
     }
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
+        Debugbar::info($request);
         $rules = [
             'customer_name' => 'required',
             'contact' => 'required',
             'address' => 'required',
-            'img_pathC' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'password' => 'required',
+            'usertype' => 'required',
+            'email' => 'required',
         ];
-
         $messages = [
             'customer_name.required' => 'Account Name is required',
             'contact.required' => 'Account Contact is required',
             'address.required' => 'Account Home Address is required',
-            'img_pathC.required' => 'Account Image is required',
-            'img_pathC.image' => 'Account Image must be an image',
-            'img_pathC.mimes' => 'Account Image must be a file of type: jpeg, png, jpg, gif',
-            'img_pathC.max' => 'Account Image must not be larger than 2048 kilobytes',
         ];
-        $validator = Validator::make($request->all(), $rules, $messages);
-        if ($validator->fails()) {
-            return redirect()
-                ->back()
-                ->withErrors($validator)
-                ->withInput();
+        Validator::make($request->all(), $rules, $messages);
+
+        $user = User::find($id);
+        $user->name = $request->customer_name;
+        $user->email = $request->email;
+        if ($request->password) {
+            $user->password = Hash::make($request->password);
         }
-        $usertype = Auth::user()->usertype;
-        if ($usertype == 'Admin') {
-            $customer = Customer::find($id);
+        $user->usertype = $request->usertype;
+        $user->save();
 
 
-            if ($request->file()) {
-                $fileName = time() . '_' . $request->file('img_pathC')->getClientOriginalName();
-
-
-                $path = Storage::putFileAs(
-                    'public/images',
-                    $request->file('img_pathC'),
-                    $fileName
-                );
-                $customer->img_pathC = '/storage/images/' . $fileName;
+        $customer = Customer::where('user_id', $id)->first();
+        $customer->customer_name = $request->customer_name;
+        $customer->contact = $request->contact;
+        $customer->address = $request->address;
+        $customer->user_id = $user->id;
+        $customer->img_pathC = "DEFAULT";
+        DB::table('media')->where('model_id', $customer->id)->delete();
+        if ($request->document !== null) {
+            foreach ($request->input("document", []) as $file) {
+                $customer->addMedia(storage_path("customers/images/" . $file))->toMediaCollection("images");
+                // unlink(storage_path("drivers/images/" . $file));
             }
-            $customer->customer_name = $request->customer_name;
-            $customer->contact = $request->contact;
-            $customer->address = $request->address;
-
-            $customer->save();
-        } else {
-            $customer = Customer::where('user_id', Auth::user()->id);
-
-
-            if ($request->file()) {
-                $fileName = time() . '_' . $request->file('img_pathC')->getClientOriginalName();
-
-
-                $path = Storage::putFileAs(
-                    'public/images',
-                    $request->file('img_pathC'),
-                    $fileName
-                );
-                $customer->img_pathC = '/storage/images/' . $fileName;
-            }
-            $customer->customer_name = $request->customer_name;
-            $customer->contact = $request->contact;
-            $customer->address = $request->address;
-
-            $customer->save();
         }
-        if ($usertype == 'Admin') {
-            return redirect()->route('customers.index');
-        } else {
-            return redirect()->route('redirect');
-        }
+        $customer->save();
+
+        return response()->json($customer, 200, [], 0);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        Customer::destroy($id);
-        return redirect()->route('customers.index');
+        Debugbar::info($id);
+        $customer = Customer::find($id);
+        User::destroy($customer->user_id);
+        DB::table('media')->where('model_id', $id)->delete();
+        return response()->json([], 200, [], 0);
     }
 
     public function Cancelled($id)

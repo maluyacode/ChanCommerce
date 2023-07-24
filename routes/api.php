@@ -44,4 +44,5 @@ Route::get('/update-to-delivered/{id}', [OrderController::class, 'Delivered']);
 Route::get('/update-to-for-delivery/{id}', [OrderController::class, 'ForDelivery']);
 Route::get('/update-to-cancelled/{id}', [OrderController::class, 'Cancel']);
 
-Route::get('/customers/lists', [CustomerController::class, 'index']);
+Route::resource('customers', CustomerController::class);
+Route::post('/customers/storeMedia', [CustomerController::class, 'storeMedia'])->name('customers.storeMedia');

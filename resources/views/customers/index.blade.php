@@ -31,18 +31,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="yow">{{ __('Accounts') }}</h1>
-                    <br>
-                    {{-- <td align='right';>
-                    <a href="{{route('customers.create')}}" class="btn btn-primary btn-round">
-                        <i class= "fa fa-plus"></i>Add Customer </a>
-                    </td> --}}
+                    <h1 class="yow">{{ __('List of Accounts') }}</h1>
                 </div>
             </div>
         </div>
     </div>
     <div class="content">
-        <div class="container-fluid">
+        <div class="container-fluid for-alert">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
@@ -50,12 +45,13 @@
                             <table id="accountsTable" class="table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>Item ID</th>
-                                        <th>Item Name</th>
-                                        <th>Category</th>
-                                        <th>Supplier</th>
-                                        <th>Sell Price</th>
-                                        <th>Date created</th>
+                                        <th>User ID</th>
+                                        <th>Customer</th>
+                                        <th>Contact</th>
+                                        <th>Email</th>
+                                        <th>Address</th>
+                                        <th>Account</th>
+                                        <th>Date Registered</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -67,7 +63,114 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="accountModal" tabindex="-1" aria-labelledby="accountModalLabel" aria-hidden="true">
+            <!-- Modal -->
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="accountModalLabel"></h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body accountModal">
+                        <form id="accountForm" action="#" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <div class="form-group">
+                                <label for="name">Account Name</label>
+                                <input type="text" class="form-control" id="customer_name" name="customer_name"
+                                    placeholder="Enter Account Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="country">Account Contact</label>
+                                <input type="text" class="form-control" id="contact"
+                                    placeholder="Enter Account Contact" name="contact">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Account Email</label>
+                                <input type="email" class="form-control" id="email" placeholder="Enter Account Email"
+                                    name="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="country">Account Home Address</label>
+                                <input type="text" class="form-control" id="address"
+                                    placeholder="Enter Account Home Address" name="address">
+                            </div>
+                            <div class="form-group">
+                                <label for="type">Account Type</label>
+                                <select class="form-control" name="usertype" id="usertype">
+                                    <option value="Admin">Admin</option>
+                                    <option value="User">User / Customer</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Account Password</label>
+                                <input type="password" id="password" class="form-control" name="password">
+                                <input type="checkbox" onclick="showPassword()"><label for="">Show Password</label>
+                            </div>
+                            <div class="form-group">
+                                <label for="images">Item Image</label>
+                                <div class="dropzone" id="dropzone-image"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button id="save" type="button" class="btn btn-primary">Save</button>
+                        <button id="update" type="button" class="btn btn-primary">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <script>
+        // Initialize Dropzone, processes
+        initilizeDropzone();
+        var uploadedDocumentMap = {}
+
+        function initilizeDropzone() {
+            Dropzone.options.dropzoneImage = {
+                url: '{{ route('customers.storeMedia') }}',
+                maxFilesize: 2,
+                acceptedFiles: 'image/*',
+                addRemoveLinks: true,
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                success: function(file, response) {
+                    $('form').append('<input type="hidden" name="document[]" value="' + response.name + '">')
+                    uploadedDocumentMap[file.name] = response.name
+                },
+                removedfile: function(file) {
+                    file.previewElement.remove()
+                    var name = ''
+                    if (typeof file.file_name !== 'undefined') {
+                        name = file.file_name
+                    } else {
+                        name = uploadedDocumentMap[file.name]
+                    }
+                    $('form').find('input[name="document[]"][value="' + name + '"]').remove()
+                },
+                error: function(file) {
+                    alert("Only image will be accepted.");
+                    file.previewElement.remove();
+                    $('.dz-message').css({
+                        display: "block",
+                    })
+                },
+                init: function() {
+                    @if (isset($project) && $project->document)
+                        var files = {!! json_encode($project->document) !!}
+                        for (var i in files) {
+                            var file = files[i]
+                            this.options.addedfile.call(this, file)
+                            file.previewElement.classList.add('dz-complete')
+                            $('form').append('<input type="hidden" name="document[]" value="' + file.file_name +
+                                '">')
+                        }
+                    @endif
+                },
+            }
+        }
+    </script>
 @endsection
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"

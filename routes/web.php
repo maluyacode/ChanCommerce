@@ -92,7 +92,8 @@ Route::middleware([AdminMiddleware::class])->group(function () {
     // Route::resource('items','App\Http\Controllers\ItemController'); in api
     Route::view('/items', 'items.index')->name('items.index');
 
-    Route::resource('customers', 'App\Http\Controllers\CustomerController');
+    // Route::resource('customers', 'App\Http\Controllers\CustomerController'); // in api
+    Route::view('/customers', 'customers.index')->name('customer.list');
     Route::resource('suppliers', 'App\Http\Controllers\SupplierController');
     Route::resource('shippers', 'App\Http\Controllers\ShipperController');
     Route::resource('stocks', 'App\Http\Controllers\StockController');

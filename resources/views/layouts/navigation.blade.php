@@ -65,7 +65,7 @@
             </li>
 
             <li class="nav-item" style="background-color:#A52A2A">
-                <a href="{{ route('customers.index') }}" class="nav-link">
+                <a href="{{ route('customer.list') }}" class="nav-link">
                     <i class="nav-icon far fa-address-card" style="color: white"></i>
                     <p style="color: white">
                         {{ __('Accounts') }}
