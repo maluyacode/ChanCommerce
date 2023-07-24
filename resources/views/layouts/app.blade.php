@@ -25,6 +25,68 @@
     </script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+    <style>
+        .header {
+            text-decoration: none;
+            color: #343a40;
+            font-style: 'Times New Roman', Times, serif !important;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .brand-link {
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .user-div a {
+            text-decoration: none;
+        }
+
+        .user-div a:hover {
+            color: white;
+        }
+
+        .user-name {
+            text-decoration: none;
+            color: white;
+            font-style: 'Times New Roman' !important;
+            font-weight: 400;
+            letter-spacing: 2px
+        }
+
+        .nav-item a p,
+        .toggle-mode,
+        .account-settings {
+            font-weight: 600;
+            font-style: 'Pro';
+            text-transform: uppercase;
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+        .toggle-mode,
+        .account-settings {
+            text-decoration: none;
+            margin-right: 20px;
+        }
+
+        .pushmenu {
+            font-size: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-content: center;
+        }
+        .main-sidebar,
+        .sidebar {
+            background-color: #A8A196 !important;
+        }
+        .mt-2{
+            background-color: #A8A196 !important;
+        }
+    </style>
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -35,21 +97,22 @@
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"
-                            style="color: #000000"></i></a>
+                    <a class="nav-link pushmenu" data-widget="pushmenu" href="#" role="button"><i
+                            class="fas fa-bars" style="color: #000000"></i></a>
                 </li>
             </ul>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
 
-                    <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false"
+                    <a class="nav-link account-settings" data-toggle="dropdown" href="#" aria-expanded="false"
                         style="color: white; text-align:right">
-                        <strong>{{ 'Account Settings' }}
+                        {{ 'Account Settings' }}
                     </a>
                     <span style="margin-left: auto;">
                         <strong>
-                            <a href="{{ route('redirectadmin') }}" style="color: white;">Toggle Customer Mode</a>
+                            <a class="toggle-mode" href="{{ route('redirectadmin') }}" style="color: white;">Toggle
+                                Customer Mode</a>
                         </strong>
                     </span>
                     <div class="dropdown-menu dropdown-menu-right" style="left: inherit; right: 0px;">
@@ -79,7 +142,7 @@
                 <img src="/images/SQUARELOGO.png" alt=""width="40px" height="40px" class="img"
                     style="opacity: .8">
 
-                <strong><span class="col-md 15 text-center" style="color: black"> QK Hardware Store</span>
+                <strong><span class="header"> QK Hardware Store</span></strong>
             </a>
 
             @include('layouts.navigation')

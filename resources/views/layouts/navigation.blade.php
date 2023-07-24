@@ -2,9 +2,9 @@
 <div class="sidebar">
     <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="info">
+        <div class="info user-div">
             <a href="{{ route('profile.show') }}"
-                class="d-block"style="color: white; display:flex; justify-content: center; text-align:center">{{ Auth::user()->name }}
+                class="d-block user-name">{{ Auth::user()->name }}
             </a>
 
         </div>
@@ -30,7 +30,7 @@
                         <i class="fas fa-angle-left right"></i>
                     </p>
                 </a>
-                <ul class="nav nav-treeview" style="background-color: #A52A2A">
+                <ul class="nav nav-treeview" >
                     <li class="nav-item">
                         <a href="{{ route('items.index') }}" class="nav-link">
                             <i class="fas fa-clipboard nav-icon" style="color: white"></i>
