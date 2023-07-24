@@ -1,0 +1,59 @@
+.card-body {
+    color: #F4F2DE !important;
+    background-color: #2B2730;
+}
+
+.jc-bs3-row {
+    background-color: #00000000;
+}
+
+#shippersTable thead {
+    text-transform: uppercase;
+}
+
+#shippersTable thead tr th {
+    font-weight: 500 !important;
+}
+
+#itemsTable_filter label {
+    font-weight: 200 !important;
+    text-transform: uppercase;
+}
+
+#shippersTable tbody {
+    font-weight: 400;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-transform: capitalize;
+}
+
+.yow {
+    letter-spacing: 5px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.table-bordered {
+    border: 1px solid #464444 !important;
+}
+
+.table-bordered th {
+    border: 1px solid #464444 !important;
+}
+
+.table-bordered td {
+    text-transform: capitalize;
+    border: 1px solid #464444 !important;
+}
+
+.categoryForm {
+    display: inline-flex;
+    flex-direction: row;
+}
+
+.categoryForm button,
+.categoryForm input {
+    margin: 0 5px;
+}
+
+.colorData {
+    background-color: red !important;
+}

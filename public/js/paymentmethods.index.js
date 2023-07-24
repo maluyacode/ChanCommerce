@@ -1,8 +1,44 @@
+let dataTable = $('#paymentMethodsTable').DataTable({
+    ajax: {
+        url: '/api/payment-methods',
+        dataSrc: ''
+    },
+    responsive: true,
+    autoWidth: false,
+    dom: 'Bfrtip',
+    columns: [{
+        data: 'id',
+        class: 'selection'
+    },
+    {
+        data: 'Methods'
+    },
+    {
+        data: null,
+        render: function (data) {
+            let createdDate = new Date(data.created_at);
+            return createdDate.toLocaleDateString("en-US");
+        }
+    },
+    {
+        data: null,
+        render: function (data) {
+            return `<button type="button" data-bs-toggle="modal" data-bs-target="#itemModal" data-id="${data.id}" class="btn btn-primary edit">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button type="button" data-id="${data.id}" class="btn btn-danger btn-delete delete">
+                    <i class="fas fa-trash" style="color:white"></i>
+                </button>`;
+        }
+    }
+    ]
+});
+
 $(function () {
     let input = $('<input>').addClass('form-control').attr({
         "id": "name",
-        "name": "cat_name",
-        "placeholder": "Create category",
+        "name": "name",
+        "placeholder": "Create Payment Method",
     })
     let button = $('<button>').addClass('btn btn-secondary').html('Add').attr({
         "id": "add",
@@ -11,37 +47,40 @@ $(function () {
 
     container.append(input).append(button);
 
-    $('#category-table_wrapper').prepend(container);
+    $('#paymentMethodsTable_wrapper').prepend(container);
 });
+
+function alertAction(message) {
+    $('.for-alert').prepend(`
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        ${message}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+`);
+    $('.alert').fadeOut(5000, function () {
+        $(this).remove();
+    });
+}
 
 $(document).on('click', 'button#add', function () {
     let name = $('#name').val();
     $.ajax({
-        url: "/api/category/store",
+        url: "/api/payment-methods/store",
         type: "POST",
-        data: { "cat_name": name },
+        data: { "name": name },
         dataType: "json",
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         success: function (data) {
             $('#name').val("");
-
-            $('.for-alert').prepend(`
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                New Category Created
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        `);
-            $('.alert').fadeOut(5000, function () {
-                $(this).remove();
-            });
-            $('#category-table').DataTable().ajax.reload();
+            alertAction("New Payment Method Added");
+            $('#paymentMethodsTable').DataTable().ajax.reload();
         },
         error: function (error) {
-            alert("error");
+            $.alert("Give it a name boy");
         },
     })
 })
@@ -52,7 +91,7 @@ $(document).on('click', 'button.edit', function () {
     $(`.selection`).siblings('td').removeClass('colorData');
     $(`.selection`).removeClass('colorData');
     $.ajax({
-        url: `/api/category/${id}/edit`,
+        url: `/api/payment-methods/${id}/edit`,
         type: "GET",
         dataType: "json",
         headers: {
@@ -62,7 +101,7 @@ $(document).on('click', 'button.edit', function () {
             $('#name').attr({
                 "data-id": data.id
             });
-            $('#name').val(data.cat_name);
+            $('#name').val(data.Methods);
             $('#add').attr({
                 "id": "update",
             }).html("Update");
@@ -82,14 +121,14 @@ $(document).on('click', 'button.edit', function () {
 $(document).on('click', 'button#update', function () {
     let id = $('#name').attr('data-id');
     let formData = {
-        cat_name: $('#name').val()
+        name: $('#name').val()
     }
 
     $(`.selection`).siblings('td').removeClass('colorData');
     $(`.selection`).removeClass('colorData');
 
     $.ajax({
-        url: `/api/category/${id}/update`,
+        url: `/api/payment-methods/${id}/update`,
         type: "PUT",
         data: formData,
         headers: {
@@ -101,19 +140,8 @@ $(document).on('click', 'button#update', function () {
             $('#update').attr({
                 "id": "add",
             }).html("Create");
-
-            $('.for-alert').prepend(`
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                Category Updated
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        `);
-            $('.alert').fadeOut(5000, function () {
-                $(this).remove();
-            });
-            $('#category-table').DataTable().ajax.reload();
+            alertAction("Payement Method Updated Successfully")
+            $('#paymentMethodsTable').DataTable().ajax.reload();
         },
         error: function (error) {
             alert("error");
@@ -124,33 +152,23 @@ $(document).on('click', 'button#update', function () {
 $(document).on('click', 'button.delete', function () {
     let id = $(this).attr("data-id");
     $.confirm({
-        title: 'Delete Category',
+        title: 'Delete Payment Method',
         content: 'Are you sure?',
         buttons: {
             confirm: function () {
                 $.ajax({
-                    url: `/api/category/${id}/delete`,
+                    url: `/api/payment-methods/${id}/delete`,
                     type: 'DELETE',
                     dataType: "json",
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function (data) {
-                        $('.for-alert').prepend(`
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            Successfully Deleted!
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    `);
-                        $('.alert').fadeOut(5000, function () {
-                            $(this).remove();
-                        });
-                        $('#category-table').DataTable().ajax.reload();
+                        alertAction("Payment Method Deleted Successfully")
+                        $('#paymentMethodsTable').DataTable().ajax.reload();
                     },
                     error: function () {
-                        alert('error')
+                        $.alert('Error')
                     }
                 })
             },

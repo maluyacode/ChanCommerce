@@ -7,6 +7,8 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\PaymentMethodController;
+use App\Http\Controllers\ShipperController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,3 +48,16 @@ Route::get('/update-to-cancelled/{id}', [OrderController::class, 'Cancel']);
 
 Route::resource('customers', CustomerController::class);
 Route::post('/customers/storeMedia', [CustomerController::class, 'storeMedia'])->name('customers.storeMedia');
+
+Route::get('/payment-methods', [PaymentMethodController::class, 'index']);
+Route::post('/payment-methods/store', [PaymentMethodController::class, 'store']);
+Route::get('/payment-methods/{id}/edit', [PaymentMethodController::class, 'edit']);
+Route::put('/payment-methods/{id}/update', [PaymentMethodController::class, 'update']);
+Route::delete('/payment-methods/{id}/delete', [PaymentMethodController::class, 'destroy']);
+
+
+Route::get('/shippers', [ShipperController::class, 'index']);
+Route::post('/shippers/store', [ShipperController::class, 'store']);
+Route::get('/shippers/{id}/edit', [ShipperController::class, 'edit']);
+Route::put('/shippers/{id}/update', [ShipperController::class, 'update']);
+Route::delete('/shippers/{id}/delete', [ShipperController::class, 'destroy']);

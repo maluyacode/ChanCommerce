@@ -95,10 +95,12 @@ Route::middleware([AdminMiddleware::class])->group(function () {
     // Route::resource('customers', 'App\Http\Controllers\CustomerController'); // in api
     Route::view('/customers', 'customers.index')->name('customer.list');
     Route::resource('suppliers', 'App\Http\Controllers\SupplierController');
-    Route::resource('shippers', 'App\Http\Controllers\ShipperController');
+    // Route::resource('shippers', 'App\Http\Controllers\ShipperController'); // api
+    Route::view('shippers', 'shippers.index')->name('shippers.index');
     Route::resource('stocks', 'App\Http\Controllers\StockController');
     Route::resource('categories', 'App\Http\Controllers\CategoryController');
-    Route::resource('paymentmethods', 'App\Http\Controllers\PaymentMethodController');
+    // Route::resource('paymentmethods', 'App\Http\Controllers\PaymentMethodController');
+    Route::view('paymentmethods', 'paymentmethods.index')->name('paymentmethods.index');
     Route::resource('orders', 'App\Http\Controllers\OrderController');
     // Route::view('/orders/list', 'orders.index')->name('orders.index'); in api
     Route::view('updatestatus', 'orders.updatestatus')->name('updatestatus'); //in api

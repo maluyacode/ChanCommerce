@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
-Use View;
-Use Storage;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Storage;
 
 class PaymentMethodController extends Controller
 {
@@ -14,9 +15,8 @@ class PaymentMethodController extends Controller
      */
     public function index()
     {
-        $pmethods = PaymentMethod::all();
-        
-        return View::make('paymentmethods.index',compact('pmethods'));
+        $data = PaymentMethod::all();
+        return response()->json($data, 200, [], 0);
     }
 
     /**
@@ -31,27 +31,21 @@ class PaymentMethodController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    
-        {
-            $rules = [
-                'Methods' => 'required|max:255|min:3',
-            ];
-            $messages = [
-                'Methods.required' => 'Please enter your Method name.',
-                
-            ];
-            $validator = Validator::make($request->all(), $rules, $messages);
-            if ($validator->fails()) {
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
-        $pmethods = new PaymentMethod;
+    {
+        $rules = [
+            'Methods' => 'required|max:255|min:3',
+        ];
+        $messages = [
+            'Methods.required' => 'Please enter your Method name.',
 
-      
-        $pmethods->Methods = $request->Methods;
-   
-       
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        $pmethods = new PaymentMethod;
+        $pmethods->Methods = $request->name;
         $pmethods->save();
-        return redirect()->route('paymentmethods.index');
+
+        return response()->json($pmethods, 200, [], 0);
     }
 
     /**
@@ -65,10 +59,10 @@ class PaymentMethodController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
         $pmethods =  PaymentMethod::find($id);
-        return view('paymentmethods.edit', compact('pmethods'));
+        return response()->json($pmethods, 200, [], 0);
     }
 
     /**
@@ -81,28 +75,23 @@ class PaymentMethodController extends Controller
         ];
         $messages = [
             'Methods.required' => 'Please enter your Method name.',
-            
-        ];
-        $validator = Validator::make($request->all(), $rules, $messages);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-        $pmethods = PaymentMethod::find($id);
 
-       
-        $pmethods->Methods = $request->Methods;
-       
-       
+        ];
+        Validator::make($request->all(), $rules, $messages);
+
+        $pmethods = PaymentMethod::find($id);
+        $pmethods->Methods = $request->name;
         $pmethods->save();
-        return redirect()->route('paymentmethods.index');
+
+        return response()->json($pmethods, 200, [], 0);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         PaymentMethod::destroy($id);
-        return redirect()->route('paymentmethods.index');
+        return response()->json([], 200, [], 0);
     }
 }

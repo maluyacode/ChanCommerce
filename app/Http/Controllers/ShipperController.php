@@ -18,8 +18,7 @@ class ShipperController extends Controller
     public function index()
     {
         $shippers = Shipper::all();
-
-        return View::make('shippers.index', compact('shippers'));
+        return response()->json($shippers);
     }
 
     /**
@@ -35,7 +34,6 @@ class ShipperController extends Controller
      */
     public function store(Request $request)
     {
-
         $rules = [
             'Shipper' => 'required|max:255|min:3',
         ];
@@ -43,18 +41,13 @@ class ShipperController extends Controller
             'Shipper.required' => 'Please enter your Shipper name.',
 
         ];
-        $validator = Validator::make($request->all(), $rules, $messages);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+        Validator::make($request->all(), $rules, $messages);
+
         $shippers = new Shipper;
-
-
-        $shippers->name = $request->Shipper;
-
-
+        $shippers->name = $request->name;
         $shippers->save();
-        return redirect()->route('shippers.index');
+
+        return response()->json($shippers, 200, [], 0);
     }
 
     /**
@@ -68,10 +61,10 @@ class ShipperController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
         $shippers =  Shipper::find($id);
-        return view('shippers.edit', compact('shippers'));
+        return response($shippers);
     }
 
     /**
@@ -86,26 +79,21 @@ class ShipperController extends Controller
             'Shipper.required' => 'Please enter your Shipper name.',
 
         ];
-        $validator = Validator::make($request->all(), $rules, $messages);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+        Validator::make($request->all(), $rules, $messages);
+
         $shippers = Shipper::find($id);
-
-
-        $shippers->name = $request->Shipper;
-
-
+        $shippers->name = $request->name;
         $shippers->save();
-        return redirect()->route('shippers.index');
+
+        return response()->json($shippers, 200, [], 0);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         Shipper::destroy($id);
-        return redirect()->route('shippers.index');
+        return response()->json([], 200, [], 0);
     }
 }

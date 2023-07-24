@@ -1,77 +1,57 @@
 @extends('layouts.app')
+@section('styles')
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
 
+    <link rel="stylesheet" href="{{ asset('css/paymentmethods.index.css') }}">
+@endsection
+
+@section('headscripts')
+    <!-- DataTables JS -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+@endsection
 @section('content')
-    <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="yow">{{ __('Payment Methods') }}</h1>
-                    <br>
-                    <td align='right';>
-                    <a href="{{route('paymentmethods.create')}}" class="btn btn-primary btn-round">
-                        <i class= "fa fa-plus"></i>Add Payment Method </a>
-                    </td>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
     <div class="content">
-        <div class="container-fluid">
+        <div class="container-fluid for-alert">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <table class="table">
+                            <table id="paymentMethodsTable" class="table-bordered">
                                 <thead>
                                     <tr>
-                                      
-                                      <th scope="col">Method ID</th>
-                                      <th scope="col">Method Name</th>
-                                      
-                                      <th scope="col">Date created</th>
-                                      <th scope="col">Action</th>
-                                     
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Date Created</th>
+                                        <th scope="col">Action</th>
                                     </tr>
-                                  </thead>
-                                  <tbody>
-                                      @foreach($pmethods as $pmethod)
-                                      <tr>
-                                          
-                                          <td>{{$pmethod->id}}</td>
-                                          <td>{{$pmethod->Methods}}</td>
-                                
-                                          <td>{{$pmethod->created_at}}</td>
-                                          
-                                          <td>
-                                            <a href="{{ route('paymentmethods.edit', $pmethod) }}" class="btn btn-primary"><i
-                                                    class="fas fa-edit"></i></a>
-                                            <form action="{{route('paymentmethods.destroy',$pmethod->id)}}" method="POST" style = "display:inline-block">
-                                                @method('DELETE')
-                                                @csrf
-                                                <button type="submit"class = "btn btn-danger btn-delete">
-                                                    <i class="fas fa-trash" style="color:white"></i>
-                                                </button>
-                                            </form>
-                                        </td>
-                                              
-                                                  
-                                              
-                                          
-                                         
-                                      </tr>
-                                     @endforeach
+                                </thead>
+                                <tbody>
+
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
+        </div>
     </div>
-    <!-- /.content -->
+@endsection
+@section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+    </script>
+    <script src="{{ asset('js/paymentmethods.index.js') }}" defer></script>
 @endsection
