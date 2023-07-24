@@ -9,6 +9,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ShipperController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\SupplierController;
 
 /*
@@ -69,3 +70,6 @@ Route::post('/suppliers', [SupplierController::class, 'store']);
 Route::get('/suppliers/{id}/edit', [SupplierController::class, 'edit']);
 Route::put('/suppliers/{id}/update', [SupplierController::class, 'update']);
 Route::delete('/suppliers/{id}/delete', [SupplierController::class, 'destroy']);
+
+Route::get('/item/stocks', [StockController::class, 'index']);
+Route::put('/item/update/{id}/stock', [StockController::class, 'update']);

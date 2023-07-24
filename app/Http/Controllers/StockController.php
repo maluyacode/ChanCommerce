@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\Stock;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Storage;
@@ -19,12 +20,10 @@ class StockController extends Controller
     public function index()
     {
 
-        $items = Item::all();
         $stocks = DB::table('items')
-            ->join('stocks', 'id', '=', 'stocks.item_id')
-            ->orderBy('stocks.item_id', 'ASC')->get();
+            ->join('stocks', 'items.id', 'stocks.item_id')->get();
 
-        return View::make('stocks.index', compact('stocks', 'items'));
+        return response()->json($stocks);
     }
 
     /**
@@ -100,23 +99,12 @@ class StockController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $rules = [
-            'quantity' => 'required|numeric|min:0',
-        ];
-        $messages = [
-            'quantity.required' => 'Please enter Quantity.',
-            'quantity.numeric' => 'Quantity must be a number.',
-            'quantity.min' => 'Quantity must be at least :min.',
+        Debugbar::info($request, $id);
 
-        ];
-        $validator = Validator::make($request->all(), $rules, $messages);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-        $stock = Stock::find($id);
+        $stock = Stock::where('item_id', $id)->first();
 
-        $stock->item_id = $request->item_id;
-        $stock->quantity = $request->quantity;
+        // $stock->item_id = $request->item_id;
+        $stock->quantity = $stock->quantity + $request->quantity;
 
         if ($stock->quantity > 0) {
             Item::where('id', $stock->item_id)
@@ -127,7 +115,7 @@ class StockController extends Controller
         }
 
         $stock->save();
-        return redirect()->route('stocks.index');
+        return response()->json($stock);
     }
 
     /**

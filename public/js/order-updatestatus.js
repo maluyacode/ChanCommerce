@@ -86,6 +86,7 @@ let dataTable = $('#ordersTable').DataTable({
 
         },
         searchable: false,
+        class: 'button-actions'
     }
     ]
 });

@@ -2,28 +2,31 @@
     color: #F4F2DE !important;
     background-color: #2B2730;
 }
-
+#stockTable_wrapper{
+    background-color: #2B2730 !important;
+}
 .jc-bs3-row {
     background-color: #00000000;
 }
 
-#ordersTable thead {
+#stockTable thead {
     text-transform: uppercase;
 }
 
-#ordersTable thead tr th {
+#stockTable thead tr th {
     font-weight: 500 !important;
 }
 
-#ordersTable_filter label {
+#stockTable_filter label {
     font-weight: 200 !important;
     text-transform: uppercase;
 }
 
-#ordersTable tbody {
+#stockTable tbody {
     font-weight: 400;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     text-transform: capitalize;
+    background-color: #2B2730 !important;
 }
 
 .yow {
@@ -44,15 +47,26 @@
     border: 1px solid #464444 !important;
 }
 
-td button {
-    font-size: 12px !important;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    margin: 2px;
+.table-bordered td.lowercase {
+    text-transform: lowercase;
 }
 
-.button-actions{
-    width: 90px;
+.form-group label {
+    color: #464444;
 }
+
+.dz-message {
+    color: #464444;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.action-buttons button {
+    margin: 3px;
+    font-size: 12px;
+}
+

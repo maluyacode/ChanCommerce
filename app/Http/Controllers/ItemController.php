@@ -88,6 +88,11 @@ class ItemController extends Controller
 
         $item->save();
 
+        DB::table('stocks')->insert([
+            "item_id" => $item->id,
+            "quantity" => 0,
+        ]);
+
         return response()->json($item, $status = 200);
     }
 
@@ -160,7 +165,7 @@ class ItemController extends Controller
         Item::destroy($id);
         return response()->json(["status" => 200]);
     }
-    
+
     public function getItems(Request $request)
     {
         $categories = Category::all();
@@ -175,7 +180,7 @@ class ItemController extends Controller
             ->orderBy('items.id', 'ASC')->paginate(4);
         $categoryId = $request->input('category_id');
 
-        return View::make('items.welcome', compact('items', 'categories', 'suppliers', 'categoryId','itemCount'));
+        return View::make('items.welcome', compact('items', 'categories', 'suppliers', 'categoryId', 'itemCount'));
     }
     public function search(Request $request)
     {

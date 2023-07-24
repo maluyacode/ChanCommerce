@@ -97,9 +97,10 @@ Route::middleware([AdminMiddleware::class])->group(function () {
     Route::view('/customers', 'customers.index')->name('customer.list');
     // Route::resource('suppliers', 'App\Http\Controllers\SupplierController'); in api
     Route::view('/suppliers', 'suppliers.index')->name('suppliers.index');
-    // Route::resource('shippers', 'App\Http\Controllers\ShipperController'); // api
+    // Route::resource('shippers', 'App\Http\Controllers\ShipperController'); // in api
     Route::view('shippers', 'shippers.index')->name('shippers.index');
-    Route::resource('stocks', 'App\Http\Controllers\StockController');
+    // Route::resource('stocks', 'App\Http\Controllers\StockController'); in api
+    Route::view('/stocks', 'stocks.index')->name('stocks.index');
     Route::resource('categories', 'App\Http\Controllers\CategoryController');
     // Route::resource('paymentmethods', 'App\Http\Controllers\PaymentMethodController');
     Route::view('paymentmethods', 'paymentmethods.index')->name('paymentmethods.index');
@@ -110,7 +111,7 @@ Route::middleware([AdminMiddleware::class])->group(function () {
     Route::get('show', [App\Http\Controllers\OrderController::class, 'show'])->name('show');
     //  Route::get('/delivered/{id}', [App\Http\Controllers\OrderController::class, 'Delivered'])->name('delivered'); in api
     Route::get('/fordelivery/{id}', [App\Http\Controllers\OrderController::class, 'ForDelivery'])->name('fordelivery');
-    ///Route::get('/shipped/{id}', [App\Http\Controllers\OrderController::class, 'Shipped'])->name('shipped');
+    ///Route::get('/shipped/{id}', [App\Http\Controllers\OrderController::class, 'Shipped'])->name('shipped'); in api
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 });
