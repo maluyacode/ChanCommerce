@@ -1,80 +1,107 @@
 @extends('layouts.app')
+@section('styles')
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
 
+    <link rel="stylesheet" href="{{ asset('css/supplier-index.css') }}">
+@endsection
+
+@section('headscripts')
+    <!-- DataTables JS -->
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <!-- DataTables Buttons JS -->
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+@endsection
 @section('content')
-    <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="yow">{{ __('Suppliers') }}</h1>
-                    <br>
-                    <td align='right';>
-                    <a href="{{route('suppliers.create')}}" class="btn btn-primary btn-round">
-                        <i class= "fa fa-plus"></i>Add Supplier </a>
-                    </td>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- /.content-header -->
-
-    <!-- Main content -->
     <div class="content">
-        <div class="container-fluid">
+        <div class="container-fluid for-alert">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <table class="table">
+                            <table id="supplierTable" class="table-bordered">
                                 <thead>
                                     <tr>
-                                      <th scope="col">Supplier Name</th>
-                                      <th scope="col">Supplier Contact Number</th>
-                                      <th scope="col">Supplier Address</th>
-                                      <th scope="col">Supplier Email</th>
-                                      <th scope="col">Date created</th>
-                                      <th scope="col">Action</th>
-                                     
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Contact</th>
+                                        <th>Address</th>
+                                        <th>Email</th>
+                                        <th>Action</th>
                                     </tr>
-                                  </thead>
-                                  <tbody>
-                                      @foreach($supplier as $supplier)
-                                      <tr>
-                                         
-                                        
-                                          <td>{{$supplier->sup_name}}</td>
-                                          <td>{{$supplier->sup_contact}}</td>
-                                          <td>{{$supplier->sup_address}}</td>
-                                          <td>{{$supplier->sup_email}}</td>
-                                          <td>{{$supplier->created_at}}</td>
-                                          
-                                          <td>
-                                            <a href="{{ route('suppliers.edit', $supplier) }}" class="btn btn-primary"><i
-                                                    class="fas fa-edit"></i></a>
-                                                    <form action="{{route('suppliers.destroy',$supplier->id)}}" method="POST" style = "display:inline-block">
-                                                        @method('DELETE')
-                                                        @csrf
-                                                        <button type="submit"class = "btn btn-danger btn-delete">
-                                                            <i class="fas fa-trash" style="color:white"></i>
-                                                        </button>
-                                                    </form>
-                                        </td>
-                                              
-                                                  
-                                               
-                                          
-                                         
-                                      </tr>
-                                     @endforeach
-                                 
-                                  </tbody>
+                                </thead>
+                                <tbody>
+                                </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
+        </div>
     </div>
-    <!-- /.content -->
+    <div class="modal fade" id="supplierModal" tabindex="-1" aria-labelledby="supplierModalLabel" aria-hidden="true">
+        <!-- Modal -->
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="supplierModalLabel"></h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body supplierModal">
+                    <form id="supplierForm" action="#" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                            <label for="sup_name">Name</label>
+                            <input type="text" class="form-control" id="sup_name" name="sup_name"
+                                placeholder="Enter Supplier Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="sup_contact">Contact</label>
+                            <input type="text" class="form-control" id="sup_contact" placeholder="Enter Supplier Contact"
+                                name="sup_contact">
+                        </div>
+                        <div class="form-group">
+                            <label for="sup_email">Account Email</label>
+                            <input type="email" class="form-control" id="sup_email" placeholder="Enter Supplier Email"
+                                name="sup_email">
+                        </div>
+                        <div class="form-group">
+                            <label for="sup_address">Supplier Address</label>
+                            <input type="text" class="form-control" id="sup_address"
+                                placeholder="Enter Account Home Address" name="sup_address">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button id="save" type="button" class="btn btn-primary">Save</button>
+                    <button id="update" type="button" class="btn btn-primary">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+@section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+    </script>
+    <script src="{{ asset('js/supplier-index.js') }}" defer></script>
 @endsection

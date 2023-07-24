@@ -9,6 +9,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ShipperController;
+use App\Http\Controllers\SupplierController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,3 +62,10 @@ Route::post('/shippers/store', [ShipperController::class, 'store']);
 Route::get('/shippers/{id}/edit', [ShipperController::class, 'edit']);
 Route::put('/shippers/{id}/update', [ShipperController::class, 'update']);
 Route::delete('/shippers/{id}/delete', [ShipperController::class, 'destroy']);
+
+
+Route::get('/suppliers', [SupplierController::class, 'index']);
+Route::post('/suppliers', [SupplierController::class, 'store']);
+Route::get('/suppliers/{id}/edit', [SupplierController::class, 'edit']);
+Route::put('/suppliers/{id}/update', [SupplierController::class, 'update']);
+Route::delete('/suppliers/{id}/delete', [SupplierController::class, 'destroy']);

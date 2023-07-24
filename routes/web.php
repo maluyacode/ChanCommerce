@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\UserMiddleware;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\SupplierController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -94,7 +95,8 @@ Route::middleware([AdminMiddleware::class])->group(function () {
 
     // Route::resource('customers', 'App\Http\Controllers\CustomerController'); // in api
     Route::view('/customers', 'customers.index')->name('customer.list');
-    Route::resource('suppliers', 'App\Http\Controllers\SupplierController');
+    // Route::resource('suppliers', 'App\Http\Controllers\SupplierController'); in api
+    Route::view('/suppliers', 'suppliers.index')->name('suppliers.index');
     // Route::resource('shippers', 'App\Http\Controllers\ShipperController'); // api
     Route::view('shippers', 'shippers.index')->name('shippers.index');
     Route::resource('stocks', 'App\Http\Controllers\StockController');
