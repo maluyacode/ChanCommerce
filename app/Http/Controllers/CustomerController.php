@@ -20,15 +20,15 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        // $users = User::all();
 
 
-        $customers = DB::table('customers')
-            ->join('users', 'customers.user_id', '=', 'users.id')
-            ->select('customers.*', 'customers.id AS cus_id', 'users.*')
+        // $customers = DB::table('customers')
+        //     ->join('users', 'customers.user_id', '=', 'users.id')
+        //     ->select('customers.*', 'customers.id AS cus_id', 'users.*')
 
-            ->orderBy('customers.id', 'ASC')->get();
-        return View::make('customers.index', compact('users', 'customers'));
+        //     ->orderBy('customers.id', 'ASC')->get();
+        // return View::make('customers.index', compact('users', 'customers'));
     }
 
     public function userprofile($id, Request $request)
@@ -141,7 +141,7 @@ class CustomerController extends Controller
                 $totalprice += $order->sellprice;
             }
         }
-
+        // dd($orders);
 
         $itemCount = DB::table('carts')->where('user_id', Auth::user()->id)->count();
         return View::make('customers.cusprofile', compact('order', 'user', 'users', 'customers', 'totalprice', 'orders', 'itemCount'));
@@ -434,6 +434,7 @@ class CustomerController extends Controller
 
     public function Cancelled($id)
     {
+        // dd($id);
         $order = DB::table('orders')
             ->join('orderlines', 'orders.id', '=', 'orderlines.orderinfo_id')
             ->join('customers', 'orders.cus_id', '=', 'customers.id')
@@ -457,7 +458,6 @@ class CustomerController extends Controller
             Order::where('id', $id)
                 ->update([
                     "status" => "Cancelled"
-
                 ]);
 
             return back();

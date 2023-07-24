@@ -44,9 +44,9 @@
                                         <th>Items</th>
                                         <th>Mode of Payment</th>
                                         <th>Total Price</th>
-                                        <th>Status</th>
+                                        <th>Current Status</th>
                                         <th>Date placed</th>
-                                        <th>Action</th>
+                                        <th>Update</th>
                                     </tr>
                                 </thead>
                                 <tbody>

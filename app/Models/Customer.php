@@ -10,4 +10,8 @@ class Customer extends Model
     use HasFactory;
     protected $table = "customers";
     protected $primaryKey="id";
+
+    public function user(){
+        return $this->hasOne(User::class. 'user_id', 'id');
+    }
 }

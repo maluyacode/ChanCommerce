@@ -54,7 +54,7 @@
                                                         Action <span class="caret"></span>
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                        
+
                                                         <a href="{{ route('increment', ['id' => $carts->item_id]) }}">Add
                                                             Quantity</a>
                                                         <a href="{{ route('decrement', ['id' => $carts->item_id]) }}">Reduce

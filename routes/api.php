@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,3 +41,7 @@ Route::delete('/category/{id}/delete', [CategoryController::class, 'destroy']);
 Route::get('/get-orders', [OrderController::class, 'getOrders']);
 Route::get('/update-to-shipped/{id}', [OrderController::class, 'Shipped']);
 Route::get('/update-to-delivered/{id}', [OrderController::class, 'Delivered']);
+Route::get('/update-to-for-delivery/{id}', [OrderController::class, 'ForDelivery']);
+Route::get('/update-to-cancelled/{id}', [OrderController::class, 'Cancel']);
+
+Route::get('/customers/lists', [CustomerController::class, 'index']);

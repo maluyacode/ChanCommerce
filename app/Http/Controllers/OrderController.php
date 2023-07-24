@@ -25,32 +25,21 @@ use App\Models\PaymentMethod;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(OrderDataTable $dataTable)
     {
         return $dataTable->render('orders.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store()
     {
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(DeliveredOrderDataTable $dataTable)
     {
         $orders = Order::with([
@@ -104,7 +93,7 @@ class OrderController extends Controller
             'paymentmethod'  => function ($query) {
                 return $query->select('id', 'Methods');
             }
-        ])->whereNotIn('status', ["Delivered"])->get();
+        ])->whereNotIn('status', ["Delivered", "Cancelled"])->get();
 
         return response()->json($orders);
     }
@@ -145,7 +134,7 @@ class OrderController extends Controller
         $userEmail = $orders->email;
 
         Mail::send(new OrderConfirmation($userEmail, $order));
-        return View::make('transact.confirmed');
+        return response()->json($order, 200, [], 0);
     }
 
     public function Shipped($id)
@@ -160,32 +149,34 @@ class OrderController extends Controller
         return response()->json($order);
     }
 
+    public function Cancel($id)
+    {
+        $order = Order::find($id);
+
+        Order::where('id', $id)
+            ->update([
+                "status" => "Cancelled"
+            ]);
+
+        return response()->json($order);
+    }
+
     public function ShippedOrders(ShippedOrderDataTable $dataTable)
     {
         $test = 10;
         return $dataTable->render('orders.shipped', compact('test'));
     }
-    /**
-     * Show the form for editing the specified resource.
-     */
-
 
     public function edit(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         //

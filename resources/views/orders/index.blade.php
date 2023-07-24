@@ -13,7 +13,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="yow">{{ __('Orders') }}</h1>
+                    <h1 class="yow">{{ __('All Orders No Matter What') }}</h1>
                 </div>
             </div>
         </div>

@@ -44,7 +44,11 @@
     border: 1px solid #464444 !important;
 }
 
-.shipped,
-.delivered {
+td button {
     font-size: 12px !important;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin: 2px;
 }
