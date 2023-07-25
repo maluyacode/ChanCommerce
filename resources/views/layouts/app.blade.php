@@ -27,12 +27,24 @@
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 
     <style>
+        body{
+            overflow-x: hidden;
+        }
+        .brand-link {
+            height: 50px;
+            margin-bottom: 30px;
+        }
+
+        .brand-link img {
+            width: 50px;
+        }
+
         .header {
             text-decoration: none;
-            color: #343a40;
+            color: #F4F2DE;
             font-style: 'Times New Roman', Times, serif !important;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: normal;
         }
 
         .brand-link {
@@ -40,20 +52,35 @@
             text-transform: uppercase;
         }
 
-        .user-div a {
-            text-decoration: none;
+        .user-panel {
+            background-color: #00000000 !important;
+            margin: 1px 0px 0px 10px !important;
+            padding: 0px !important;
+
         }
 
-        .user-div a:hover {
-            color: white;
+        .user-div a {
+            text-decoration: none;
+            color: #F4F2DE;
         }
+
 
         .user-name {
             text-decoration: none;
-            color: white;
+            color: #6c757d;
             font-style: 'Times New Roman' !important;
             font-weight: 400;
             letter-spacing: 2px
+        }
+
+        .card-body {
+            background-color: #2B2730;
+        }
+
+        .card-body .card {
+            opacity: 0.8;
+            background-color: #2B2730;
+            background-blend-mode: darken;
         }
 
         .nav-item a p,
@@ -64,6 +91,7 @@
             text-transform: uppercase;
             font-size: 15px;
             font-weight: 400;
+            color: #F4F2DE;
         }
 
         .toggle-mode,
@@ -79,12 +107,33 @@
             justify-content: center;
             align-content: center;
         }
+
         .main-sidebar,
         .sidebar {
-            background-color: #A8A196 !important;
+            background-color: #2B2730 !important;
         }
-        .mt-2{
-            background-color: #A8A196 !important;
+
+        .mt-2 {
+            background-color: #2B2730 !important;
+        }
+
+        .nav-link i:not(.fa-angle-left) {
+            font-size: 30px;
+        }
+
+        li {
+            max-width: 234px !important;
+            background-color: #00000000;
+        }
+
+        .main-footer {
+            color: #F4F2DE !important;
+            font-size: 14px;
+            letter-spacing: 1.5px;
+        }
+
+        .main-footer a {
+            text-decoration: none;
         }
     </style>
 </head>
@@ -136,13 +185,11 @@
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar "style="background-color: #F0E68C">
+        <aside class="main-sidebar "style="height: 138vh !important">
             <!-- Brand Logo -->
             <a href="/" class="brand-link">
-                <img src="/images/SQUARELOGO.png" alt=""width="40px" height="40px" class="img"
-                    style="opacity: .8">
-
-                <strong><span class="header"> QK Hardware Store</span></strong>
+                <img src="/images/SQUARELOGO.png">
+                <span class="header"> QK Hardware Store</span>
             </a>
 
             @include('layouts.navigation')
@@ -166,15 +213,15 @@
         <!-- /.control-sidebar -->
 
         <!-- Main Footer -->
-        <footer class="main-footer"style="background-color: #A52A2A">
-
+        <footer
+            class="main-footer"style="background-color: #A52A2A; border-top: 1px solid #2B2730; margin: 0;">
             <!-- To the right -->
-            <div class="float-right d-none d-sm-inline" style="color: white">
-                Anything you want
+            <div class="float-right d-none d-sm-inline">
+                Copyright &copy; 2023 <a href="">CQ Hardware Store </a> All
+                rights reserved.
             </div>
             <!-- Default to the left -->
-            <strong>Copyright &copy; 2023 <a style="color: white" href="">CQ Hardware Store </a>.</strong> All
-            rights reserved.
+            <span>Anthing you want</span>
         </footer>
     </div>
     <!-- ./wrapper -->

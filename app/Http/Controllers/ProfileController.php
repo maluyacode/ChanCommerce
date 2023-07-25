@@ -18,28 +18,29 @@ class ProfileController extends Controller
         $users = User::all();
 
 
-        $customers = DB::table('customers')
-            ->join('users', 'customers.user_id', '=', 'users.id')
-            ->select('customers.*', 'customers.id AS cus_id', 'users.*')
-            ->where('customers.user_id', Auth::id())->first();
-
-
+        // $customers = DB::table('customers')
+        //     ->join('users', 'customers.user_id', '=', 'users.id')
+        //     ->select('customers.*', 'customers.id AS cus_id', 'users.*')
+        //     ->where('customers.user_id', Auth::id())->first();
+        $adminUser = Customer::with('user')->find(Auth::user()->id);
+        $adminUser->getMedia('images');
+        // dd($adminUser->media);
         //return dd($customers);
-        return View::make('auth.profile', compact('users', 'customers'));
+        return View::make('auth.profile', compact('adminUser'));
         // return view('auth.profile');
     }
 
-    public function update(ProfileUpdateRequest $request)
-    {
-        if ($request->password) {
-            auth()->user()->update(['password' => Hash::make($request->password)]);
-        }
+    // public function update(ProfileUpdateRequest $request)
+    // {
+    //     if ($request->password) {
+    //         auth()->user()->update(['password' => Hash::make($request->password)]);
+    //     }
 
-        auth()->user()->update([
-            'name' => $request->name,
-            'email' => $request->email,
-        ]);
+    //     auth()->user()->update([
+    //         'name' => $request->name,
+    //         'email' => $request->email,
+    //     ]);
 
-        return redirect()->back()->with('success', 'Profile updated.');
-    }
+    //     return redirect()->back()->with('success', 'Profile updated.');
+    // }
 }

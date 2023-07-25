@@ -6,7 +6,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">{{ __('My profile') }}</h1>
+                    {{-- <h1 class="m-0">{{ __('My profile') }}</h1> --}}
                 </div><!-- /.col -->
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -16,130 +16,128 @@
     <!-- Main content -->
     <div class="content">
         <div class="card-site js-container-fluid">
-            <div class="row">
-                
+            <div class="row" style="display:flex; flex-direction:row; justify-content:center">
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-body">
-                    
-                    <div class="card">
-
-                        <form action="{{ route('profile.update') }}" method="POST">
-                            @csrf
-                            @method('PUT')
-
-                            <div class="card-body">
-
-                                <div class="input-group mb-3">
-                                    <input type="text" name="name"
-                                           class="form-control @error('name') is-invalid @enderror"
-                                           placeholder="{{ __('Name') }}" value="{{ old('name', auth()->user()->name) }}" required>
-                                    <div class="input-group-append">
-                                        <div class="input-group-text">
-                                            <span class="fas fa-user"></span>
-                                        </div>
-                                    </div>
-                                    @error('name')
-                                    <span class="error invalid-feedback">
-                                        {{ $message }}
-                                    </span>
-                                    @enderror
-                                </div>
-
-                                <div class="input-group mb-3">
-                                    <input type="email" name="email"
-                                           class="form-control @error('email') is-invalid @enderror"
-                                           placeholder="{{ __('Email') }}" value="{{ old('email', auth()->user()->email) }}" required>
-                                    <div class="input-group-append">
-                                        <div class="input-group-text">
-                                            <span class="fas fa-envelope"></span>
-                                        </div>
-                                    </div>
-                                    @error('email')
-                                    <span class="error invalid-feedback">
-                                        {{ $message }}
-                                    </span>
-                                    @enderror
-                                </div>
-
-                                <div class="input-group mb-3">
-                                    <input type="password" name="password"
-                                           class="form-control @error('password') is-invalid @enderror"
-                                           placeholder="{{ __('New password') }}">
-                                    <div class="input-group-append">
-                                        <div class="input-group-text">
-                                            <span class="fas fa-lock"></span>
-                                        </div>
-                                    </div>
-                                    @error('password')
-                                    <span class="error invalid-feedback">
-                                        {{ $message }}
-                                    </span>
-                                    @enderror
-                                </div>
-
-                                <div class="input-group mb-3">
-                                    <input type="password" name="password_confirmation"
-                                           class="form-control @error('password_confirmation') is-invalid @enderror"
-                                           placeholder="{{ __('New password confirmation') }}"
-                                           autocomplete="new-password">
-                                    <div class="input-group-append">
-                                        <div class="input-group-text">
-                                            <span class="fas fa-lock"></span>
-                                        </div>
+                            <div class="card">
+                                <div class="row no-gutters">
+                                    <div class="col-sm-20" style="padding: 50px; background-color: #000000">
+                                        <img src="{{ $adminUser->media[0]->original_url }}" class="card-img-top "
+                                            alt="..." height="375px" style="object-fit: cover">
                                     </div>
                                 </div>
-                                <div class="col-sm-5">
-                                    {{-- //img class="card-img-top" src="{{$customers->img_pathC }}" alt=""width="20px" height="50px"/> --}}
-                                  </div>
+                                <form action="{{ route('profile.update') }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+
+                                    <div class="card-body">
+
+                                        <div class="input-group mb-3">
+                                            <input type="text" name="name"
+                                                class="form-control @error('name') is-invalid @enderror"
+                                                placeholder="{{ __('Name') }}"
+                                                value="{{ old('name', auth()->user()->name) }}" required>
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <span class="fas fa-user"></span>
+                                                </div>
+                                            </div>
+                                            @error('name')
+                                                <span class="error invalid-feedback">
+                                                    {{ $message }}
+                                                </span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="input-group mb-3">
+                                            <input type="email" name="email"
+                                                class="form-control @error('email') is-invalid @enderror"
+                                                placeholder="{{ __('Email') }}"
+                                                value="{{ old('email', auth()->user()->email) }}" required>
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <span class="fas fa-envelope"></span>
+                                                </div>
+                                            </div>
+                                            @error('email')
+                                                <span class="error invalid-feedback">
+                                                    {{ $message }}
+                                                </span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="input-group mb-3">
+                                            <input type="password" name="password"
+                                                class="form-control @error('password') is-invalid @enderror"
+                                                placeholder="{{ __('New password') }}">
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <span class="fas fa-lock"></span>
+                                                </div>
+                                            </div>
+                                            @error('password')
+                                                <span class="error invalid-feedback">
+                                                    {{ $message }}
+                                                </span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="input-group mb-3">
+                                            <input type="password" name="password_confirmation"
+                                                class="form-control @error('password_confirmation') is-invalid @enderror"
+                                                placeholder="{{ __('New password confirmation') }}"
+                                                autocomplete="new-password">
+                                            <div class="input-group-append">
+                                                <div class="input-group-text">
+                                                    <span class="fas fa-lock"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            {{-- //img class="card-img-top" src="{{$customers->img_pathC }}" alt=""width="20px" height="50px"/> --}}
+                                        </div>
+                                    </div>
+
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
+                                    </div>
+                                </form>
+
                             </div>
 
-                            <div class="card-footer" style="background-color: black">
-                                <button type="submit" class="btn btn-primary">{{ __('Submit') }}</button>
-                            </div>
-                        </form>
-                        
+
+                        </div>
                     </div>
-                    
-                    
-                </div>
-                </div>
-                
-        </div>
-        <div class="card" style="max-width: 500px;">
-            <div class="row no-gutters">
-                <div class="col-sm-20" style="background: #868e96;">
-                    <img src="{{$customers->img_pathC }}" class="card-img-top " alt="..." height = "375px" >
+
                 </div>
             </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
+            <!-- /.content -->
+        @endsection
+
+        @section('styles')
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+        @endsection
+
+        @section('scripts')
+            @if ($message = Session::get('success'))
+                <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+                <script>
+                    toastr.options = {
+                        "closeButton": true,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+
+                    toastr.success('{{ $message }}')
+                </script>
+            @endif
+        @endsection
     </div>
-    <!-- /.content -->
-    
-@endsection
-
-@section('styles')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
-@endsection
-
-@section('scripts')
-    @if ($message = Session::get('success'))
-        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-        <script>
-            toastr.options = {
-                "closeButton": true,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-
-            toastr.success('{{ $message }}')
-        </script>
-    @endif
-@endsection
+</div>

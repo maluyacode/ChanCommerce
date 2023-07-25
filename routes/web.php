@@ -84,7 +84,7 @@ Route::get('/search', [App\Http\Controllers\ItemController::class, 'search'])->n
 Route::get('/search2', [App\Http\Controllers\ItemController::class, 'search2'])->name('search2');
 Route::get('/show/{id}', [App\Http\Controllers\CategoryController::class, 'show'])->name('category');
 Route::get('/success', function () {
-    return view('transact.success');
+    // return view('transact.success');
 });
 Route::get('/check-availability/{itemId}', [\App\Http\Controllers\ItemController::class, 'checkAvailability']);
 
