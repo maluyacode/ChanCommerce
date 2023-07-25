@@ -68,13 +68,13 @@
                     <h2 class="card-title" style="color: black">Order #{{ $orderId }}</h2>
 
                     @if ($orderItems->first()->status == 'Delivered')
-                        <a class="btn btn-primary" style="display: none">Cancel Order</a>
+                        <a class="btn btn-primary" disabled>Cancel Order</a>
                     @elseif($orderItems->first()->status == 'Shipped')
-                        <a class="btn btn-primary" style="display: none">Cancel Order</a>
+                        <a class="btn btn-primary" disabled>Cancel Order</a>
                     @elseif($orderItems->first()->status == 'Cancelled')
-                        <a class="btn btn-primary" style="display: none">Order Cancelled</a>
+                        <a class="btn btn-primary" disabled>Order Cancelled</a>
                     @else
-                        <a href="{{ route('cancelled', ['id' => $orderId]) }}" class="btn btn-primary">Cancel Order</a>
+                        <a href="{{ route('cancelled', ['id' => $order->id]) }}" class="btn btn-primary">Cancel Order</a>
                     @endif
                 </div>
                 <div class="card-body">

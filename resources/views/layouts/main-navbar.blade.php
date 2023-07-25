@@ -56,11 +56,11 @@
                             class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
                             style="color:white">Log in</a>
 
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}"
-                                class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
-                                style="color:white">Register</a>
-                        @endif
+
+                        <a href="{{ route('register') }}"
+                            class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+                            style="color:white">Register</a>
+
                     @endauth
                 </div>
             </div>
@@ -68,6 +68,11 @@
     @endif
 
     <nav class="navbar navbar-expand-lg" style="background-color: white">
+        @foreach ($categories as $category)
+            <a style="color:black; margin-right:20px"
+                href="{{ route('category', $category->id) }}">{{ $category->cat_name }}
+            </a>
+        @endforeach
         @auth
             @if (Auth::user()->usertype == 'Admin')
                 <a style="color: black; margin-right:20px" href="{{ route('backadmin') }}" class="d-block"
@@ -75,7 +80,7 @@
                     Mode</a>
             @endif
         @endauth
-        @yield('categories')
+
     </nav><br>
     @yield('content')
 </body>

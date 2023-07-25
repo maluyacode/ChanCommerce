@@ -108,8 +108,6 @@
             </div>
         @endforeach
     </div>
-
-
     <script>
         src = "https://code.jquery-1.12.4.min.js" >
     </script>
@@ -117,9 +115,9 @@
         src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
     </script>
 @endsection
-@section('categories')
+{{-- @section('categories')
     @foreach ($categories as $category)
         <a style="color:black; margin-right:20px" href="{{ route('category', $category->id) }}">{{ $category->cat_name }}
         </a>
     @endforeach
-@endsection
+@endsection --}}

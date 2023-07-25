@@ -13,6 +13,7 @@ use App\Models\Category;
 use App\Models\Supplier;
 use App\Models\Stock;
 use Barryvdh\Debugbar\Facades\Debugbar;
+use Illuminate\Support\Facades\Auth;
 
 class ItemController extends Controller
 {
@@ -168,19 +169,24 @@ class ItemController extends Controller
 
     public function getItems(Request $request)
     {
-        $categories = Category::all();
-        $suppliers = Supplier::all();
-        $userId = auth()->user()->id;
-        $itemCount = DB::table('carts')->where('user_id', $userId)->count();
+        // if (Auth::user()) {
 
-        $items = DB::table('items')
-            ->join('categories', 'items.cat_id', '=', 'categories.id')
-            ->join('suppliers', 'items.sup_id', '=', 'suppliers.id')
-            ->select('items.id as it_id', 'items.*', 'categories.*', 'suppliers.*')
-            ->orderBy('items.id', 'ASC')->paginate(4);
-        $categoryId = $request->input('category_id');
+            $categories = Category::all();
+            $suppliers = Supplier::all();
+            // $userId = auth()->user()->id;
+            // $itemCount = DB::table('carts')->where('user_id', $userId)->count();
 
-        return View::make('items.welcome', compact('items', 'categories', 'suppliers', 'categoryId', 'itemCount'));
+            $items = DB::table('items')
+                ->join('categories', 'items.cat_id', '=', 'categories.id')
+                ->join('suppliers', 'items.sup_id', '=', 'suppliers.id')
+                ->select('items.id as it_id', 'items.*', 'categories.*', 'suppliers.*')
+                ->orderBy('items.id', 'ASC')->paginate(4);
+            $categoryId = $request->input('category_id');
+
+            return View::make('items.welcome', compact('items', 'categories', 'suppliers', 'categoryId'));
+        // } else {
+        //     return redirect()->route('login');
+        // }
     }
     public function search(Request $request)
     {

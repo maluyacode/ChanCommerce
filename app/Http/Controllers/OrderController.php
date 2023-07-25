@@ -133,7 +133,7 @@ class OrderController extends Controller
             ]);
         $userEmail = $orders->email;
 
-        Mail::send(new OrderConfirmation($userEmail, $order));
+        // Mail::send(new OrderConfirmation($userEmail, $order));
         return response()->json($order, 200, [], 0);
     }
 
