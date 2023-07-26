@@ -2,9 +2,11 @@
     color: #F4F2DE !important;
     background-color: #2B2730;
 }
-#stockTable_wrapper{
+
+#stockTable_wrapper {
     background-color: #2B2730 !important;
 }
+
 .jc-bs3-row {
     background-color: #00000000;
 }
@@ -70,3 +72,14 @@
     font-size: 12px;
 }
 
+.jconfirm-title {
+    letter-spacing: 2px;
+    font-weight: 600;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.jconfirm-content div form div label {
+    letter-spacing: 2px;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+}

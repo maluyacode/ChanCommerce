@@ -59,7 +59,7 @@ $(document).on('click', '.edit', function () {
             '<form action="" class="formName">' +
             '<div class="form-group">' +
             '<label>Provide the Quantity, and it will be added to the stock.</label>' +
-            '<input type="text" placeholder="Your name" class="name form-control" required />' +
+            '<input type="text" placeholder="Quantity" class="name form-control" required />' +
             '</div>' +
             '</form>',
         buttons: {
@@ -69,7 +69,7 @@ $(document).on('click', '.edit', function () {
                 action: function () {
                     var quantity = this.$content.find('.name').val();
                     if (!quantity) {
-                        $.alert('Specify Bai!');
+                        $.alert('Akala mo lang meron, pero wala wala wala! ');
                         return false;
                     }
                     let formData = {

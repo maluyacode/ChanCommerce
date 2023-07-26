@@ -19,7 +19,7 @@ let dataTable = $('#itemsTable').DataTable({
     {
         data: null,
         render: function (data) {
-            return `<img src="${data.media[0].original_url}" data-id="${data.id}">
+            return `<img src="${data.media[0]?.original_url}" data-id="${data.id}">
                      <span class="hover-text viewImage" data-id="${data.id}">View Images</span>`;
         },
         class: "item-image",

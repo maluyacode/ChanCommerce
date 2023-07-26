@@ -16,6 +16,9 @@ $(function () {
 
 $(document).on('click', 'button#add', function () {
     let name = $('#name').val();
+    if (!name) {
+        $.alert("Category Name Reqired");
+    }
     $.ajax({
         url: "/api/category/store",
         type: "POST",
@@ -41,7 +44,6 @@ $(document).on('click', 'button#add', function () {
             $('#category-table').DataTable().ajax.reload();
         },
         error: function (error) {
-            alert("error");
         },
     })
 })
@@ -81,10 +83,15 @@ $(document).on('click', 'button.edit', function () {
 
 $(document).on('click', 'button#update', function () {
     let id = $('#name').attr('data-id');
+    let name = $('#name').val();
+    console.log(name);
     let formData = {
-        cat_name: $('#name').val()
+        cat_name: name
     }
-
+    if (!name) {
+        $.alert("Category Name Reqired");
+        $('#name').val(name);
+    }
     $(`.selection`).siblings('td').removeClass('colorData');
     $(`.selection`).removeClass('colorData');
 
@@ -116,7 +123,6 @@ $(document).on('click', 'button#update', function () {
             $('#category-table').DataTable().ajax.reload();
         },
         error: function (error) {
-            alert("error");
         },
     })
 })
