@@ -45,7 +45,7 @@ let dataTable = $('#supplierTable').DataTable({
 });
 
 $('.dt-buttons').prepend(
-    '<button type="button" id="create" data-bs-toggle="modal" data-bs-target="#supplierModal" class="btn btn-success">Create</buttons>'
+    '<button type="button" id="create" data-bs-toggle="modal" data-bs-target="#supplierModal" class="dt-button">Create</buttons>'
 );
 
 let updateButton = $('#update');
@@ -102,7 +102,8 @@ saveButton.on('click', function () {
             $('#supplierTable').DataTable().ajax.reload();
         },
         error: function (error) {
-            alert("Error Validation Display Soon!");
+            errorsShow(error.responseJSON.errors);
+            console.log(error);
         }
     })
 })
@@ -168,7 +169,9 @@ updateButton.on('click', function (event) {
             $('#supplierTable').DataTable().ajax.reload();
         },
         error: function (error) {
-            $.alert('Error');
+            console.log(error.responseJSON.errors);
+            errorsShow(error.responseJSON.errors);
+
         }
     })
 })
@@ -199,8 +202,43 @@ $(document).on('click', 'button.delete', function () {
                 })
             },
             cancel: function () {
-                $.alert('Canceled!');
+
             },
         }
     });
 });
+
+function errorsShow(message) {
+    $('#supplierModal *').prop('disabled', false);
+    $('.invalid-feedback').css({
+        display: "none"
+    })
+    if (message.sup_name) {
+        $('#sup_name').siblings('div').html(message.sup_name).css({
+            display: "block"
+        })
+    }
+    if (message.sup_contact) {
+        $('#sup_contact').siblings('div').html(message.sup_contact).css({
+            display: "block"
+        })
+    }
+
+    if (message.sup_email) {
+        $('#sup_email').siblings('div').html(message.sup_email).css({
+            display: "block"
+        })
+    }
+
+    if (message.sup_address) {
+        $('#sup_address').siblings('div').html(message.sup_address).css({
+            display: "block"
+        })
+    }
+}
+
+$('input').on("keyup", function () {
+    $(this).siblings('div').css({
+        display: "none"
+    })
+})

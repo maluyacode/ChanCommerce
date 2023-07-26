@@ -60,3 +60,11 @@ td {
     letter-spacing: 5px;
     font-family: 'Times New Roman', Times, serif;
 }
+
+.for-alert {
+    width: 950px;
+    height: 100px !important;
+    position: absolute;
+    right: 1%;
+    top: 8.5%;
+}

@@ -47,7 +47,7 @@ class SupplierController extends Controller
             'sup_email.required' => 'Please enter supplier email address.',
             'sup_email.email' => 'Please enter a valid email address.',
             'sup_email.unique' => 'This email address has already been registered.',
-        ]);
+        ])->validate();
 
         $supplier = new Supplier;
         $supplier->sup_name = $request->sup_name;
@@ -84,7 +84,7 @@ class SupplierController extends Controller
             'sup_contact' => 'required',
             'sup_address' => 'required',
             'sup_email' => 'required|email',
-        ]);
+        ])->validate();
 
         $supplier = Supplier::find($id);
         $supplier->sup_name = $request->sup_name;

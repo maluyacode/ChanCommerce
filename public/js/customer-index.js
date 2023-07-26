@@ -55,7 +55,7 @@ let dataTable = $('#accountsTable').DataTable({
 });
 
 $('.dt-buttons').prepend(
-    '<button type="button" id="create" data-bs-toggle="modal" data-bs-target="#accountModal" class="btn btn-success">Create</buttons>'
+    '<button type="button" id="create" data-bs-toggle="modal" data-bs-target="#accountModal" class="dt-button">Create</buttons>'
 );
 
 function showPassword() {
@@ -141,7 +141,8 @@ saveButton.on('click', function () {
             $('#accountsTable').DataTable().ajax.reload();
         },
         error: function (error) {
-            alert("Error Validation Display Soon!");
+            errorsShow(error.responseJSON.errors)
+            $('#accountModal *').prop('disabled', false);
         }
     })
 })
@@ -209,7 +210,8 @@ updateButton.on('click', function (event) {
             $('#accountsTable').DataTable().ajax.reload();
         },
         error: function (error) {
-            $.alert('Error');
+            errorsShow(error.responseJSON.errors)
+            $('#accountModal *').prop('disabled', false);
         }
     })
 })
@@ -229,8 +231,6 @@ $(document).on('click', 'button.delete', function () {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function (data) {
-                        $('#accountModal *').prop('disabled', false);
-                        $('#accountModal').modal("hide");
                         resetForm()
                         alertAction("Account Deleted Succesfully")
                         $('#accountsTable').DataTable().ajax.reload();
@@ -246,3 +246,47 @@ $(document).on('click', 'button.delete', function () {
         }
     });
 });
+
+
+function errorsShow(message) {
+    $('.invalid-feedback').css({
+        display: "none"
+    })
+
+    if (message.customer_name) {
+        $('#customer_name').siblings('div').html(message.customer_name).css({
+            display: "block"
+        })
+    }
+
+    if (message.contact) {
+        $('#contact').siblings('div').html(message.contact).css({
+            display: "block"
+        })
+    }
+
+    if (message.email) {
+        $('#email').siblings('div').html(message.email).css({
+            display: "block"
+        })
+    }
+
+    if (message.address) {
+        $('#address').siblings('div').html(message.address).css({
+            display: "block"
+        })
+    }
+
+}
+
+$('input').on("keyup", function () {
+    $(this).siblings('div').css({
+        display: "none"
+    })
+})
+
+$('select').on("change", function () {
+    $(this).siblings('div').css({
+        display: "none"
+    })
+})

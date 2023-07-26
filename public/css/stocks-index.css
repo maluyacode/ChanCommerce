@@ -83,3 +83,11 @@
     font-weight: bold;
     font-family: 'Times New Roman', Times, serif;
 }
+
+.for-alert {
+    width: 1120px;
+    height: 100px !important;
+    position: absolute;
+    right: 1%;
+    top: 8.5%;
+}

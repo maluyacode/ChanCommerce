@@ -32,7 +32,8 @@
         </div>
     </div>
     <div class="content">
-        <div class="container-fluid for-alert">
+        <div class="container-fluid">
+            <div class="for-alert"></div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
@@ -72,21 +73,29 @@
                             <label for="sup_name">Name</label>
                             <input type="text" class="form-control" id="sup_name" name="sup_name"
                                 placeholder="Enter Supplier Name">
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="sup_contact">Contact</label>
                             <input type="text" class="form-control" id="sup_contact" placeholder="Enter Supplier Contact"
                                 name="sup_contact">
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="sup_email">Account Email</label>
                             <input type="email" class="form-control" id="sup_email" placeholder="Enter Supplier Email"
                                 name="sup_email">
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="sup_address">Supplier Address</label>
                             <input type="text" class="form-control" id="sup_address"
                                 placeholder="Enter Account Home Address" name="sup_address">
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
                     </form>
                 </div>

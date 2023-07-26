@@ -144,7 +144,7 @@ $(document).on('click', 'button#update', function () {
             $('#paymentMethodsTable').DataTable().ajax.reload();
         },
         error: function (error) {
-            alert("error");
+            $.alert("Give it a name boy");
         },
     })
 })

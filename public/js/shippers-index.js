@@ -144,7 +144,7 @@ $(document).on('click', 'button#update', function () {
             $('#shippersTable').DataTable().ajax.reload();
         },
         error: function (error) {
-            alert("error");
+            $.alert("Give it a name boy");
         },
     })
 })

@@ -37,7 +37,8 @@
         </div>
     </div>
     <div class="content">
-        <div class="container-fluid for-alert">
+        <div class="container-fluid">
+            <div class="for-alert"></div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">

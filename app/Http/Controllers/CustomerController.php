@@ -184,7 +184,6 @@ class CustomerController extends Controller
             'contact' => 'required',
             'address' => 'required',
             'password' => 'required',
-            'usertype' => 'required',
             'email' => 'required',
         ];
         $messages = [
@@ -192,7 +191,7 @@ class CustomerController extends Controller
             'contact.required' => 'Account Contact is required',
             'address.required' => 'Account Home Address is required',
         ];
-        Validator::make($request->all(), $rules, $messages);
+        Validator::make($request->all(), $rules, $messages)->validate();
 
         $user = new User;
         $user->name = $request->customer_name;
@@ -361,8 +360,6 @@ class CustomerController extends Controller
             'customer_name' => 'required',
             'contact' => 'required',
             'address' => 'required',
-            'password' => 'required',
-            'usertype' => 'required',
             'email' => 'required',
         ];
         $messages = [
@@ -370,7 +367,7 @@ class CustomerController extends Controller
             'contact.required' => 'Account Contact is required',
             'address.required' => 'Account Home Address is required',
         ];
-        Validator::make($request->all(), $rules, $messages);
+        Validator::make($request->all(), $rules, $messages)->validate();
 
         $user = User::find($id);
         $user->name = $request->customer_name;

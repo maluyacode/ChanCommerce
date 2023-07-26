@@ -37,7 +37,10 @@
         </div>
     </div>
     <div class="content">
-        <div class="container-fluid for-alert">
+        <div class="container-fluid">
+            <div class="for-alert">
+
+            </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
@@ -78,21 +81,29 @@
                                 <label for="name">Account Name</label>
                                 <input type="text" class="form-control" id="customer_name" name="customer_name"
                                     placeholder="Enter Account Name">
+                                    <div class="invalid-feedback">
+                                    </div>
                             </div>
                             <div class="form-group">
                                 <label for="country">Account Contact</label>
                                 <input type="text" class="form-control" id="contact"
                                     placeholder="Enter Account Contact" name="contact">
+                                    <div class="invalid-feedback">
+                                    </div>
                             </div>
                             <div class="form-group">
                                 <label for="email">Account Email</label>
                                 <input type="email" class="form-control" id="email" placeholder="Enter Account Email"
                                     name="email">
+                                    <div class="invalid-feedback">
+                                    </div>
                             </div>
                             <div class="form-group">
                                 <label for="country">Account Home Address</label>
                                 <input type="text" class="form-control" id="address"
                                     placeholder="Enter Account Home Address" name="address">
+                                    <div class="invalid-feedback">
+                                    </div>
                             </div>
                             <div class="form-group">
                                 <label for="type">Account Type</label>
@@ -100,6 +111,8 @@
                                     <option value="Admin">Admin</option>
                                     <option value="User">User / Customer</option>
                                 </select>
+                                <div class="invalid-feedback">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="password">Account Password</label>

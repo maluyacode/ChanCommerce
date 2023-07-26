@@ -57,3 +57,11 @@
 .colorData {
     background-color: red !important;
 }
+
+.for-alert {
+    width: 950px;
+    height: 100px !important;
+    position: absolute;
+    right: 1%;
+    top: 8.5%;
+}

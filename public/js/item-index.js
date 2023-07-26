@@ -289,18 +289,31 @@ function errorsShow(message) {
     $('.invalid-feedback').css({
         display: "none"
     })
-    $('#name').siblings('div').html(message.item_name).css({
-        display: "block"
-    })
-    $('#category').siblings('div').html(message.cat_id).css({
-        display: "block"
-    })
-    $('#supplier').siblings('div').html(message.sup_id).css({
-        display: "block"
-    })
-    $('#sellprice').siblings('div').html(message.sellprice).css({
-        display: "block"
-    })
+
+    if (message.item_name) {
+        $('#name').siblings('div').html(message.item_name).css({
+            display: "block"
+        })
+    }
+
+    if (message.cat_id) {
+        $('#category').siblings('div').html(message.cat_id).css({
+            display: "block"
+        })
+    }
+
+    if (message.sup_id) {
+        $('#supplier').siblings('div').html(message.sup_id).css({
+            display: "block"
+        })
+    }
+
+    if (message.sellprice) {
+        $('#sellprice').siblings('div').html(message.sellprice).css({
+            display: "block"
+        })
+    }
+
 }
 
 $('input').on("keyup", function () {

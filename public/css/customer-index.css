@@ -80,3 +80,11 @@
     border: 1px solid #464444;
     margin: 10px;
 }
+
+.for-alert {
+    width: 950px;
+    height: 100px !important;
+    position: absolute;
+    right: 1%;
+    top: 8.5%;
+}

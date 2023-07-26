@@ -56,3 +56,11 @@ td button {
 .button-actions{
     width: 90px;
 }
+
+.for-alert {
+    width: 950px;
+    height: 100px !important;
+    position: absolute;
+    right: 1%;
+    top: 8.5%;
+}

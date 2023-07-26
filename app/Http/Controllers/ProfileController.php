@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
 use App\Models\Customer;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Storage;
@@ -15,17 +16,19 @@ class ProfileController extends Controller
 {
     public function show()
     {
-        $users = User::all();
-
-
         // $customers = DB::table('customers')
         //     ->join('users', 'customers.user_id', '=', 'users.id')
         //     ->select('customers.*', 'customers.id AS cus_id', 'users.*')
         //     ->where('customers.user_id', Auth::id())->first();
-        $adminUser = Customer::with('user')->find(Auth::user()->id);
-        $adminUser->getMedia('images');
-        // dd($adminUser->media);
-        //return dd($customers);
+        try {
+            $adminUser = Customer::with('user')->where('user_id', Auth::user()->id)->first();
+            $adminUser->getMedia('images');
+            // dd($adminUser->media);
+            //return dd($customers);
+        } catch (Exception $e) {
+            return redirect()->route('backadmin')->with('error', 'Error occurred while fetching media.');
+        }
+
         return View::make('auth.profile', compact('adminUser'));
         // return view('auth.profile');
     }
