@@ -236,7 +236,7 @@
     <script src="{{ asset('js/adminlte.min.js') }}" defer></script>
     <script>
         $(document).ready(function() {
-            let size = $('.brand-link').width();
+            let size = 90;
 
             $('.main-sidebar').on("mouseenter", function() {
                 if (size > 100) {

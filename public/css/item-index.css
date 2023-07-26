@@ -65,3 +65,25 @@ form {
     text-transform: capitalize;
     border: 1px solid #464444 !important;
 }
+
+label:not(.dataTables_filter label) {
+    color: #3F2E3E !important;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 17px;
+    letter-spacing: 2px;
+}
+
+option,
+input,
+select {
+    text-transform: capitalize;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.for-alert {
+    width: 1000px;
+    height: 100px !important;
+    position: absolute;
+    right: 1%;
+    top: 8.5%;
+}

@@ -59,8 +59,8 @@ class ItemController extends Controller
         $rules = [
             'item_name' => 'required|string|max:255',
             'sellprice' => 'required|numeric|min:0',
-            'sup_id' => 'required',
-            'cat_id' => 'required',
+            'sup_id' => 'required|numeric',
+            'cat_id' => 'required|numeric',
         ];
         $messages = [
             'item_name.required' => 'Item name is required.',
@@ -71,6 +71,8 @@ class ItemController extends Controller
             'sellprice.min' => 'Sell price must be at least :min.',
             'sup_id.required' => 'Supplier is required.',
             'cat_id.required' => 'Category is required.',
+            'sup_id.numeric' => 'Supplier is required.',
+            'cat_id.numeric' => 'Category is required.',
         ];
         Validator::make($request->all(), $rules, $messages)->validate();
 
@@ -171,19 +173,19 @@ class ItemController extends Controller
     {
         // if (Auth::user()) {
 
-            $categories = Category::all();
-            $suppliers = Supplier::all();
-            // $userId = auth()->user()->id;
-            // $itemCount = DB::table('carts')->where('user_id', $userId)->count();
+        $categories = Category::all();
+        $suppliers = Supplier::all();
+        // $userId = auth()->user()->id;
+        // $itemCount = DB::table('carts')->where('user_id', $userId)->count();
 
-            $items = DB::table('items')
-                ->join('categories', 'items.cat_id', '=', 'categories.id')
-                ->join('suppliers', 'items.sup_id', '=', 'suppliers.id')
-                ->select('items.id as it_id', 'items.*', 'categories.*', 'suppliers.*')
-                ->orderBy('items.id', 'ASC')->paginate(4);
-            $categoryId = $request->input('category_id');
+        $items = DB::table('items')
+            ->join('categories', 'items.cat_id', '=', 'categories.id')
+            ->join('suppliers', 'items.sup_id', '=', 'suppliers.id')
+            ->select('items.id as it_id', 'items.*', 'categories.*', 'suppliers.*')
+            ->orderBy('items.id', 'ASC')->paginate(4);
+        $categoryId = $request->input('category_id');
 
-            return View::make('items.welcome', compact('items', 'categories', 'suppliers', 'categoryId'));
+        return View::make('items.welcome', compact('items', 'categories', 'suppliers', 'categoryId'));
         // } else {
         //     return redirect()->route('login');
         // }

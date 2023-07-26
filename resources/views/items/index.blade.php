@@ -30,7 +30,8 @@
 
 @section('content')
     <div class="content-header">
-        <div class="container-fluid for-alert">
+        <div class="container-fluid">
+            <div class="for-alert"></div>
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="yow">{{ __('List of Items') }}</h1>
@@ -78,22 +79,30 @@
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>
                             <input type="text" class="form-control" id="name" name="item_name">
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="catergory" class="form-label">Category</label>
                             <select class="form-select" id="category" name="cat_id">
                                 <option selected>Please select</option>
                             </select>
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="supplier" class="form-label">Supplier</label>
                             <select class="form-select" id="supplier" name="sup_id">
                                 <option value="">Please select</option>
                             </select>
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="sellprice" class="form-label">Sell Price</label>
-                            <input type="text" class="form-control" id="sellprice" name="sellprice">
+                            <input type="number" class="form-control" id="sellprice" name="sellprice">
+                            <div class="invalid-feedback">
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="images">Item Image</label>
@@ -102,7 +111,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button id="save" type="button" class="btn btn-primary">Save</button>
                     <button id="update" type="button" class="btn btn-primary">Update</button>
                 </div>
@@ -168,5 +177,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
-
 @endsection

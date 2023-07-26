@@ -129,23 +129,13 @@ $('#save').on('click', function (event) {
             $('.dz-message').css({
                 display: "block",
             })
-
-            $('.for-alert').prepend(`
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                New Item Created
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        `);
-            $('.alert').fadeOut(5000, function () {
-                $(this).remove();
-            });
+            alertAction("New Item Created")
             $('#itemsTable').DataTable().ajax.reload();
 
         },
         error: function (error) {
-            alert("error");
+            errorsShow(error.responseJSON.errors);
+            $('#itemModal *').prop('disabled', false);
         }
     })
 });
@@ -242,25 +232,13 @@ $('#update').on('click', function (event) {
             $('.dz-message').css({
                 display: "block",
             })
-
-            $('.for-alert').prepend(`
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                Successfully Updated!
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        `);
-            $('.alert').fadeOut(5000, function () {
-                $(this).remove();
-            });
+            alertAction("Item Updated Successfully")
             $('#item_id').remove();
             $('#itemsTable').DataTable().ajax.reload();
 
         },
         error: function (error) {
-            console.log(error.responseJSON.errors);
-            alert("error");
+            errorsShow(error.responseJSON.errors);
             $('#itemModal *').prop('disabled', false);
         }
     })
@@ -282,17 +260,7 @@ $(document).on('click', 'button.delete', function () {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function (data) {
-                        $('.for-alert').prepend(`
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            Successfully Deleted!
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    `);
-                        $('.alert').fadeOut(5000, function () {
-                            $(this).remove();
-                        });
+                        alertAction("Item Deleted Successfully")
                         $('#itemsTable').DataTable().ajax.reload();
                     },
                     error: function () {
@@ -302,8 +270,53 @@ $(document).on('click', 'button.delete', function () {
             },
 
             cancel: function () {
-                $.alert('Canceled!');
+
             },
         }
     });
 });
+
+
+function errorsShow(message) {
+    $('.invalid-feedback').css({
+        display: "none"
+    })
+    $('#name').siblings('div').html(message.item_name).css({
+        display: "block"
+    })
+    $('#category').siblings('div').html(message.cat_id).css({
+        display: "block"
+    })
+    $('#supplier').siblings('div').html(message.sup_id).css({
+        display: "block"
+    })
+    $('#sellprice').siblings('div').html(message.sellprice).css({
+        display: "block"
+    })
+}
+
+$('input').on("keyup", function () {
+    $(this).siblings('div').css({
+        display: "none"
+    })
+})
+
+$('select').on("change", function () {
+    $(this).siblings('div').css({
+        display: "none"
+    })
+})
+
+function alertAction(message) {
+    $('.for-alert').prepend(`
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        ${message}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+`);
+    $('.alert').fadeOut(5000, function () {
+        $(this).remove();
+    });
+}
