@@ -23,7 +23,12 @@ class ItemController extends Controller
     public function index()
     {
         $items = Item::with('supplier', 'category')->get();
-        return response()->json($items);
+        $itemsWithMedia = $items->map(function ($item) {
+            $item->media = $item->getMedia('*');
+            return $item;
+        });
+        Debugbar::info($itemsWithMedia);
+        return response()->json($itemsWithMedia);
     }
 
     /**
@@ -34,6 +39,13 @@ class ItemController extends Controller
         $suppliers = Supplier::all()->pluck('sup_name', 'id');
         $categories = Category::all()->pluck('cat_name', 'id');
         return response()->json(["suppliers" => $suppliers, "categories" => $categories]);
+    }
+
+    public function getItemMedia($id)
+    {
+        $itemMedia = Item::find($id);
+        $itemMedia->getMedia('images');
+        return response()->json($itemMedia);
     }
 
     public function storeMedia(Request $request)

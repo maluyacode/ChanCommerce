@@ -34,6 +34,7 @@ Route::post('/item/store', [ItemController::class, 'store']);
 Route::get('/item/{id}/edit', [ItemController::class, 'edit']);
 Route::put('/item/{id}/update', [ItemController::class, 'update']);
 Route::delete('/item/{id}/delete', [ItemController::class, 'destroy']);
+Route::get('/item/media/{id}', [ItemController::class, 'getItemMedia']);
 
 
 Route::post('/category/store', [CategoryController::class, 'store']);

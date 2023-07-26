@@ -49,6 +49,7 @@
                                 <thead>
                                     <tr>
                                         <th>Item ID</th>
+                                        <th>Image</th>
                                         <th>Item Name</th>
                                         <th>Category</th>
                                         <th>Supplier</th>

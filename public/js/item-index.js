@@ -17,6 +17,14 @@ let dataTable = $('#itemsTable').DataTable({
         data: 'id'
     },
     {
+        data: null,
+        render: function (data) {
+            return `<img src="${data.media[0].original_url}" data-id="${data.id}">
+                     <span class="hover-text viewImage" data-id="${data.id}">View Images</span>`;
+        },
+        class: "item-image",
+    },
+    {
         data: 'item_name'
     },
     {
@@ -38,12 +46,12 @@ let dataTable = $('#itemsTable').DataTable({
     {
         data: null,
         render: function (data) {
-            return `<button type="button" data-bs-toggle="modal" data-bs-target="#itemModal" data-id="${data.id}" class="btn btn-primary edit">
+            return `<div class="action-buttons"><button type="button" data-bs-toggle="modal" data-bs-target="#itemModal" data-id="${data.id}" class="btn btn-primary edit">
                     <i class="fas fa-edit"></i>
                 </button>
                 <button type="button" data-id="${data.id}" class="btn btn-danger btn-delete delete">
                     <i class="fas fa-trash" style="color:white"></i>
-                </button>`;
+                </button></div>`;
         }
     }
     ]
@@ -320,3 +328,55 @@ function alertAction(message) {
         $(this).remove();
     });
 }
+
+$(document).on('click', '.viewImage', function (event) {
+    let id = $(this).attr('data-id');
+    event.preventDefault();
+    console.log(id);
+
+    $.ajax({
+        url: `/api/item/media/${id}`,
+        type: 'GET',
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (data) {
+            // console.log(data.media[0].original_url);
+            let container = $('<div>').attr("id", "containsImages").css({
+                "position": "absolute",
+                "top": "10%",
+                "height": "50%",
+                "display": "flex",
+                "justify-content": "center",
+                "gap": "10px",
+                "flex-wrap": "wrap",
+                "background-color": "#C51605",
+            });
+            $.each(data.media, function (index, value) {
+                container.append(
+                    $('<img>').attr({
+                        src: value.original_url
+                    }).css({
+                        "width": "200px",
+                        "height": "200px",
+                        "object-fit": "cover",
+                    })
+                )
+            });
+            container.append($('<button>').attr({
+                id: "closeImages",
+            }).html("Closure na bai!").css({
+                "flex-basis": "100%",
+            }));
+            $('.card-body').append(container);
+        },
+        error: function () {
+            alert('error')
+        }
+    })
+})
+
+$(document).on('click', '#closeImages', function () {
+    $('#containsImages').remove();
+})
