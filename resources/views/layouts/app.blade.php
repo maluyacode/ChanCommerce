@@ -27,9 +27,10 @@
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 
     <style>
-        body{
+        body {
             overflow-x: hidden;
         }
+
         .brand-link {
             height: 50px;
             margin-bottom: 30px;
@@ -45,7 +46,10 @@
             font-style: 'Times New Roman', Times, serif !important;
             font-size: 16px;
             font-weight: normal;
+            width: inherit;
         }
+
+        aside {}
 
         .brand-link {
             text-decoration: none;
@@ -185,9 +189,9 @@
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar "style="height: 138vh !important">
+        <aside class="main-sidebar "style="height: 138vh !important;">
             <!-- Brand Logo -->
-            <a href="/" class="brand-link">
+            <a href="/" class="brand-link" id="brand">
                 <img src="/images/SQUARELOGO.png">
                 <span class="header"> QK Hardware Store</span>
             </a>
@@ -213,8 +217,7 @@
         <!-- /.control-sidebar -->
 
         <!-- Main Footer -->
-        <footer
-            class="main-footer"style="background-color: #A52A2A; border-top: 1px solid #2B2730; margin: 0;">
+        <footer class="main-footer"style="background-color: #A52A2A; border-top: 1px solid #2B2730; margin: 0;">
             <!-- To the right -->
             <div class="float-right d-none d-sm-inline">
                 Copyright &copy; 2023 <a href="">CQ Hardware Store </a> All
@@ -231,7 +234,60 @@
     @vite('resources/js/app.js')
     <!-- AdminLTE App -->
     <script src="{{ asset('js/adminlte.min.js') }}" defer></script>
+    <script>
+        $(document).ready(function() {
+            let size = $('.brand-link').width();
 
+            $('.main-sidebar').on("mouseenter", function() {
+                if (size > 100) {
+                    $('.header').fadeIn(300, function() {
+                        $(this).css({
+                            display: "inline-block",
+                        })
+                    })
+                    $('.brand-link img').css({
+                        "margin-left": "0px"
+                    })
+                }
+            });
+            $('.main-sidebar').on("mouseleave", function() {
+                if (size > 100) {
+                    $('.header').fadeOut(300, function() {
+                        $(this).css({
+                            display: "none",
+                        })
+                    })
+                    $('.brand-link img').css({
+                        "margin-left": "5px"
+                    })
+                }
+            });
+
+
+            $('.pushmenu').on("click", function() {
+                size = $('.brand-link').width();
+                if (size < 100) {
+                    $('.header').fadeIn(300, function() {
+                        $(this).css({
+                            display: "inline-block",
+                        })
+                    })
+                    $('.brand-link img').css({
+                        "margin-left": "0px"
+                    })
+                } else {
+                    $('.header').fadeOut(300, function() {
+                        $(this).css({
+                            display: "none",
+                        })
+                    })
+                    $('.brand-link img').css({
+                        "margin-left": "5px"
+                    })
+                }
+            });
+        });
+    </script>
     @yield('scripts')
 </body>
 
