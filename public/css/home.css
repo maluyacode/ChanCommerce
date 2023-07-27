@@ -1,0 +1,10 @@
+.card-text {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.card-text button {
+    margin: 3px;
+    font-weight: 300;
+}

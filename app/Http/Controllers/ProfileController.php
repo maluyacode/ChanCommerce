@@ -16,21 +16,13 @@ class ProfileController extends Controller
 {
     public function show()
     {
-        // $customers = DB::table('customers')
-        //     ->join('users', 'customers.user_id', '=', 'users.id')
-        //     ->select('customers.*', 'customers.id AS cus_id', 'users.*')
-        //     ->where('customers.user_id', Auth::id())->first();
         try {
             $adminUser = Customer::with('user')->where('user_id', Auth::user()->id)->first();
             $adminUser->getMedia('images');
-            // dd($adminUser->media);
-            //return dd($customers);
         } catch (Exception $e) {
             return redirect()->route('backadmin')->with('error', 'Error occurred while fetching media.');
         }
-
         return View::make('auth.profile', compact('adminUser'));
-        // return view('auth.profile');
     }
 
     // public function update(ProfileUpdateRequest $request)

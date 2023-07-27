@@ -224,4 +224,13 @@ class ItemController extends Controller
         $available = ($stock->quantity > 0);
         return response()->json(['available' => $available]);
     }
+    public function productSold()
+    {
+        $items = DB::table('items')
+            ->join('orderlines', 'items.id', 'orderlines.item_id')
+            ->groupBy('items.item_name')
+            ->pluck(DB::raw('sum(quantity)'), 'items.item_name');
+        // dd($items);
+        return response()->json($items);
+    }
 }

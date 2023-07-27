@@ -11,6 +11,7 @@ use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ShipperController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,3 +75,5 @@ Route::delete('/suppliers/{id}/delete', [SupplierController::class, 'destroy']);
 
 Route::get('/item/stocks', [StockController::class, 'index']);
 Route::put('/item/update/{id}/stock', [StockController::class, 'update']);
+
+Route::get('/product/sold', [ItemController::class, 'productSold']);
