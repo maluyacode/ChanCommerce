@@ -57,4 +57,6 @@ $('#productSold').on('click', function () {
     })
 });
 
-$('')
+$('#productStocks').on('click',  function (){
+    alert("No Stocks")
+})
