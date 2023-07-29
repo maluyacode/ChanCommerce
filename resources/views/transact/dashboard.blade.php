@@ -1,4 +1,4 @@
-@extends('layouts.transact')
+@extends('layouts.main-navbar')
 {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @section('search')
     <div
@@ -30,6 +30,14 @@
         </div>
     </div>
 @endsection --}}
+@section('nav-categories')
+    <nav class="navbar navbar-expand-lg" style="background-color: white">
+        @foreach ($categories as $category)
+            <a style="color:black; margin-right:20px" href="{{ route('category', $category->id) }}">{{ $category->cat_name }}
+            </a>
+        @endforeach
+    </nav><br>
+@endsection
 @section('content')
     @if (session()->has('message'))
         <div class="alert alert-success">

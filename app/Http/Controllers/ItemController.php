@@ -193,7 +193,7 @@ class ItemController extends Controller
         $items = DB::table('items')
             ->join('categories', 'items.cat_id', '=', 'categories.id')
             ->join('suppliers', 'items.sup_id', '=', 'suppliers.id')
-            ->select('items.id as it_id', 'items.*', 'categories.*', 'suppliers.*')
+            ->select('items.*', 'categories.cat_name', 'suppliers.sup_name')
             ->orderBy('items.id', 'ASC')->paginate(4);
         $categoryId = $request->input('category_id');
 
@@ -205,7 +205,7 @@ class ItemController extends Controller
     public function search(Request $request)
     {
         $query = $request->get('q');
-        $items = Item::search($query)->get();
+        $items = Item::search($query)->orderBy('items.id', 'ASC')->paginate(4);
         $categories = Category::all();
 
         return view('items.welcome', compact('items', 'categories'))->with('message', 'Product Added to Cart!');
@@ -213,7 +213,7 @@ class ItemController extends Controller
     public function search2(Request $request)
     {
         $query = $request->get('q');
-        $items = Item::search($query)->get();
+        $items = Item::search($query)->orderBy('items.id', 'ASC')->paginate(4);
         $categories = Category::all();
 
         return view('transact.dashboard', compact('items', 'categories'));

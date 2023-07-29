@@ -155,6 +155,14 @@
                     </div>
                 </div> --}}
 @extends('layouts.main-navbar')
+@section('nav-categories')
+    <nav class="navbar navbar-expand-lg" style="background-color: white">
+        @foreach ($categories as $category)
+            <a style="color:black; margin-right:20px" href="{{ route('category', $category->id) }}">{{ $category->cat_name }}
+            </a>
+        @endforeach
+    </nav><br>
+@endsection
 @section('content')
     <div class="container">
         @foreach ($items as $item)
@@ -193,7 +201,7 @@
                                     </button> --}}
                                         <div class="clearfix">
                                             <form id="my-form" method="POST"
-                                                action="{{ route('addcart', ['id' => $item->it_id]) }}">
+                                                action="{{ route('addcart', ['id' => $item->id]) }}">
                                                 @csrf
                                                 <button class="btn btn-outline-primary btn-sm btn-block" type="submit"
                                                     role="button">

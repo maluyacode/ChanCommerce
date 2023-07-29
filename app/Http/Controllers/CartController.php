@@ -28,8 +28,6 @@ class CartController extends Controller
 {
     public function addcart($id)
     {
-        Session::flush();
-        dd($id);
         if (Auth::id()) {
             // dd($id);
             $user = auth()->user()->id;
