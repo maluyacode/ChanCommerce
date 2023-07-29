@@ -158,7 +158,7 @@
 @section('nav-categories')
     <nav class="navbar navbar-expand-lg" style="background-color: white">
         @foreach ($categories as $category)
-            <a style="color:black; margin-right:20px" href="{{ route('category', $category->id) }}">{{ $category->cat_name }}
+            <a style="color:black; margin-right:30px; text-transform:uppercase" href="{{ route('category', $category->id) }}">{{ $category->cat_name }}
             </a>
         @endforeach
     </nav><br>
@@ -172,8 +172,10 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-lg-0">
-                                    <div class="bg-image hover-zoom ripple rounded ripple-surface">
-                                        <img src="{{ asset($item->img_path) }}" class="card-img-top" alt="">
+                                    <div class="bg-image hover-zoom ripple rounded ripple-surface"
+                                        style="display: flex; justify-content:center">
+                                        <img src="{{ $item->media[0]->original_url }}" class="card-img-top"
+                                            style="min-height:100px; min-width:100px; max-height: 400px; max-width: 400px; object-fit:cover">
                                         <a href="#!">
                                             <div class="hover-overlay">
                                                 <div class="mask" style="background-color: rgba(253, 253, 253, 0.15);">
@@ -185,7 +187,7 @@
                                 <div class="col-md-6 col-lg-6 col-xl-6">
                                     <h5>{{ $item->item_name }}</h5>
                                     <div class="mt-1 mb-0 text-muted small">
-                                        <span>{{ $item->cat_name }}</span>
+                                        <span>{{ $item->category->cat_name }}</span>
                                         <span class="text-primary"> • </span>
                                         <span>{{ $item->description }}</span>
                                     </div>

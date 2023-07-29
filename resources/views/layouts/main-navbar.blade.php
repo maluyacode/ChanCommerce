@@ -29,6 +29,20 @@
                 left: -75%;
             }
         }
+
+        .number:after {
+            content: attr(value);
+            font-size: 12px;
+            color: #fff;
+            background: red;
+            border-radius: 50%;
+            padding: 0 5px;
+            position: relative;
+            left: -8px;
+            top: -10px;
+            opacity: 0.9;
+            font-style: inherit;
+        }
     </style>
 </head>
 
@@ -61,24 +75,26 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             @if (Auth::user()->usertype == 'Admin')
-                                <a class="dropdown-item" href="{{ route('backadmin') }}" class="d-block">Admin Mode</a>
+                                <a class="dropdown-item" href="{{ route('backadmin') }}" class="d-block">
+                                    <i class="fa-solid fa-unlock" style="margin-left: 2px; margin-right:27px;"></i>
+                                    Admin
+                                </a>
                             @endif
                             <a href="{{ route('shoppingcart', ['id' => auth()->user()->id]) }}" class="dropdown-item">
                                 <i class="fas fa-shopping-cart"></i>
-                                {{-- <span class="badge badge-light"
-                                        style="font-size:12px; margin-right:10px;">{{ $itemCount }}</span> --}}
+                                <span class="number" data-id="{{ Auth::user()->id }}" id="cart-number"></span>
                                 {{ __('Cart') }}
-                                <span class="badge">{{ Session::has('cart') ? Session::get('cart')->totalQty : '' }}</span>
                             </a>
                             <a href="{{ route('userprofile', ['id' => auth()->user()->id]) }}" class="dropdown-item">
-                                <i class="fas fa-person" style="margin-left: 5px;"></i>
+                                <i class="fas fa-person" style="margin-left: 5px; margin-right:30px;"></i>
                                 {{ __('Profile') }}
                             </a>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <a href="{{ route('logout') }}" class="dropdown-item"
                                     onclick="event.preventDefault(); this.closest('form').submit();">
-                                    <i class="fa-solid fa-right-from-bracket" style="margin-left: 5px;"></i>
+                                    <i class="fa-solid fa-right-from-bracket"
+                                        style="margin-left: 5px; margin-right:25px;"></i>
                                     {{ __('Log Out') }}
                                 </a>
                             </form>
@@ -101,6 +117,15 @@
     @endif
 
     @yield('nav-categories')
+    @if (Session::has('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert"
+            style="position: fixed; z-index: 1; width: 100%; top: 14%;">
+            {!! Session::get('success') !!}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
     @yield('content')
     <script src="{{ asset('js/main-navbar.js') }}"></script>
 </body>

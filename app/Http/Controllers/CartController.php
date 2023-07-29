@@ -16,6 +16,7 @@ use App\Models\Shipper;
 use App\Models\PaymentMethod;
 use App\Models\Item;
 use App\Models\Customer;
+use App\Models\User;
 use App\Models\Order;
 use App\Models\Cart;
 use App\Models\Stock;
@@ -44,7 +45,7 @@ class CartController extends Controller
                         "sellprice" => $cart->sellprice + $items->sellprice
                     ]);
 
-                return redirect()->back()->with('message', 'Product Added to Cart!');
+                return redirect()->back()->with('success', 'Product Added to Cart!');
             } else {
                 $user = auth()->user();
                 $items = Item::find($id);
@@ -56,7 +57,7 @@ class CartController extends Controller
                 $cart->sellprice = $items->sellprice;
                 $cart->save();
                 // dd($cart);
-                return redirect()->back()->with('message', 'Product Added to Cart!');
+                return back()->with('success', 'Product Added to Cart!');
             }
         } else {
             return redirect('login');
@@ -189,5 +190,14 @@ class CartController extends Controller
         Cart::where('user_id', $user)->delete();
 
         return View::make('transact.success');
+    }
+
+    public function countItemInCart($id)
+    {
+        $cart = Cart::where('user_id', $id)
+            ->groupBy('item_id')
+            ->select('item_id')
+            ->get();
+        return response()->json(["cart" => count($cart)]);
     }
 }

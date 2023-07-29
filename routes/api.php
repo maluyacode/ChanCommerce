@@ -11,6 +11,7 @@ use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ShipperController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 
 /*
@@ -27,6 +28,8 @@ use App\Http\Controllers\HomeController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/cart/{id}/count', [CartController::class, 'countItemInCart']);
 
 Route::get('/items', [ItemController::class, 'index']);
 Route::get('/item/create', [ItemController::class, 'create']);

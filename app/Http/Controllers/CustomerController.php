@@ -39,7 +39,7 @@ class CustomerController extends Controller
 
     public function index()
     {
-        $customers = Customer::with(['user'])->get();
+        $customers = Customer::with(['user', 'media'])->get();
         return response()->json($customers, 200, [], 0);
     }
 

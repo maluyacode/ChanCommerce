@@ -23,8 +23,8 @@
                             <div class="card">
                                 <div class="row no-gutters">
                                     <div class="col-sm-20" style="padding: 50px; background-color: #000000">
-                                        <img src="{{ $adminUser->media[0]->original_url }}" class="card-img-top "
-                                            alt="..." height="375px" style="object-fit: cover">
+                                        <img src="{{ $adminUser->media != null ? $adminUser->media[0]->original_url : '' }}"
+                                            class="card-img-top " alt="..." height="375px" style="object-fit: cover">
                                     </div>
                                 </div>
                                 <form action="{{ route('profile.update') }}" method="POST">

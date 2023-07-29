@@ -20,16 +20,12 @@ class HomeController extends Controller
         $categories = Category::all();
         $suppliers = Supplier::all();
 
-        $items = DB::table('items')
-            ->join('categories', 'items.cat_id', '=', 'categories.id')
-            ->join('suppliers', 'items.sup_id', '=', 'suppliers.id')
-            ->select('items.id as it_id', 'items.*', 'categories.*', 'suppliers.*')
-            ->orderBy('items.id', 'ASC')->get();
+        $items = Item::with(['category', 'supplier', 'media'])->orderBy('items.id', 'ASC')->paginate(4);
 
         if ($usertype == 'Admin') {
             return view('home');
         } else {
-            return view('transact.dashboard', compact('usertype', 'categories', 'items', 'suppliers'));
+            return view('items.welcome', compact('usertype', 'categories', 'items', 'suppliers'));
         }
     }
 
@@ -39,16 +35,12 @@ class HomeController extends Controller
         $categories = Category::all();
         $suppliers = Supplier::all();
 
-        $items = DB::table('items')
-            ->join('categories', 'items.cat_id', '=', 'categories.id')
-            ->join('suppliers', 'items.sup_id', '=', 'suppliers.id')
-            ->select('items.id as it_id', 'items.*', 'categories.*', 'suppliers.*')
-            ->orderBy('items.id', 'ASC')->get();
+        $items = Item::with(['category', 'supplier', 'media'])->orderBy('items.id', 'ASC')->paginate(4);
 
         if ($usertype == 'Admin') {
-            return view('transact.dashboard', compact('usertype', 'categories', 'items', 'suppliers'));
+            return view('items.welcome', compact('usertype', 'categories', 'items', 'suppliers'));
         } else {
-            return view('transact.dashboard', compact('usertype', 'categories', 'items', 'suppliers'));
+            return view('items.welcome', compact('usertype', 'categories', 'items', 'suppliers'));
         }
     }
     public function backadmin()

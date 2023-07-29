@@ -190,11 +190,15 @@ class ItemController extends Controller
         // $userId = auth()->user()->id;
         // $itemCount = DB::table('carts')->where('user_id', $userId)->count();
 
-        $items = DB::table('items')
-            ->join('categories', 'items.cat_id', '=', 'categories.id')
-            ->join('suppliers', 'items.sup_id', '=', 'suppliers.id')
-            ->select('items.*', 'categories.cat_name', 'suppliers.sup_name')
-            ->orderBy('items.id', 'ASC')->paginate(4);
+        // $items = DB::table('items')
+        //     ->join('categories', 'items.cat_id', '=', 'categories.id')
+        //     ->join('suppliers', 'items.sup_id', '=', 'suppliers.id')
+        //     ->select('items.*', 'categories.cat_name', 'suppliers.sup_name')
+        //     ->orderBy('items.id', 'ASC')->paginate(4);
+
+        $items = Item::with(['category', 'supplier', 'media'])->orderBy('items.id', 'ASC')->paginate(4);
+        // $items->getMedia('images');
+        // dd($items);
         $categoryId = $request->input('category_id');
 
         return View::make('items.welcome', compact('items', 'categories', 'suppliers', 'categoryId'));

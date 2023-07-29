@@ -15,6 +15,7 @@ use App\DataTables\CategoryDataTable;
 use App\Models\Category;
 use App\Models\Supplier;
 use GuzzleHttp\Promise\Create;
+use App\Models\Item;
 
 class CategoryController extends Controller
 {
@@ -63,14 +64,10 @@ class CategoryController extends Controller
     public function show($id)
     {
         // dd($id);
-        $items = DB::table('items')
-            ->join('categories', 'items.cat_id', '=', 'categories.id')
-            ->join('suppliers', 'items.sup_id', '=', 'suppliers.id')
-            ->select('items.id as it_id', 'items.*', 'categories.*', 'suppliers.*')
-            ->where('categories.id', $id)->get();
+        $items = Item::with(['category', 'supplier', 'media'])->where('cat_id', $id)->orderBy('items.id', 'ASC')->paginate(4);
         $categories = Category::all();
         $suppliers = Supplier::all();
-
+        // dd($items);
         return view::make('items.show', compact('items', 'categories'))->with('message', 'Product Added to Cart!');
     }
 

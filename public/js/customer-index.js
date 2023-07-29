@@ -16,6 +16,13 @@ let dataTable = $('#accountsTable').DataTable({
         data: 'id'
     },
     {
+        data: null,
+        render: function (data) {
+            return `<img src="${data.media[0]?.original_url}" data-id="${data.id}">`;
+        },
+        class: "item-image",
+    },
+    {
         data: 'customer_name'
     },
     {

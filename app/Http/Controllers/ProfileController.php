@@ -25,17 +25,17 @@ class ProfileController extends Controller
         return View::make('auth.profile', compact('adminUser'));
     }
 
-    // public function update(ProfileUpdateRequest $request)
-    // {
-    //     if ($request->password) {
-    //         auth()->user()->update(['password' => Hash::make($request->password)]);
-    //     }
+    public function update(ProfileUpdateRequest $request)
+    {
+        if ($request->password) {
+            Auth::update(['password' => Hash::make($request->password)]);
+        }
 
-    //     auth()->user()->update([
-    //         'name' => $request->name,
-    //         'email' => $request->email,
-    //     ]);
+        Auth::update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
 
-    //     return redirect()->back()->with('success', 'Profile updated.');
-    // }
+        return redirect()->back()->with('success', 'Profile updated.');
+    }
 }

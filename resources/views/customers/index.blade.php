@@ -49,6 +49,7 @@
                                 <thead>
                                     <tr>
                                         <th>User ID</th>
+                                        <th>Image</th>
                                         <th>Customer</th>
                                         <th>Contact</th>
                                         <th>Email</th>

@@ -88,3 +88,15 @@
     right: 1%;
     top: 8.5%;
 }
+
+.item-image img {
+    width: 75px;
+    height: 75px;
+    object-fit: cover;
+}
+
+.item-image {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
