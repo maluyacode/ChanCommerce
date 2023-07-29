@@ -7,7 +7,7 @@
         </div>
     @endif
     @if (Auth::id())
-        <div class="container-fluid">
+        <div class="container-fluid" style="padding-top: 50px;">
             <div class="text-center">
                 <div class="row">
                     <div class="col-lg-8">
@@ -47,19 +47,21 @@
                                             <td><span class="label label-success"
                                                     style="font-size: 17px;">{{ $carts->sellprice }}</span></td>
                                             <td>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                <div class="dropdown show">
+                                                    <a class="btn btn-secondary dropdown-toggle" type="button"
                                                         id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                                         aria-expanded="false">
                                                         Action <span class="caret"></span>
-                                                    </button>
+                                                    </a>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-
-                                                        <a href="{{ route('increment', ['id' => $carts->item_id]) }}">Add
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('increment', ['id' => $carts->item_id]) }}">Add
                                                             Quantity</a>
-                                                        <a href="{{ route('decrement', ['id' => $carts->item_id]) }}">Reduce
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('decrement', ['id' => $carts->item_id]) }}">Reduce
                                                             Quantity</a>
-                                                        <a href="{{ route('delete', ['id' => $carts->item_id]) }}">Remove
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('delete', ['id' => $carts->item_id]) }}">Remove
                                                             All</a>
                                                     </div>
                                                 </div>
