@@ -86,3 +86,46 @@ select {
     right: 1%;
     top: 8.5%;
 }
+
+.dz-message {
+    color: #464444;
+}
+
+.item-image img {
+    width: 75px;
+    height: 75px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.hover-text {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    /* Background color of the hover text */
+    color: white;
+    /* Text color of the hover text */
+    font-size: 16px;
+    opacity: 0;
+    /* Initially hidden */
+    transition: opacity 0.2s ease;
+    /* Transition for smooth fading in/out */
+}
+
+.item-image:hover .hover-text {
+    opacity: 1;
+    /* Show the hover text on hover */
+}
+
+.item-image {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}

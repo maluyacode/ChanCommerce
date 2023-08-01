@@ -82,29 +82,29 @@
                                 <label for="name">Account Name</label>
                                 <input type="text" class="form-control" id="customer_name" name="customer_name"
                                     placeholder="Enter Account Name">
-                                    <div class="invalid-feedback">
-                                    </div>
+                                <div class="invalid-feedback">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="country">Account Contact</label>
                                 <input type="text" class="form-control" id="contact"
                                     placeholder="Enter Account Contact" name="contact">
-                                    <div class="invalid-feedback">
-                                    </div>
+                                <div class="invalid-feedback">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="email">Account Email</label>
                                 <input type="email" class="form-control" id="email" placeholder="Enter Account Email"
                                     name="email">
-                                    <div class="invalid-feedback">
-                                    </div>
+                                <div class="invalid-feedback">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="country">Account Home Address</label>
                                 <input type="text" class="form-control" id="address"
                                     placeholder="Enter Account Home Address" name="address">
-                                    <div class="invalid-feedback">
-                                    </div>
+                                <div class="invalid-feedback">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="type">Account Type</label>
@@ -118,6 +118,8 @@
                             <div class="form-group">
                                 <label for="password">Account Password</label>
                                 <input type="password" id="password" class="form-control" name="password">
+                                <div class="invalid-feedback">
+                                </div>
                                 <input type="checkbox" onclick="showPassword()"><label for="">Show Password</label>
                             </div>
                             <div class="form-group">
@@ -190,5 +192,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
-    <script src="{{ asset('js/customer-index.js') }}" defer></script>
+    <script src="{{ asset('js/customer-index.js') }}"></script>
 @endsection

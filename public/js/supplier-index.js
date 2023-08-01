@@ -16,6 +16,18 @@ let dataTable = $('#supplierTable').DataTable({
         data: 'id'
     },
     {
+        data: null,
+        render: function (data) {
+            if (!data.media[0]) {
+                return "No Images In media"
+            } else {
+                return `<img src="${data.media[0]?.original_url}" data-id="${data.id}">
+                     <span class="hover-text viewImage" data-id="${data.id}">View Images</span>`;
+            }
+        },
+        class: "item-image",
+    },
+    {
         data: 'sup_name'
     },
     {
@@ -75,6 +87,12 @@ function alertAction(message) {
 $(document).on('click', 'button#create', function () {
     updateButton.hide();
     saveButton.show();
+    resetForm();
+    $('input[name="document[]"]').remove();
+    $('.dz-preview').remove()
+    $('.dz-message').css({
+        display: "block",
+    })
 })
 
 saveButton.on('click', function () {
@@ -109,6 +127,12 @@ saveButton.on('click', function () {
 })
 
 $(document).on('click', 'button.edit', function () {
+
+    $('input[name="document[]"]').remove();
+    $('.dz-preview').remove()
+    $('.dz-message').css({
+        display: "block",
+    })
 
     let id = $(this).attr('data-id');
     resetForm();
@@ -241,4 +265,60 @@ $('input').on("keyup", function () {
     $(this).siblings('div').css({
         display: "none"
     })
+})
+
+$(document).on('click', '.viewImage', function (event) {
+    let id = $(this).attr('data-id');
+    event.preventDefault();
+    console.log(id);
+
+    $.ajax({
+        url: `/api/supplier/media/${id}`,
+        type: 'GET',
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (data) {
+            // console.log(data.media[0].original_url);
+            let container = $('<div>').attr("id", "containsImages").css({
+                "position": "absolute",
+                "top": "10%",
+                "height": "50%",
+                "display": "flex",
+                "justify-content": "center",
+                "gap": "10px",
+                "flex-wrap": "wrap",
+                "background-color": "#C51605",
+            });
+            $.each(data.media, function (index, value) {
+                container.append(
+                    $('<img>').attr({
+                        src: value.original_url
+                    }).css({
+                        "width": "200px",
+                        "height": "200px",
+                        "object-fit": "cover",
+                    })
+                )
+            });
+            container.append($('<button>').attr({
+                id: "closeImages",
+            }).html("Closure na bai!").css({
+                "flex-basis": "100%",
+            }).addClass('btn btn-success'));
+            $('.card-body').append(container);
+        },
+        error: function () {
+            alert('error')
+        }
+    })
+})
+
+$(document).on('click', '#closeImages', function () {
+    $('#containsImages').remove();
+})
+
+$('#supplierModal').on('hidden.bs.modal', function () {
+    $('div.invalid-feedback').empty()
 })

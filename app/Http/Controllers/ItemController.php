@@ -162,7 +162,7 @@ class ItemController extends Controller
         $item->cat_id = $request->cat_id;
 
         if ($request->document !== null) {
-            DB::table('media')->where('model_id', $id)->delete();
+            DB::table('media')->where('model_id', $item->id)->where('model_type', 'App\Models\Item')->delete();
             foreach ($request->input("document", []) as $file) {
                 $item->addMedia(storage_path("items/images/" . $file))->toMediaCollection("images");
             }

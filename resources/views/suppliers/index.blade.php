@@ -5,6 +5,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
 
     <link rel="stylesheet" href="{{ asset('css/supplier-index.css') }}">
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
 @endsection
 
 @section('headscripts')
@@ -42,6 +44,7 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
+                                        <th>Image</th>
                                         <th>Name</th>
                                         <th>Contact</th>
                                         <th>Address</th>
@@ -97,6 +100,10 @@
                             <div class="invalid-feedback">
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="image">Image</label>
+                            <div class="dropzone" id="dropzoneImage"></div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -107,10 +114,55 @@
             </div>
         </div>
     </div>
+    <script>
+        var uploadedDocumentMap = {}
+        Dropzone.options.dropzoneImage = {
+            url: '{{ route('suppliers.storeMedia') }}',
+            maxFilesize: 2,
+            acceptedFiles: 'image/*',
+            addRemoveLinks: true,
+            headers: {
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+            },
+            success: function(file, response) {
+                $('form').append('<input type="hidden" name="document[]" value="' + response.name + '">')
+                uploadedDocumentMap[file.name] = response.name
+            },
+            removedfile: function(file) {
+                file.previewElement.remove()
+                var name = ''
+                if (typeof file.file_name !== 'undefined') {
+                    name = file.file_name
+                } else {
+                    name = uploadedDocumentMap[file.name]
+                }
+                $('form').find('input[name="document[]"][value="' + name + '"]').remove()
+            },
+            error: function(file) {
+                alert("Only image will be accepted.");
+                file.previewElement.remove();
+                $('.dz-message').css({
+                    display: "block",
+                })
+            },
+            init: function() {
+                @if (isset($project) && $project->document)
+                    var files = {!! json_encode($project->document) !!}
+                    for (var i in files) {
+                        var file = files[i]
+                        this.options.addedfile.call(this, file)
+                        file.previewElement.classList.add('dz-complete')
+                        $('form').append('<input type="hidden" name="document[]" value="' + file.file_name +
+                            '">')
+                    }
+                @endif
+            },
+        }
+    </script>
 @endsection
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
-    <script src="{{ asset('js/supplier-index.js') }}" defer></script>
+    <script src="{{ asset('js/supplier-index.js') }}"></script>
 @endsection

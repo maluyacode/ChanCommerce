@@ -385,8 +385,8 @@ class CustomerController extends Controller
         $customer->address = $request->address;
         $customer->user_id = $user->id;
         $customer->img_pathC = "DEFAULT";
-        DB::table('media')->where('model_id', $customer->id)->delete();
         if ($request->document !== null) {
+            DB::table('media')->where('model_id', $customer->id)->where('model_type', 'App\Models\Customer')->delete();
             foreach ($request->input("document", []) as $file) {
                 $customer->addMedia(storage_path("customers/images/" . $file))->toMediaCollection("images");
                 // unlink(storage_path("drivers/images/" . $file));
@@ -441,5 +441,11 @@ class CustomerController extends Controller
         } else {
             return back()->with('message', 'Order Cannot Be Cancelled');
         }
+    }
+    public function getCustomerMedia($id)
+    {
+        $customer = Customer::find($id);
+        $customer->getMedia('images');
+        return response()->json($customer);
     }
 }

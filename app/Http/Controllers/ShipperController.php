@@ -17,7 +17,7 @@ class ShipperController extends Controller
      */
     public function index()
     {
-        $shippers = Shipper::all();
+        $shippers = Shipper::with('media')->get();
         return response()->json($shippers);
     }
 
@@ -32,6 +32,24 @@ class ShipperController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+    public function storeMedia(Request $request)
+    {
+        $path = storage_path("shippers/images");
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+
+        $file = $request->file("file");
+        $name = uniqid() . "_" . trim($file->getClientOriginalName());
+        $file->move($path, $name);
+
+        return response()->json([
+            "name" => $name,
+            "original_name" => $file->getClientOriginalName(),
+        ]);
+    }
+
     public function store(Request $request)
     {
         $rules = [
@@ -45,6 +63,11 @@ class ShipperController extends Controller
 
         $shippers = new Shipper;
         $shippers->name = $request->name;
+        if ($request->document !== null) {
+            foreach ($request->input("document", []) as $file) {
+                $shippers->addMedia(storage_path("shippers/images/" . $file))->toMediaCollection("images");
+            }
+        }
         $shippers->save();
 
         return response()->json($shippers, 200, [], 0);
@@ -63,7 +86,7 @@ class ShipperController extends Controller
      */
     public function edit($id)
     {
-        $shippers =  Shipper::find($id);
+        $shippers =  Shipper::with('media')->find($id);
         return response($shippers);
     }
 
@@ -83,6 +106,12 @@ class ShipperController extends Controller
 
         $shippers = Shipper::find($id);
         $shippers->name = $request->name;
+        if ($request->document !== null) {
+            DB::table('media')->where('model_id', $id)->where('model_type', 'App\Models\Shipper')->delete();
+            foreach ($request->input("document", []) as $file) {
+                $shippers->addMedia(storage_path("shippers/images/" . $file))->toMediaCollection("images");
+            }
+        }
         $shippers->save();
 
         return response()->json($shippers, 200, [], 0);
@@ -95,5 +124,12 @@ class ShipperController extends Controller
     {
         Shipper::destroy($id);
         return response()->json([], 200, [], 0);
+    }
+
+    public function getShipperMedia($id)
+    {
+        $shipper = Shipper::find($id);
+        $shipper->getMedia('images');
+        return response()->json($shipper);
     }
 }

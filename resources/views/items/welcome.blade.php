@@ -158,7 +158,8 @@
 @section('nav-categories')
     <nav class="navbar navbar-expand-lg" style="background-color: white">
         @foreach ($categories as $category)
-            <a style="color:black; margin-right:30px; text-transform:uppercase" href="{{ route('category', $category->id) }}">{{ $category->cat_name }}
+            <a style="color:black; margin-right:30px; text-transform:uppercase"
+                href="{{ route('category', $category->id) }}">{{ $category->cat_name }}
             </a>
         @endforeach
     </nav><br>

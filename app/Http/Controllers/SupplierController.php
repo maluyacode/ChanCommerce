@@ -6,10 +6,11 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 use App\DataTables\SupplierDataTable;
 use App\Models\Supplier;
-
+use Barryvdh\Debugbar\Facades\Debugbar;
 
 class SupplierController extends Controller
 {
@@ -18,8 +19,26 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        $suppliers = Supplier::all();
+        $suppliers = Supplier::with('media')->get();
+        Debugbar::addMessage($suppliers);
         return response()->json($suppliers);
+    }
+
+    public function storeMedia(Request $request)
+    {
+        $path = storage_path("suppliers/images");
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+
+        $file = $request->file("file");
+        $name = uniqid() . "_" . trim($file->getClientOriginalName());
+        $file->move($path, $name);
+
+        return response()->json([
+            "name" => $name,
+            "original_name" => $file->getClientOriginalName(),
+        ]);
     }
 
     /**
@@ -54,6 +73,13 @@ class SupplierController extends Controller
         $supplier->sup_contact = $request->sup_contact;
         $supplier->sup_address = $request->sup_address;
         $supplier->sup_email = $request->sup_email;
+
+        if ($request->document !== null) {
+            foreach ($request->input("document", []) as $file) {
+                $supplier->addMedia(storage_path("suppliers/images/" . $file))->toMediaCollection("images");
+            }
+        }
+
         $supplier->save();
         return response()->json($supplier, 200, [], 0);
     }
@@ -91,6 +117,13 @@ class SupplierController extends Controller
         $supplier->sup_contact = $request->sup_contact;
         $supplier->sup_address = $request->sup_address;
         $supplier->sup_email = $request->sup_email;
+
+        if ($request->document !== null) {
+            DB::table('media')->where('model_id', $supplier->id)->where('model_type', 'App\Models\Supplier')->delete();
+            foreach ($request->input("document", []) as $file) {
+                $supplier->addMedia(storage_path("suppliers/images/" . $file))->toMediaCollection("images");
+            }
+        }
         $supplier->save();
 
         return response()->json($supplier, 200, [], 0);
@@ -103,5 +136,11 @@ class SupplierController extends Controller
     {
         Supplier::destroy($id);
         return response()->json([], 200, [], 0);
+    }
+    public function getSupplierMedia($id)
+    {
+        $supplier = Supplier::find($id);
+        $supplier->getMedia('images');
+        return response()->json($supplier);
     }
 }

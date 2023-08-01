@@ -19,8 +19,12 @@ let dataTable = $('#itemsTable').DataTable({
     {
         data: null,
         render: function (data) {
-            return `<img src="${data.media[0]?.original_url}" data-id="${data.id}">
+            if (!data.media[0]) {
+                return "No Images In media"
+            } else {
+                return `<img src="${data.media[0]?.original_url}" data-id="${data.id}">
                      <span class="hover-text viewImage" data-id="${data.id}">View Images</span>`;
+            }
         },
         class: "item-image",
     },
@@ -62,6 +66,10 @@ let dataTable = $('#itemsTable').DataTable({
 $('.dt-buttons').prepend(
     '<button type="button" id="create" data-bs-toggle="modal" data-bs-target="#itemModal" class="dt-button">Create</buttons>'
 );
+
+$('#itemModal').on('hidden.bs.modal', function () {
+    $('div.invalid-feedback').empty()
+})
 
 
 $('#create').on('click', function () {
@@ -381,7 +389,7 @@ $(document).on('click', '.viewImage', function (event) {
                 id: "closeImages",
             }).html("Closure na bai!").css({
                 "flex-basis": "100%",
-            }));
+            }).addClass('btn btn-success'));
             $('.card-body').append(container);
         },
         error: function () {
