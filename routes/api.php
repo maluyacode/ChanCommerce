@@ -39,6 +39,7 @@ Route::get('/item/{id}/edit', [ItemController::class, 'edit']);
 Route::put('/item/{id}/update', [ItemController::class, 'update']);
 Route::delete('/item/{id}/delete', [ItemController::class, 'destroy']);
 Route::get('/item/media/{id}', [ItemController::class, 'getItemMedia']);
+Route::post('/item/import', [ItemController::class, 'import']);
 
 
 Route::post('/category/store', [CategoryController::class, 'store']);
@@ -56,6 +57,7 @@ Route::get('/update-to-cancelled/{id}', [OrderController::class, 'Cancel']);
 Route::resource('customers', CustomerController::class);
 Route::post('/customers/storeMedia', [CustomerController::class, 'storeMedia'])->name('customers.storeMedia');
 Route::get('/customer/media/{id}', [CustomerController::class, 'getCustomerMedia']);
+Route::post('/customer/import', [CustomerController::class, 'import']);
 
 Route::get('/payment-methods', [PaymentMethodController::class, 'index']);
 Route::post('/payment-methods/store', [PaymentMethodController::class, 'store']);
@@ -71,7 +73,7 @@ Route::get('/shippers/{id}/edit', [ShipperController::class, 'edit']);
 Route::put('/shippers/{id}/update', [ShipperController::class, 'update']);
 Route::delete('/shippers/{id}/delete', [ShipperController::class, 'destroy']);
 Route::get('/shipper/media/{id}', [ShipperController::class, 'getShipperMedia']);
-
+Route::post('/shipper/import', [ShipperController::class, 'import']);
 
 Route::get('/suppliers', [SupplierController::class, 'index']);
 Route::post('/suppliers', [SupplierController::class, 'store']);
@@ -80,6 +82,7 @@ Route::get('/suppliers/{id}/edit', [SupplierController::class, 'edit']);
 Route::put('/suppliers/{id}/update', [SupplierController::class, 'update']);
 Route::delete('/suppliers/{id}/delete', [SupplierController::class, 'destroy']);
 Route::get('/supplier/media/{id}', [SupplierController::class, 'getSupplierMedia']);
+Route::post('/supplier/import', [SupplierController::class, 'import']);
 
 
 Route::get('/item/stocks', [StockController::class, 'index']);

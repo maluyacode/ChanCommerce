@@ -353,3 +353,36 @@ $(document).on('click', '.viewImage', function (event) {
 $(document).on('click', '#closeImages', function () {
     $('#containsImages').remove();
 })
+
+$('#importForm').on('submit', function (e) {
+
+    e.preventDefault()
+    let file = $('#excelFile').val();
+    if (file) {
+        let formData = new FormData($(this)[0]);
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
+        $.ajax({
+            url: '/api/shipper/import',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: "json",
+            success: function (responseData) {
+
+                $('#importForm').trigger("reset");
+
+            },
+            error: function (responseError) {
+                errorDisplay(responseError.responseJSON.errors);
+            }
+        })
+    } else {
+        $.alert('Put Excel File First')
+    }
+})

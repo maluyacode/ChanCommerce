@@ -5,6 +5,7 @@ namespace App\Models;
 use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -21,7 +22,7 @@ class Item extends Model implements HasMedia
 
     protected $table = 'items';
     protected $primaryKey = 'id';
-    protected $fillable = ['item_name', 'sellprice', 'img_path', 'cat_id'];
+    protected $fillable = ['item_name', 'sellprice', 'img_path', 'cat_id', 'sup_id'];
 
     public function orderlines()
     {

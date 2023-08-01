@@ -30,6 +30,18 @@
         <div class="container-fluid">
             <div class="for-alert"></div>
             <div class="row">
+                <form id="importForm" style="width: 50%;">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <button id="importButton" class="btn btn-secondary" type="submit">Import</button>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" name="excelFile" id="excelFile"
+                                accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                            <label class="custom-file-label" for="inputGroupFile03" id="labelImport">Choose file</label>
+                        </div>
+                    </div>
+                </form>
                 <div class="col-lg-12">
                     <form></form>
                     <div class="card">

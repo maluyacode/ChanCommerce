@@ -143,4 +143,8 @@ class SupplierController extends Controller
         $supplier->getMedia('images');
         return response()->json($supplier);
     }
+    public function import(Request $request)
+    {
+        Debugbar::info($request);
+    }
 }

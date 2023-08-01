@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\Debugbar\Facades\Debugbar;
 
 class ShipperController extends Controller
 {
@@ -131,5 +132,9 @@ class ShipperController extends Controller
         $shipper = Shipper::find($id);
         $shipper->getMedia('images');
         return response()->json($shipper);
+    }
+    public function import(Request $request)
+    {
+        Debugbar::info($request);
     }
 }

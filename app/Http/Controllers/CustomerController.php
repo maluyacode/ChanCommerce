@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Imports\CustomersImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 use App\Models\Customer;
 use App\Models\User;
@@ -447,5 +449,10 @@ class CustomerController extends Controller
         $customer = Customer::find($id);
         $customer->getMedia('images');
         return response()->json($customer);
+    }
+    public function import(Request $request)
+    {
+        Excel::import(new CustomersImport, $request->excelFile);
+        return response()->json([]);
     }
 }

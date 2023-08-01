@@ -14,6 +14,8 @@ use App\Models\Supplier;
 use App\Models\Stock;
 use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ItemsImport;
 
 class ItemController extends Controller
 {
@@ -162,7 +164,7 @@ class ItemController extends Controller
         $item->cat_id = $request->cat_id;
 
         if ($request->document !== null) {
-            DB::table('media')->where('model_id', $item->id)->where('model_type', 'App\Models\Item')->delete();
+            // DB::table('media')->where('model_id', $item->id)->where('model_type', 'App\Models\Item')->delete();
             foreach ($request->input("document", []) as $file) {
                 $item->addMedia(storage_path("items/images/" . $file))->toMediaCollection("images");
             }
@@ -236,5 +238,10 @@ class ItemController extends Controller
             ->pluck(DB::raw('sum(quantity)'), 'items.item_name');
         // dd($items);
         return response()->json($items);
+    }
+    public function import(Request $request)
+    {
+        Excel::import(new ItemsImport, $request->excelFile);
+        return response()->json([]);
     }
 }

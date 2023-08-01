@@ -1,5 +1,5 @@
 {
-    
+
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
@@ -26,7 +26,7 @@
         "yajra/laravel-datatables-buttons": "^10.0",
         "yajra/laravel-datatables-oracle": "^10.4"
     },
-    
+
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.8",
         "fakerphp/faker": "^1.9.1",
@@ -81,5 +81,5 @@
     },
     "minimum-stability": "stable",
     "prefer-stable": true
-    
+
 }

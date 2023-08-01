@@ -401,3 +401,42 @@ $(document).on('click', '.viewImage', function (event) {
 $(document).on('click', '#closeImages', function () {
     $('#containsImages').remove();
 })
+
+$('#excelFile').on('change', function (e) {
+    $('#labelImport').html(e.target.files[0].name);
+})
+
+$('#importForm').on('submit', function (e) {
+
+    e.preventDefault()
+    let file = $('#excelFile').val();
+    if (file) {
+        let formData = new FormData($(this)[0]);
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
+        $.ajax({
+            url: '/api/item/import',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: "json",
+            success: function (responseData) {
+
+                $('#importForm').trigger("reset");
+                $('#itemsTable').DataTable().ajax.reload();
+                alertAction('Imported Successfully')
+
+            },
+            error: function (responseError) {
+                errorDisplay(responseError.responseJSON.errors);
+            }
+        })
+    } else {
+        $.alert('Put Excel File First')
+    }
+})
