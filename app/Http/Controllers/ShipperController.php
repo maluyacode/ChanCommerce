@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Shipper;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ShippersImport;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\Debugbar\Facades\Debugbar;
@@ -135,6 +137,7 @@ class ShipperController extends Controller
     }
     public function import(Request $request)
     {
-        Debugbar::info($request);
+        Excel::import(new ShippersImport, $request->excelFile);
+        return response()->json([]);
     }
 }

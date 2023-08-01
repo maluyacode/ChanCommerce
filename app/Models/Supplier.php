@@ -14,6 +14,8 @@ class Supplier extends Model implements HasMedia
     use HasFactory;
     use InteractsWithMedia;
 
+    public $fillable = ["sup_name", "sup_contact", "sup_address", "sup_email"];
+
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')

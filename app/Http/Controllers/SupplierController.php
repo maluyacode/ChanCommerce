@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\SuppliersImport;
 
 use App\DataTables\SupplierDataTable;
 use App\Models\Supplier;
@@ -145,6 +147,7 @@ class SupplierController extends Controller
     }
     public function import(Request $request)
     {
-        Debugbar::info($request);
+        Excel::import(new SuppliersImport, $request->excelFile);
+        return response()->json([]);
     }
 }

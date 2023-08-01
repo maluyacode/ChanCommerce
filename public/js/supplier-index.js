@@ -343,8 +343,10 @@ $('#importForm').on('submit', function (e) {
             },
             dataType: "json",
             success: function (responseData) {
-
+                $('#labelImport').html('Choose file');
                 $('#importForm').trigger("reset");
+                $('#supplierTable').DataTable().ajax.reload();
+                alertAction('Imported Successfully')
 
             },
             error: function (responseError) {
@@ -354,4 +356,8 @@ $('#importForm').on('submit', function (e) {
     } else {
         $.alert('Put Excel File First')
     }
+})
+
+$('#excelFile').on('change', function (e) {
+    $('#labelImport').html(e.target.files[0].name);
 })

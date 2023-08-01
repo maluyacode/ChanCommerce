@@ -18,6 +18,7 @@ class Customer extends Model implements HasMedia
 
     protected $table = "customers";
     protected $primaryKey = "id";
+    public $fillable = ["customer_name", "contact", "address", "img_pathC"];
 
     public function user()
     {

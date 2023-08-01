@@ -13,6 +13,7 @@ class Shipper extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
+    public $fillable = ["name"];
 
     public function registerMediaConversions(Media $media = null): void
     {

@@ -426,7 +426,7 @@ $('#importForm').on('submit', function (e) {
             },
             dataType: "json",
             success: function (responseData) {
-
+                $('#labelImport').html('Choose file');
                 $('#importForm').trigger("reset");
                 $('#itemsTable').DataTable().ajax.reload();
                 alertAction('Imported Successfully')
