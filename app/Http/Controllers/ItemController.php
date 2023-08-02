@@ -211,7 +211,7 @@ class ItemController extends Controller
     }
     public function search(Request $request)
     {
-        $query = $request->get('q');
+        $query = $request->search;
         $items = Item::search($query)->orderBy('items.id', 'ASC')->paginate(4);
         $categories = Category::all();
 

@@ -76,6 +76,7 @@ use App\Http\Controllers\SupplierController;
 // Route::get('/fordelivery/{id}', [App\Http\Controllers\OrderController::class, 'ForDelivery'])->name('fordelivery');
 // Route::get('/shipped/{id}', [App\Http\Controllers\OrderController::class, 'Shipped'])->name('shipped');
 
+
 Route::get('/redirect', [App\Http\Controllers\HomeController::class, 'redirect'])->name('redirect');
 Route::get('/redirectadmin', [App\Http\Controllers\HomeController::class, 'redirectadmin'])->name('redirectadmin');
 Route::get('/backadmin', [App\Http\Controllers\HomeController::class, 'backadmin'])->name('backadmin');

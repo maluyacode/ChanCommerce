@@ -8,7 +8,8 @@
     <title>QK Hardware Store</title>
 
     <!-- Fonts -->
-
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -18,6 +19,7 @@
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
     </script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <style>
         .navbar-toggler {
             background-color: #F0E68C;
@@ -62,9 +64,13 @@
                 </ul>
                 <div class="form-inline my-2 my-lg-0" style="padding-right: 20px">
                     <form action="{{ route('search') }}" method="get" style="display: flex; flex-wrap:nowrap">
-                        <input class="form-control" type="search" aria-label="Search">
-                        <button class="btn my-2 my-sm-0" type="submit"
-                            style="background-color: #F0E68C; margin-left: -10px"><i class="fas fa-search"></i></button>
+                        <div class="ui-widget">
+                            <input class="form-control" type="text" aria-label="Search" name="search"
+                                id="tags">
+                            <button class="btn my-2 my-sm-0" type="submit"
+                                style="background-color: #F0E68C; margin-left: -10px"><i
+                                    class="fas fa-search"></i></button>
+                        </div>
                     </form>
                 </div>
                 @auth
