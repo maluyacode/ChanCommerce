@@ -16,6 +16,7 @@ use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ItemsImport;
+use App\Models\Order;
 
 class ItemController extends Controller
 {
@@ -235,10 +236,39 @@ class ItemController extends Controller
         $items = DB::table('items')
             ->join('orderlines', 'items.id', 'orderlines.item_id')
             ->groupBy('items.item_name')
-            ->pluck(DB::raw('sum(quantity)'), 'items.item_name');
+            ->orderBy('totalQuantity', 'DESC')
+            ->pluck(DB::raw('sum(quantity) as totalQuantity'), 'items.item_name');
         // dd($items);
         return response()->json($items);
     }
+    public function totalSales()
+    {
+        $sales = DB::table('orders AS o')
+            ->join('orderlines AS ol', 'o.id', '=', 'ol.orderinfo_id')
+            ->join('items AS i', 'ol.item_id', '=', 'i.id')
+            ->orderBy(DB::raw('month(o.created_at)'), 'ASC')
+            ->groupBy('o.created_at')
+            ->where('o.status', 'Delivered')
+            ->pluck(
+                DB::raw('sum(ol.quantity * i.sellprice) AS total'),
+                DB::raw('monthname(o.created_at) AS month')
+            )
+            ->all();
+
+        return response()->json($sales);
+    }
+
+    public function itemCategories()
+    {
+        $categories = DB::table('items as i')
+            ->rightJoin('categories as c', 'c.id', 'i.cat_id')
+            ->groupBy('c.cat_name')
+            ->pluck(DB::raw('COUNT(cat_id)'), 'c.cat_name')
+            ->all();
+        Debugbar::info($categories);
+        return response()->json($categories);
+    }
+
     public function import(Request $request)
     {
         Excel::import(new ItemsImport, $request->excelFile);

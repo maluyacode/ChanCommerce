@@ -4,7 +4,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 @endsection
 @section('content')
-    <div class="content-header">
+    {{-- <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
@@ -12,7 +12,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <div class="content">
         <div class="container-fluid">
             <div class="row">
@@ -22,15 +22,14 @@
                             <div class="card-text">
                                 <p>{{ __('Welcome Admin! You are logged in!') }}</p>
                                 <div class="buttons">
-                                    <button id="productSold" class="btn btn-light btn-sm ">Product Sales</button>
-                                    <button class="btn btn-light btn-sm">Annual Sales</button>
-                                    <button class="btn btn-light btn-sm">Monthly Sales</button>
-                                    <button id="productStocks" class="btn btn-light btn-sm">Product Stocks</button>
+                                    <button id="productSold" class="btn btn-light btn-sm ">Product Sold</button>
+                                    <button id="totalSales" class="btn btn-light btn-sm">Total Sales</button>
+                                    <button id="itemCategories" class="btn btn-light btn-sm">Item Categories</button>
                                 </div>
                             </div>
-                            <div class="card">
-                                <img src="/images/HWLogo.png" alt="" class="responsive">
-                                <div class="chart-container" style="position: relative; height:40vh; width:80vw">
+                            <div class="card" style="display: flex; justify-content: center; align-items:center">
+                                <img src="/images/HWLogo.png" alt="" class="responsive" style="width: 80%">
+                                <div class="chart-container">
                                     <canvas id="myChart"></canvas>
                                 </div>
                             </div>

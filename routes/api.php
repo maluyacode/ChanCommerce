@@ -89,3 +89,5 @@ Route::get('/item/stocks', [StockController::class, 'index']);
 Route::put('/item/update/{id}/stock', [StockController::class, 'update']);
 
 Route::get('/product/sold', [ItemController::class, 'productSold']);
+Route::get('/total/sales', [ItemController::class, 'totalSales']);
+Route::get('/product/categories', [ItemController::class, 'itemCategories']);
