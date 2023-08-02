@@ -79,6 +79,11 @@
                                     <i class="fa-solid fa-unlock" style="margin-left: 2px; margin-right:27px;"></i>
                                     Admin
                                 </a>
+                            @else
+                                <a class="dropdown-item" href="{{ route('backadmin') }}" class="d-block">
+                                    <i class="fa-solid fa-unlock" style="margin-left: 2px; margin-right:27px;"></i>
+                                    CRUD
+                                </a>
                             @endif
                             <a href="{{ route('shoppingcart', ['id' => auth()->user()->id]) }}" class="dropdown-item">
                                 <i class="fas fa-shopping-cart"></i>

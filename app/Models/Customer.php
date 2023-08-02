@@ -25,6 +25,11 @@ class Customer extends Model implements HasMedia
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'cus_id', 'id');
+    }
+
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')

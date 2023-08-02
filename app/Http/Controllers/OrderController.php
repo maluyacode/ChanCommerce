@@ -22,6 +22,8 @@ use App\Models\Item;
 use App\Models\Order;
 use App\Models\Shipper;
 use App\Models\PaymentMethod;
+use App\Events\OrderConfirmEvent;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
 {
@@ -42,6 +44,7 @@ class OrderController extends Controller
 
     public function show(DeliveredOrderDataTable $dataTable)
     {
+        // eager
         $orders = Order::with([
             'items' => function ($query) {
                 return $query->select('id', 'item_name', 'sellprice');
@@ -80,6 +83,8 @@ class OrderController extends Controller
         // foreach ($orders as $order) {
         //     $total = $total + 1;
         // }
+
+        // eager
         $orders = Order::with([
             'items' => function ($query) {
                 return $query->select('id', 'item_name', 'sellprice');
@@ -113,27 +118,17 @@ class OrderController extends Controller
 
     public function ForDelivery($id)
     {
-        $orders = DB::table('orders')
-            ->join('orderlines', 'orders.id', '=', 'orderlines.orderinfo_id')
-            ->join('customers', 'orders.cus_id', '=', 'customers.id')
-            ->join('users', 'customers.user_id', '=', 'users.id')
-            ->join('items', 'items.id', '=', 'orderlines.item_id')
-            ->join('shippers', 'orders.ship_id', '=', 'shippers.id')
-            ->join('payment_methods', 'payment_methods.id', '=', 'orders.pm_id')
-            ->select('orders.id AS o_id', 'orders.*', 'orderlines.*', 'items.*', 'shippers.*', 'payment_methods.*', 'customers.*', 'users.*')
-            ->where('orders.id', $id)
-            ->first();
-
-        $order = Order::find($id);
+        //eager
+        $order = Order::with('items', 'customer')->find($id);
 
         Order::where('id', $id)
             ->update([
                 "status" => "For Delivery"
-
             ]);
-        $userEmail = $orders->email;
 
-        Mail::send(new OrderConfirmation($userEmail, $order));
+        $userEmail = $order->customer->user->email;
+
+        OrderConfirmEvent::dispatch($userEmail, $order);
         return response()->json($order, 200, [], 0);
     }
 
@@ -165,6 +160,14 @@ class OrderController extends Controller
     {
         $test = 10;
         return $dataTable->render('orders.shipped', compact('test'));
+    }
+
+    public function pdfOrder($id)
+    {
+        //eager
+        $order = Order::with('items')->find($id);
+        $pdf = Pdf::loadView('pdf.order', ['order' => $order]);
+        return $pdf->download('qkresibo_' . $id . '_' . $order->created_at . '.pdf');
     }
 
     public function edit(string $id)

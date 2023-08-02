@@ -12,6 +12,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 use App\Models\Category;
 use App\Models\Supplier;
+use App\Models\Order;
 
 class Item extends Model implements HasMedia
 {
@@ -27,6 +28,11 @@ class Item extends Model implements HasMedia
     public function orderlines()
     {
         return $this->hasMany(Orderline::class, 'item_id');
+    }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'orderlines', 'item_id', 'orderinfo_id')->withPivot('quantity');
     }
 
     public function supplier()

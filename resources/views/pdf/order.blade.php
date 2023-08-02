@@ -9,7 +9,11 @@
     <h1>Order Confirmation</h1>
     <p>Order ID: {{ $order->id }}</p>
     <p>Order Date: {{ $order->created_at }}</p>
-    <p>Total: {{ $order->total }}</p>
+    @php $total = 0 @endphp
+    @foreach ($order->items as $orderItems)
+        @php $total +=  $orderItems->sellprice * $orderItems->pivot->quantity @endphp
+    @endforeach
+    <p>Total: {{ $total }}</p>
 
     <hr>
     <table style="color:red; justify-content:left; border:1px solid black; padding: 10px; width: 80%; text-align:center">
@@ -33,7 +37,7 @@
             @endforeach
         </tbody>
     </table>
-    <p>Total: {{ $order->total }}</p>
+    <p>Total: {{ $total }}</p>
 </body>
 <style>
     .table {

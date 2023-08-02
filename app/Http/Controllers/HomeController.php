@@ -57,11 +57,11 @@ class HomeController extends Controller
             ->select('items.id as it_id', 'items.*', 'categories.*', 'suppliers.*')
             ->orderBy('items.id', 'ASC')->get();
 
-        if ($usertype == 'Admin') {
-            return view('home');
-        } else {
-            return view('transact.dashboard', compact('usertype', 'categories', 'items', 'suppliers', 'itemCount'));
-        }
+        // if ($usertype == 'Admin') {
+        return view('home');
+        // } else {
+        //     return view('transact.dashboard', compact('usertype', 'categories', 'items', 'suppliers', 'itemCount'));
+        // }
     }
     /**
      * Create a new controller instance.

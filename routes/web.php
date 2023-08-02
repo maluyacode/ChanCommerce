@@ -90,30 +90,16 @@ Route::get('/check-availability/{itemId}', [\App\Http\Controllers\ItemController
 
 Route::middleware([AdminMiddleware::class])->group(function () {
 
-    // Route::resource('items','App\Http\Controllers\ItemController'); in api
-    Route::view('/items', 'items.index')->name('items.index');
+    // here if error
 
-    // Route::resource('customers', 'App\Http\Controllers\CustomerController'); // in api
-    Route::view('/customers', 'customers.index')->name('customer.list');
-    // Route::resource('suppliers', 'App\Http\Controllers\SupplierController'); in api
-    Route::view('/suppliers', 'suppliers.index')->name('suppliers.index');
-    // Route::resource('shippers', 'App\Http\Controllers\ShipperController'); // in api
-    Route::view('shippers', 'shippers.index')->name('shippers.index');
-    // Route::resource('stocks', 'App\Http\Controllers\StockController'); in api
-    Route::view('/stocks', 'stocks.index')->name('stocks.index');
-    Route::resource('categories', 'App\Http\Controllers\CategoryController');
-    // Route::resource('paymentmethods', 'App\Http\Controllers\PaymentMethodController');
-    Route::view('paymentmethods', 'paymentmethods.index')->name('paymentmethods.index');
     Route::resource('orders', 'App\Http\Controllers\OrderController');
-    // Route::view('/orders/list', 'orders.index')->name('orders.index'); in api
     Route::view('updatestatus', 'orders.updatestatus')->name('updatestatus'); //in api
     Route::get('shippedorders', [App\Http\Controllers\OrderController::class, 'ShippedOrders'])->name('shippedorders');
     Route::get('show', [App\Http\Controllers\OrderController::class, 'show'])->name('show');
     //  Route::get('/delivered/{id}', [App\Http\Controllers\OrderController::class, 'Delivered'])->name('delivered'); in api
     Route::get('/fordelivery/{id}', [App\Http\Controllers\OrderController::class, 'ForDelivery'])->name('fordelivery');
     ///Route::get('/shipped/{id}', [App\Http\Controllers\OrderController::class, 'Shipped'])->name('shipped'); in api
-    Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
-    Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+
 });
 
 Route::middleware('auth')->group(function () {
@@ -134,8 +120,30 @@ Route::middleware('auth')->group(function () {
     Route::get('/confirmed', function () {
         return view('transact.confirmed');
     });
+    Route::get('/pdf/{id}',  [App\Http\Controllers\OrderController::class, 'pdfOrder'])->name('pdf');
 
     Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
+
+
+    // new if no error
+    // Route::resource('items','App\Http\Controllers\ItemController'); in api
+    Route::view('/items', 'items.index')->name('items.index');
+
+    // Route::resource('customers', 'App\Http\Controllers\CustomerController'); // in api
+    Route::view('/customers', 'customers.index')->name('customer.list');
+    // Route::resource('suppliers', 'App\Http\Controllers\SupplierController'); in api
+    Route::view('/suppliers', 'suppliers.index')->name('suppliers.index');
+    // Route::resource('shippers', 'App\Http\Controllers\ShipperController'); // in api
+    Route::view('shippers', 'shippers.index')->name('shippers.index');
+    // Route::resource('stocks', 'App\Http\Controllers\StockController'); in api
+    Route::view('/stocks', 'stocks.index')->name('stocks.index');
+    Route::resource('categories', 'App\Http\Controllers\CategoryController');
+    // Route::resource('paymentmethods', 'App\Http\Controllers\PaymentMethodController');
+    Route::view('paymentmethods', 'paymentmethods.index')->name('paymentmethods.index');
+    // Route::view('/orders/list', 'orders.index')->name('orders.index'); in api
+
+    Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
+    Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 });
 
 Auth::routes();

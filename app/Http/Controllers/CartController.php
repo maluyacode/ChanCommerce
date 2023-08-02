@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\support\facades\DB;
+use App\Events\CheckoutEvent;
 
 use App\Models\Orderline;
 use App\Models\Shipper;
@@ -162,16 +163,21 @@ class CartController extends Controller
         $order->pm_id = $pm;
         $order->save();
 
+        // attach
+        $items = $cart->pluck('quantityC', 'item_id')->toArray();
+        foreach ($items as $itemId => $quantity) {
+            $order->items()->attach($itemId, ['quantity' => $quantity]);
+        }
+        // DB::table('orderlines')->insert(
+        //     [
+        //         'orderinfo_id' => $order->id,
+        //         'item_id' => $carts->item_id,
+        //         'quantity' => $carts->quantityC
+        //     ]
+        // );
+
+
         foreach ($cart as $carts) {
-            DB::table('orderlines')->insert(
-                [
-                    'orderinfo_id' => $order->id,
-                    'item_id' => $carts->item_id,
-                    'quantity' => $carts->quantityC
-                ]
-            );
-
-
             $stock = Stock::find($carts->item_id);
             $stock->quantity = $stock->quantity - $carts->quantityC;
             if ($stock->quantity == 0) {
@@ -185,9 +191,11 @@ class CartController extends Controller
         }
 
         // dd($order);
-        Mail::send(new OrderMail($Email, $order));
-
+        // Mail::send(new OrderMail($Email, $order));
         Cart::where('user_id', $user)->delete();
+
+        // call event
+        CheckoutEvent::dispatch($order, $Email);
 
         return View::make('transact.success');
     }
