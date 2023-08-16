@@ -66,6 +66,40 @@ let dataTable = $('#accountsTable').DataTable({
 
 });
 
+let validate;
+$(function () {
+
+    validate = $('#accountForm').validate({
+        rules: {
+            customer_name: {
+                required: true,
+                minlength: 5,
+            },
+            contact: {
+                required: true,
+            },
+            email: {
+                required: true,
+                email: true,
+            },
+            usertype: {
+                required: true,
+            },
+            address: {
+                required: true,
+            },
+            password: {
+                required: true,
+                minlength: 8,
+            },
+            usertype: {
+                required: true,
+            },
+        }
+    })
+
+})
+
 $('.dt-buttons').prepend(
     '<button type="button" id="create" data-bs-toggle="modal" data-bs-target="#accountModal" class="dt-button">Create</buttons>'
 );
@@ -125,6 +159,7 @@ function showImageEdit(media) {
 }
 
 $(document).on('click', 'button#create', function () {
+    validate.resetForm();
     updateButton.hide();
     saveButton.show();
     $('.image-container').remove();
@@ -132,44 +167,48 @@ $(document).on('click', 'button#create', function () {
 })
 
 saveButton.on('click', function () {
-    console.log("SAdsa");
-    let formData = new FormData($('#accountForm')[0]);
-    $('#accountModal *').prop('disabled', true);
-    // for (var pair of formData.entries()) {
-    //     console.log(pair[0] + ', ' + pair[1]);
-    // }
+    if ($('#accountForm').valid()) {
 
-    $.ajax({
-        url: '/api/customers/',
-        type: "POST",
-        data: formData,
-        contentType: false,
-        processData: false,
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        dataType: "json",
-        success: function (data, status) {
-            $('#accountModal *').prop('disabled', false);
-            $('#accountModal').modal("hide");
-            resetForm();
-            alertAction("Account Created Successfuly");
-            $('#accountsTable').DataTable().ajax.reload();
-        },
-        error: function (error) {
-            errorsShow(error.responseJSON.errors)
-            if (error.responseJSON.errors.password) {
-                $('#password').siblings('div').html(error.responseJSON.errors.password).css({
-                    display: "block"
-                })
+
+        console.log("SAdsa");
+        let formData = new FormData($('#accountForm')[0]);
+        $('#accountModal *').prop('disabled', true);
+        // for (var pair of formData.entries()) {
+        //     console.log(pair[0] + ', ' + pair[1]);
+        // }
+
+        $.ajax({
+            url: '/api/customers/',
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: "json",
+            success: function (data, status) {
+                $('#accountModal *').prop('disabled', false);
+                $('#accountModal').modal("hide");
+                resetForm();
+                alertAction("Account Created Successfuly");
+                $('#accountsTable').DataTable().ajax.reload();
+            },
+            error: function (error) {
+                errorsShow(error.responseJSON.errors)
+                if (error.responseJSON.errors.password) {
+                    $('#password').siblings('div').html(error.responseJSON.errors.password).css({
+                        display: "block"
+                    })
+                }
+                $('#accountModal *').prop('disabled', false);
             }
-            $('#accountModal *').prop('disabled', false);
-        }
-    })
+        })
+    }
 })
 
 $(document).on('click', 'button.edit', function () {
-
+    validate.resetForm();
     let id = $(this).attr('data-id');
     resetForm();
     updateButton.show();
@@ -202,39 +241,42 @@ $(document).on('click', 'button.edit', function () {
 });
 
 updateButton.on('click', function (event) {
-    let id = $('#hidden_id').val();
 
-    let formData = new FormData($('#accountForm')[0]);
-    for (var pair of formData.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
-    }
+    if ($('#accountForm').valid()) {
+        let id = $('#hidden_id').val();
 
-    formData.append('_method', 'PUT');
-
-    $('#accountModal *').prop('disabled', true);
-
-    $.ajax({
-        url: `/api/customers/${id}`,
-        type: "POST",
-        data: formData,
-        contentType: false,
-        processData: false,
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        dataType: "json",
-        success: function (data, status) {
-            $('#accountModal *').prop('disabled', false);
-            $('#accountModal').modal("hide");
-            resetForm()
-            alertAction("Account Updated Succesfully")
-            $('#accountsTable').DataTable().ajax.reload();
-        },
-        error: function (error) {
-            errorsShow(error.responseJSON.errors)
-            $('#accountModal *').prop('disabled', false);
+        let formData = new FormData($('#accountForm')[0]);
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
         }
-    })
+
+        formData.append('_method', 'PUT');
+
+        $('#accountModal *').prop('disabled', true);
+
+        $.ajax({
+            url: `/api/customers/${id}`,
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: "json",
+            success: function (data, status) {
+                $('#accountModal *').prop('disabled', false);
+                $('#accountModal').modal("hide");
+                resetForm()
+                alertAction("Account Updated Succesfully")
+                $('#accountsTable').DataTable().ajax.reload();
+            },
+            error: function (error) {
+                errorsShow(error.responseJSON.errors)
+                $('#accountModal *').prop('disabled', false);
+            }
+        })
+    }
 })
 
 $(document).on('click', 'button.delete', function () {
