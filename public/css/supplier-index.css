@@ -129,3 +129,8 @@ select {
     display: flex;
     justify-content: center;
 }
+
+#supplierForm label.error {
+    color: red !important;
+    font-weight: 200;
+}

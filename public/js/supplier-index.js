@@ -56,6 +56,30 @@ let dataTable = $('#supplierTable').DataTable({
 
 });
 
+let validate;
+$(function () {
+
+    validate = $('#supplierForm').validate({
+        rules: {
+            sup_name: {
+                required: true,
+                minlength: 5,
+            },
+            sup_contact: {
+                required: true,
+            },
+            sup_email: {
+                required: true,
+                email: true,
+            },
+            sup_address: {
+                required: true,
+            },
+        }
+    })
+
+})
+
 $('.dt-buttons').prepend(
     '<button type="button" id="create" data-bs-toggle="modal" data-bs-target="#supplierModal" class="dt-button">Create</buttons>'
 );
@@ -85,6 +109,7 @@ function alertAction(message) {
 }
 
 $(document).on('click', 'button#create', function () {
+    validate.resetForm();
     updateButton.hide();
     saveButton.show();
     resetForm();
@@ -96,38 +121,43 @@ $(document).on('click', 'button#create', function () {
 })
 
 saveButton.on('click', function () {
-    let formData = new FormData($('#supplierForm')[0]);
-    $('#supplierModal *').prop('disabled', true);
-    for (var pair of formData.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
-    }
 
-    $.ajax({
-        url: '/api/suppliers/',
-        type: "POST",
-        data: formData,
-        contentType: false,
-        processData: false,
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        dataType: "json",
-        success: function (data, status) {
-            $('#supplierModal *').prop('disabled', false);
-            $('#supplierModal').modal("hide");
-            resetForm();
-            alertAction("New Supplier Added Successfuly");
-            $('#supplierTable').DataTable().ajax.reload();
-        },
-        error: function (error) {
-            errorsShow(error.responseJSON.errors);
-            console.log(error);
+    if ($('#supplierForm').valid()) {
+
+
+        let formData = new FormData($('#supplierForm')[0]);
+        $('#supplierModal *').prop('disabled', true);
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
         }
-    })
+
+        $.ajax({
+            url: '/api/suppliers/',
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: "json",
+            success: function (data, status) {
+                $('#supplierModal *').prop('disabled', false);
+                $('#supplierModal').modal("hide");
+                resetForm();
+                alertAction("New Supplier Added Successfuly");
+                $('#supplierTable').DataTable().ajax.reload();
+            },
+            error: function (error) {
+                errorsShow(error.responseJSON.errors);
+                console.log(error);
+            }
+        })
+    }
 })
 
 $(document).on('click', 'button.edit', function () {
-
+    validate.resetForm();
     $('input[name="document[]"]').remove();
     $('.dz-preview').remove()
     $('.dz-message').css({
@@ -164,40 +194,43 @@ $(document).on('click', 'button.edit', function () {
 });
 
 updateButton.on('click', function (event) {
-    let id = $('#hidden_id').val();
 
-    let formData = new FormData($('#supplierForm')[0]);
-    for (var pair of formData.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
-    }
+    if ($('#supplierForm').valid()) {
+        let id = $('#hidden_id').val();
 
-    formData.append('_method', 'PUT');
-
-    $('#accountModal *').prop('disabled', true);
-
-    $.ajax({
-        url: `/api/suppliers/${id}/update`,
-        type: "POST",
-        data: formData,
-        contentType: false,
-        processData: false,
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        dataType: "json",
-        success: function (data, status) {
-            $('#supplierModal *').prop('disabled', false);
-            $('#supplierModal').modal("hide");
-            resetForm()
-            alertAction("Supplier Updated Succesfully")
-            $('#supplierTable').DataTable().ajax.reload();
-        },
-        error: function (error) {
-            console.log(error.responseJSON.errors);
-            errorsShow(error.responseJSON.errors);
-
+        let formData = new FormData($('#supplierForm')[0]);
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
         }
-    })
+
+        formData.append('_method', 'PUT');
+
+        $('#accountModal *').prop('disabled', true);
+
+        $.ajax({
+            url: `/api/suppliers/${id}/update`,
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: "json",
+            success: function (data, status) {
+                $('#supplierModal *').prop('disabled', false);
+                $('#supplierModal').modal("hide");
+                resetForm()
+                alertAction("Supplier Updated Succesfully")
+                $('#supplierTable').DataTable().ajax.reload();
+            },
+            error: function (error) {
+                console.log(error.responseJSON.errors);
+                errorsShow(error.responseJSON.errors);
+
+            }
+        })
+    }
 })
 $(document).on('click', 'button.delete', function () {
     let id = $(this).attr("data-id");

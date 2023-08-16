@@ -176,8 +176,8 @@ $('#save').on('click', function (event) {
 
             },
             error: function (error) {
-                errorsShow(error.responseJSON.errors);
-                $('#itemModal *').prop('disabled', false);
+                // errorsShow(error.responseJSON.errors);
+                // $('#itemModal *').prop('disabled', false);
             }
         })
     }
@@ -245,47 +245,50 @@ $(document).on('click', 'button.edit', function () {
 
 
 $('#update').on('click', function (event) {
-    event.preventDefault();
 
-    let id = $('#item_id').val();
-    let formData = new FormData($('#itemForm')[0]);
-    for (var pair of formData.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
+    if ($('#itemForm').valid()) {
+
+        let id = $('#item_id').val();
+        let formData = new FormData($('#itemForm')[0]);
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
+
+        formData.append('_method', 'PUT');
+
+        $('#itemModal *').prop('disabled', true);
+
+        $.ajax({
+            url: `/api/item/${id}/update`,
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: "json",
+            success: function (data, status) {
+                $('#itemModal').modal("hide");
+                $('#itemModal *').prop('disabled', false);
+                $('#itemForm').trigger("reset");
+                $('input[name="document[]"]').remove();
+                $('.dz-preview').remove()
+                $('.dz-message').css({
+                    display: "block",
+                })
+                alertAction("Item Updated Successfully")
+                $('#item_id').remove();
+                $('#itemsTable').DataTable().ajax.reload();
+
+            },
+            error: function (error) {
+                // errorsShow(error.responseJSON.errors);
+                // $('#itemModal *').prop('disabled', false);
+            }
+        })
     }
 
-    formData.append('_method', 'PUT');
-
-    $('#itemModal *').prop('disabled', true);
-
-    $.ajax({
-        url: `/api/item/${id}/update`,
-        type: "POST",
-        data: formData,
-        contentType: false,
-        processData: false,
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        dataType: "json",
-        success: function (data, status) {
-            $('#itemModal').modal("hide");
-            $('#itemModal *').prop('disabled', false);
-            $('#itemForm').trigger("reset");
-            $('input[name="document[]"]').remove();
-            $('.dz-preview').remove()
-            $('.dz-message').css({
-                display: "block",
-            })
-            alertAction("Item Updated Successfully")
-            $('#item_id').remove();
-            $('#itemsTable').DataTable().ajax.reload();
-
-        },
-        error: function (error) {
-            errorsShow(error.responseJSON.errors);
-            $('#itemModal *').prop('disabled', false);
-        }
-    })
 })
 
 
@@ -321,36 +324,36 @@ $(document).on('click', 'button.delete', function () {
 });
 
 
-function errorsShow(message) {
-    $('.invalid-feedback').css({
-        display: "none"
-    })
+// function errorsShow(message) {
+//     $('.invalid-feedback').css({
+//         display: "none"
+//     })
 
-    if (message.item_name) {
-        $('#name').siblings('div').html(message.item_name).css({
-            display: "block"
-        })
-    }
+//     if (message.item_name) {
+//         $('#name').siblings('div').html(message.item_name).css({
+//             display: "block"
+//         })
+//     }
 
-    if (message.cat_id) {
-        $('#category').siblings('div').html(message.cat_id).css({
-            display: "block"
-        })
-    }
+//     if (message.cat_id) {
+//         $('#category').siblings('div').html(message.cat_id).css({
+//             display: "block"
+//         })
+//     }
 
-    if (message.sup_id) {
-        $('#supplier').siblings('div').html(message.sup_id).css({
-            display: "block"
-        })
-    }
+//     if (message.sup_id) {
+//         $('#supplier').siblings('div').html(message.sup_id).css({
+//             display: "block"
+//         })
+//     }
 
-    if (message.sellprice) {
-        $('#sellprice').siblings('div').html(message.sellprice).css({
-            display: "block"
-        })
-    }
+//     if (message.sellprice) {
+//         $('#sellprice').siblings('div').html(message.sellprice).css({
+//             display: "block"
+//         })
+//     }
 
-}
+// }
 
 $('input').on("keyup", function () {
     $(this).siblings('div').css({
