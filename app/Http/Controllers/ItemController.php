@@ -70,26 +70,26 @@ class ItemController extends Controller
 
     public function store(Request $request)
     {
-        Debugbar::info($request);
-        $rules = [
-            'item_name' => 'required|string|max:255',
-            'sellprice' => 'required|numeric|min:0',
-            'sup_id' => 'required|numeric',
-            'cat_id' => 'required|numeric',
-        ];
-        $messages = [
-            'item_name.required' => 'Item name is required.',
-            'item_name.string' => 'Item name must be a string.',
-            'item_name.max' => 'Item name must not exceed :max characters.',
-            'sellprice.required' => 'Sell price is required.',
-            'sellprice.numeric' => 'Sell price must be a number.',
-            'sellprice.min' => 'Sell price must be at least :min.',
-            'sup_id.required' => 'Supplier is required.',
-            'cat_id.required' => 'Category is required.',
-            'sup_id.numeric' => 'Supplier is required.',
-            'cat_id.numeric' => 'Category is required.',
-        ];
-        Validator::make($request->all(), $rules, $messages)->validate();
+        // Debugbar::info($request);
+        // $rules = [
+        //     'item_name' => 'required|string|max:255',
+        //     'sellprice' => 'required|numeric|min:0',
+        //     'sup_id' => 'required|numeric',
+        //     'cat_id' => 'required|numeric',
+        // ];
+        // $messages = [
+        //     'item_name.required' => 'Item name is required.',
+        //     'item_name.string' => 'Item name must be a string.',
+        //     'item_name.max' => 'Item name must not exceed :max characters.',
+        //     'sellprice.required' => 'Sell price is required.',
+        //     'sellprice.numeric' => 'Sell price must be a number.',
+        //     'sellprice.min' => 'Sell price must be at least :min.',
+        //     'sup_id.required' => 'Supplier is required.',
+        //     'cat_id.required' => 'Category is required.',
+        //     'sup_id.numeric' => 'Supplier is required.',
+        //     'cat_id.numeric' => 'Category is required.',
+        // ];
+        // Validator::make($request->all(), $rules, $messages)->validate();
 
         $item = new Item;
         $item->item_name = $request->item_name;

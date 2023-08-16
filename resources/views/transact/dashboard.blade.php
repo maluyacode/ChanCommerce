@@ -1,4 +1,4 @@
-@extends('layouts.main-navbar')
+`@extends('layouts.main-navbar')
 {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @section('search')
     <div

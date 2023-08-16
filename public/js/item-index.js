@@ -62,6 +62,30 @@ let dataTable = $('#itemsTable').DataTable({
 
 });
 
+let validate;
+
+$(function () {
+
+    validate = $('#itemForm').validate({
+        rules: {
+            item_name: {
+                required: true,
+                minlength: 5,
+            },
+            cat_id: {
+                required: true,
+            },
+            sup_id: {
+                required: true,
+            },
+            sellprice: {
+                required: true,
+                number: true,
+            }
+        }
+    })
+
+})
 // make create button
 $('.dt-buttons').prepend(
     '<button type="button" id="create" data-bs-toggle="modal" data-bs-target="#itemModal" class="dt-button">Create</buttons>'
@@ -78,6 +102,7 @@ $('#create').on('click', function () {
     $('#update').hide();
     $('#save').show();
     $('#itemForm').trigger("reset");
+    validate.resetForm();
 
     $('input[name="document[]"]').remove();
     $('.dz-preview').remove()
@@ -99,8 +124,8 @@ $('#create').on('click', function () {
             category.find('option').remove()
             supplier.find('option').remove()
 
-            category.append($('<option>').html('Please select'))
-            supplier.append($('<option>').html('Please select'))
+            category.append($('<option>').val("").html('Please select'))
+            supplier.append($('<option>').val("").html('Please select'))
 
             $.each(data.categories, function (key, value) {
                 category.append($('<option>').val(key).html(value))
@@ -120,40 +145,43 @@ $('#create').on('click', function () {
 
 
 $('#save').on('click', function (event) {
-    event.preventDefault();
-    let formData = new FormData($('#itemForm')[0]);
-    // for (var pair of formData.entries()) {
-    //     console.log(pair[0] + ', ' + pair[1]);
-    // }
-    $('#itemModal *').prop('disabled', true);
-    $.ajax({
-        url: '/api/item/store',
-        type: "POST",
-        data: formData,
-        contentType: false,
-        processData: false,
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        dataType: "json",
-        success: function (data, status) {
-            $('#itemModal *').prop('disabled', false);
-            $('#itemModal').modal("hide");
-            $('#itemForm').trigger("reset");
-            $('input[name="document[]"]').remove();
-            $('.dz-preview').remove()
-            $('.dz-message').css({
-                display: "block",
-            })
-            alertAction("New Item Created")
-            $('#itemsTable').DataTable().ajax.reload();
 
-        },
-        error: function (error) {
-            errorsShow(error.responseJSON.errors);
-            $('#itemModal *').prop('disabled', false);
-        }
-    })
+    if ($('#itemForm').valid()) {
+        let formData = new FormData($('#itemForm')[0]);
+        // for (var pair of formData.entries()) {
+        //     console.log(pair[0] + ', ' + pair[1]);
+        // }
+        $('#itemModal *').prop('disabled', true);
+        $.ajax({
+            url: '/api/item/store',
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            dataType: "json",
+            success: function (data, status) {
+                $('#itemModal *').prop('disabled', false);
+                $('#itemModal').modal("hide");
+                $('#itemForm').trigger("reset");
+                $('input[name="document[]"]').remove();
+                $('.dz-preview').remove()
+                $('.dz-message').css({
+                    display: "block",
+                })
+                alertAction("New Item Created")
+                $('#itemsTable').DataTable().ajax.reload();
+
+            },
+            error: function (error) {
+                errorsShow(error.responseJSON.errors);
+                $('#itemModal *').prop('disabled', false);
+            }
+        })
+    }
+
 });
 
 
@@ -161,7 +189,7 @@ $(document).on('click', 'button.edit', function () {
     $('#save').hide();
     $('#update').show();
     $('#item_id').remove();
-
+    validate.resetForm();
     $('input[name="document[]"]').remove();
     $('.dz-preview').remove()
     $('.dz-message').css({

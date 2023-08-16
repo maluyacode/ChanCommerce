@@ -132,3 +132,8 @@ select {
     display: flex;
     justify-content: center;
 }
+
+#itemForm label.error {
+    color: red !important;
+    font-weight: 200;
+}

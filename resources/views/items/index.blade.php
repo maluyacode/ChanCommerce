@@ -98,7 +98,7 @@
                         <div class="mb-3">
                             <label for="catergory" class="form-label">Category</label>
                             <select class="form-select" id="category" name="cat_id">
-                                <option selected>Please select</option>
+                                <option value=" ">Please select</option>
                             </select>
                             <div class="invalid-feedback">
                             </div>
@@ -106,7 +106,7 @@
                         <div class="mb-3">
                             <label for="supplier" class="form-label">Supplier</label>
                             <select class="form-select" id="supplier" name="sup_id">
-                                <option value="">Please select</option>
+                                <option value=" ">Please select</option>
                             </select>
                             <div class="invalid-feedback">
                             </div>
@@ -132,6 +132,8 @@
         </div>
     </div>
 
+
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script src="{{ asset('js/item-index.js') }}" defer></script>
 
     <script>
